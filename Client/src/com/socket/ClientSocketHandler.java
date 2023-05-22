@@ -1,4 +1,4 @@
-package com.client;
+package com.socket;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,16 +16,18 @@ class ClientSocketHandler {
             this.clientSocket = new Socket(serverAddress, serverPort);
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Could not create socket\nAddress: " + serverAddress + "\nPort: " + serverPort);
         }
     }
 
     public void connectToServer() {
         try {
-            System.out.println("Connected to server...");
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             out = new PrintWriter(clientSocket.getOutputStream(), true);
+            System.out.println("Connected to server...");
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Could not connect to server...");
         }
     }
 
