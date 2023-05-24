@@ -6,8 +6,11 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import MoneyInfoStorage.MoneyInfoStorage;
+
 class ClientHandler implements Runnable {
     private Socket clientSocket;
+    private MoneyInfoStorage moneyInfoStorage;
 
     public ClientHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
@@ -40,6 +43,7 @@ class ClientHandler implements Runnable {
 
     private String processRequest(String request) {
         // TODO: Implement the logic for processing client requests and generating a response
+
 
         String response = "";
 
