@@ -1,4 +1,4 @@
-package com.socket;
+package com.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -53,5 +53,9 @@ class ClientSocketHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isConnected() {
+        return clientSocket.isConnected();
     }
 }
