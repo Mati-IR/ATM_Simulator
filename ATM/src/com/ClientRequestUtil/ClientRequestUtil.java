@@ -4,9 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ClientRequestUtil {
+    private boolean isRequestValid = false;
+    private String selectedRequest = null;
+    private String userNumber = null;
+
+    /* Authentication variables */
+    private String pin = null;
+
+
     private static final Map<String, String> requestMappings = new HashMap<>();
 
     static {
+        requestMappings.put("authenticate", "A");
         requestMappings.put("withdraw", "W");
         requestMappings.put("deposit", "D");
         requestMappings.put("balance", "B");
@@ -15,54 +24,33 @@ public class ClientRequestUtil {
         requestMappings.put("topup", "T");
     }
 
-    public static String encodeRequest(String userInput) {
-        String[] parts = userInput.trim().split("\\s+", 2);
-        String command = parts[0].toLowerCase();
 
-        if (requestMappings.containsKey(command)) {
-            String encodedCommand = requestMappings.get(command);
-            String encodedRequest = encodedCommand;
-
-            if (parts.length > 1) {
-                // Split the arguments into PIN, amount, and currency
-                String[] arguments = parts[1].trim().split("\\s+");
-                String encodedPIN = encodePIN(arguments[0]);
-                String encodedAmount = encodeAmount(arguments[1]);
-                String encodedCurrency = encodeCurrency(arguments[2]);
-
-                // Validate and append the encoded arguments
-                if (encodedPIN != null && encodedAmount != null && encodedCurrency != null) {
-                    encodedRequest += " " + encodedPIN + " " + encodedAmount + " " + encodedCurrency;
-                    return encodedRequest;
-                }
+    public String encodeRequest() {
+        switch (this.selectedRequest) {
+            case "A": {
+                return "A " + this.pin + " " + this.userNumber;
             }
-
-            return encodedRequest;
         }
-
-        return "";
+        return "Error";
     }
 
-    public static String decodeRequest(String encodedRequest) {
-        String[] parts = encodedRequest.trim().split("\\s+", 2);
-        String encodedCommand = parts[0].toUpperCase();
+    public void decodeRequest(String encodedRequest) {
+        // Split the encoded request and perform decoding/validation
+        String[] parts = encodedRequest.trim().split("\\s+");
 
-        for (Map.Entry<String, String> entry : requestMappings.entrySet()) {
-            if (entry.getValue().equals(encodedCommand)) {
-                String command = entry.getKey();
+        if (parts[0] == "A") {
+            this.selectedRequest = requestMappings.get(decodePIN(parts[0]));
+            this.pin = decodePIN(parts[1]);
+            this.userNumber = decodeUserNumber(parts[2]);
 
-                if (parts.length > 1) {
-                    String decodedArguments = decodeArguments(parts[1]);
-                    if (!decodedArguments.isEmpty()) {
-                        return command + " " + decodedArguments;
-                    }
-                } else {
-                    return command;
-                }
+            if (this.selectedRequest != null && this.pin != null && this.userNumber != null) {
+                this.isRequestValid = true;
+                return;
+            } else {
+                this.isRequestValid = false;
+                return;
             }
         }
-
-        return "";
     }
 
     private static String encodePIN(String pin) {
@@ -114,6 +102,14 @@ public class ClientRequestUtil {
         return null;
     }
 
+    private static String decodeUserNumber(String encodedUserNumber) {
+        // Perform decoding/validation of user number and return decoded value
+        if (encodedUserNumber.matches("\\d+")) {
+            return encodedUserNumber;
+        }
+        return null;
+    }
+
     private static String decodeAmount(String encodedAmount) {
         // Perform decoding/validation of amount and return decoded value
         if (encodedAmount.matches("\\d+")) {
@@ -128,5 +124,17 @@ public class ClientRequestUtil {
             return encodedCurrency;
         }
         return null;
+    }
+
+    public void setRequest(String Request) {
+        this.selectedRequest = requestMappings.get(Request);
+    }
+
+    public void setPin(String pin) {
+        this.pin = pin;
+    }
+
+    public void setUserNumber(String userNumber) {
+        this.userNumber = userNumber;
     }
 }
