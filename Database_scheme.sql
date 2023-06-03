@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Cze 01, 2023 at 07:08 PM
+-- Generation Time: Cze 03, 2023 at 03:18 PM
 -- Wersja serwera: 10.4.28-MariaDB
 -- Wersja PHP: 8.2.4
 
@@ -38,7 +38,9 @@ CREATE TABLE `account_info` (
 --
 
 INSERT INTO `account_info` (`Account_Id`, `Balance`, `Pin`) VALUES
-(1, 1000, 2137);
+(1, 600, 2137),
+(2, 1000000, 2211),
+(3, 544566, 2384);
 
 -- --------------------------------------------------------
 
@@ -48,7 +50,7 @@ INSERT INTO `account_info` (`Account_Id`, `Balance`, `Pin`) VALUES
 
 CREATE TABLE `operation_info` (
   `ID` int(11) NOT NULL,
-  `Date` datetime NOT NULL,
+  `Date` datetime NOT NULL DEFAULT current_timestamp(),
   `Operation_Type` int(11) NOT NULL,
   `Amount` int(11) DEFAULT NULL,
   `Account_Id` int(11) NOT NULL
@@ -59,7 +61,18 @@ CREATE TABLE `operation_info` (
 --
 
 INSERT INTO `operation_info` (`ID`, `Date`, `Operation_Type`, `Amount`, `Account_Id`) VALUES
-(2, '2023-06-01 18:26:45', 4, NULL, 1);
+(53, '2023-06-03 15:12:40', 1, 1000, 2),
+(54, '2023-06-03 15:12:40', 3, -500, 1),
+(55, '2023-06-03 15:12:40', 6, -222, 2),
+(56, '2023-06-03 15:12:40', 5, NULL, 3),
+(57, '2023-06-03 15:12:40', 2, 1000, 1),
+(58, '2023-06-03 15:12:40', 4, NULL, 2),
+(59, '2023-06-03 15:12:40', 4, NULL, 1),
+(60, '2023-06-03 15:12:40', 7, NULL, 2),
+(61, '2023-06-03 15:12:40', 6, -50, 1),
+(62, '2023-06-03 15:12:40', 1, -500, 3),
+(63, '2023-06-03 15:12:40', 7, NULL, 1),
+(64, '2023-06-03 15:12:40', 5, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -117,7 +130,7 @@ ALTER TABLE `operation_type`
 -- AUTO_INCREMENT for table `operation_info`
 --
 ALTER TABLE `operation_info`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- Constraints for dumped tables
