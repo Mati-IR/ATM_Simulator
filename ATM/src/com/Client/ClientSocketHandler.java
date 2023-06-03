@@ -1,4 +1,4 @@
-package com.client;
+package com.Client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-class ClientSocketHandler {
+public class ClientSocketHandler {
     private Socket clientSocket;
     private BufferedReader in;
     private PrintWriter out;
