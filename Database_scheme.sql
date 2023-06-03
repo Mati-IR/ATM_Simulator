@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Cze 01, 2023 at 06:35 PM
+-- Generation Time: Cze 01, 2023 at 07:08 PM
 -- Wersja serwera: 10.4.28-MariaDB
 -- Wersja PHP: 8.2.4
 
@@ -82,7 +82,8 @@ INSERT INTO `operation_type` (`ID`, `Operation_Name`) VALUES
 (3, 'Cash_Out_Euro'),
 (4, 'Account_Check'),
 (5, 'Pin_Change'),
-(6, 'Phone_add');
+(6, 'Phone_add'),
+(7, 'Show_Account_Info');
 
 --
 -- Indeksy dla zrzutów tabel
