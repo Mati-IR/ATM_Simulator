@@ -26,10 +26,15 @@ public class ClientRequestUtil {
 
 
     public String encodeRequest() {
-        switch (this.selectedRequest) {
-            case "A": {
-                return "A " + this.pin + " " + this.userNumber;
+        try {
+
+            switch (this.selectedRequest) {
+                case "A": {
+                    return "A " + this.pin + " " + this.userNumber;
+                }
             }
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
         }
         return "Error";
     }
@@ -127,7 +132,7 @@ public class ClientRequestUtil {
     }
 
     public void setRequest(String Request) {
-        this.selectedRequest = requestMappings.get(Request);
+        this.selectedRequest = requestMappings.get(Request.toLowerCase());
     }
 
     public void setPin(String pin) {
