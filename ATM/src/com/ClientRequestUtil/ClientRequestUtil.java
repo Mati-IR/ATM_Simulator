@@ -22,6 +22,13 @@ public class ClientRequestUtil {
         requestMappings.put("history", "H");
         requestMappings.put("changepin", "C");
         requestMappings.put("topup", "T");
+        requestMappings.put("A", "authenticate");
+        requestMappings.put("W", "withdraw");
+        requestMappings.put("D", "deposit");
+        requestMappings.put("B", "balance");
+        requestMappings.put("H", "history");
+        requestMappings.put("C", "changepin");
+        requestMappings.put("T", "topup");
     }
 
 
@@ -38,8 +45,8 @@ public class ClientRequestUtil {
         // Split the encoded request and perform decoding/validation
         String[] parts = encodedRequest.trim().split("\\s+");
 
-        if (parts[0] == "A") {
-            this.selectedRequest = requestMappings.get(decodePIN(parts[0]));
+        if (parts[0].equals("A")) {
+            this.selectedRequest = requestMappings.get(parts[0]);
             this.pin = decodePIN(parts[1]);
             this.userNumber = decodeUserNumber(parts[2]);
 
@@ -137,4 +144,17 @@ public class ClientRequestUtil {
     public void setUserNumber(String userNumber) {
         this.userNumber = userNumber;
     }
+
+    public String getSelectedRequest() {
+        return this.selectedRequest;
+    }
+
+    public String getPin() {
+        return this.pin;
+    }
+
+    public String getUserNumber() {
+        return this.userNumber;
+    }
+
 }
