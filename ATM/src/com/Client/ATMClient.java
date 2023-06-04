@@ -9,14 +9,14 @@ public class ATMClient {
 
     private ClientState         clientState = ClientState.NOT_CONNECTED;
     private int                 clientID = 0;
-    //private ClientSocketHandler clientSocketHandler;
+    private ClientSocketHandler clientSocketHandler;
     private ClientRequestUtil   clientRequestUtil;
 
     public ATMClient(int clientID, String serverAddress, int serverPort) {
         this.clientID = clientID;
         //clientSocketHandler = new ClientSocketHandler(serverAddress, serverPort);
         clientRequestUtil = new ClientRequestUtil();
-/*
+
         if(null == clientSocketHandler){
             System.out.println("Could not connect to server");
             this.clientState = ClientState.NOT_CONNECTED;
@@ -38,7 +38,7 @@ public class ATMClient {
 
         if (clientRequest != "Error"){
             clientSocketHandler.sendRequest(clientRequest);
-        }*/
+        }
 
     }
 
