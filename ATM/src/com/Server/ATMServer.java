@@ -36,7 +36,7 @@ public class ATMServer {
                 System.out.println("Client connected: " + clientSocket);
 
                 // Handle client request in a separate thread
-                Thread clientThread = new Thread(new ClientHandler(clientSocket));
+                Thread clientThread = new Thread(new ClientHandler(clientSocket, databaseHandler));
                 clientThread.start();
             }
         } catch (IOException e) {

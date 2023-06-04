@@ -15,6 +15,10 @@ public class DatabaseHandler {
     private String databasePassword;
     private Connection connection;
 
+    private final String USERS_TABLE = "account_info";
+    private final String USER_ACCOUNT_ID = "Account_Id";
+
+
     public DatabaseHandler(String databaseAddress, String databasePort, String databaseName, String databaseUsername, String databasePassword) {
         this.databaseAddress = databaseAddress;
         this.databasePort = databasePort;
@@ -76,6 +80,26 @@ public class DatabaseHandler {
             e.printStackTrace();
         }
         return resultSet;
+    }
+
+    public String getPinForUser(String userId) {
+        String pin = null;
+        try {
+            if (isConnected()) {
+                String query = "SELECT Pin FROM " + USERS_TABLE + " WHERE " + USER_ACCOUNT_ID + " = " + userId;
+                PreparedStatement statement = connection.prepareStatement(query);
+                ResultSet resultSet = statement.executeQuery();
+                if (resultSet.next()) {
+                    pin = resultSet.getString("pin");
+                }
+            } else {
+                System.err.println("Not connected to the database.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Failed to get PIN for user: " + userId);
+            e.printStackTrace();
+        }
+        return pin;
     }
 
 }
