@@ -102,4 +102,62 @@ public class DatabaseHandler {
         return pin;
     }
 
+    public int getBalanceForUser(String userId) {
+        String balance = null;
+        try {
+            if (isConnected()) {
+                String query = "SELECT Balance FROM " + USERS_TABLE + " WHERE " + USER_ACCOUNT_ID + " = " + userId;
+                PreparedStatement statement = connection.prepareStatement(query);
+                ResultSet resultSet = statement.executeQuery();
+                if (resultSet.next()) {
+                    balance = resultSet.getString("balance");
+                }
+            } else {
+                System.err.println("Not connected to the database.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Failed to get Balance for user: " + userId);
+            e.printStackTrace();
+        }
+        return Integer.parseInt(balance);
+    }
+
+    public boolean changePinForUser(String userId, String newPin) {
+        try {
+            if (isConnected()) {
+                String query = "UPDATE " + USERS_TABLE + " SET Pin = " + newPin + " WHERE " + USER_ACCOUNT_ID + " = " + userId;
+                PreparedStatement statement = connection.prepareStatement(query);
+                // if update executes successfully, return true
+                if (1 == statement.executeUpdate()) {
+                    return true;
+                }
+            } else {
+                System.err.println("Not connected to the database.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Failed to change PIN for user: " + userId);
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean changeBalanceForUser(String userId, String newBalance) {
+        try {
+            if (isConnected()) {
+                String query = "UPDATE " + USERS_TABLE + " SET Balance = " + newBalance + " WHERE " + USER_ACCOUNT_ID + " = " + userId;
+                PreparedStatement statement = connection.prepareStatement(query);
+
+                // if update executes successfully, return true
+                if (1 == statement.executeUpdate()) {
+                    return true;
+                }
+            } else {
+                System.err.println("Not connected to the database.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Failed to change Balance for user: " + userId);
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

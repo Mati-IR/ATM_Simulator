@@ -28,6 +28,12 @@ public class MoneyInfoStorage {
         this.fractionalUnits = fractionalUnits;
     }
 
+    public MoneyInfoStorage() {
+        this.currency = Currency.PLN;
+        this.wholeUnits = 0;
+        this.fractionalUnits = 0;
+    }
+
     /**
      * Constructs a CurrencyValue object from its string representation.
      * The string representation consists of the currency type (PLN, EUR) and the amount of money separated by a dot.
@@ -94,6 +100,15 @@ public class MoneyInfoStorage {
      */
     public void setFractionalUnits(long fractionalUnits) {
         this.fractionalUnits = fractionalUnits;
+    }
+
+    public int getExchangeRate() {
+        if (currency == Currency.PLN) {
+            return 1;
+        } else if (currency == Currency.EUR) {
+            return 4;
+        }
+        return 0;
     }
 
     /**

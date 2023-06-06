@@ -1,5 +1,8 @@
 package ClientRequestUtil;
 
+import MoneyInfoStorage.MoneyInfoStorage;
+
+import java.util.Currency;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +13,10 @@ public class ClientRequestUtil {
 
     /* Authentication variables */
     private String pin = null;
+
+    /* Withdrawal variables */
+    private String amount = null;
+    private MoneyInfoStorage.Currency currency = null;
 
 
     private static final Map<String, String> requestMappings = new HashMap<>();
@@ -39,6 +46,9 @@ public class ClientRequestUtil {
                 case "A": {
                     return "A " + this.pin + " " + this.userNumber;
                 }
+                case "W": {
+                    return "W " + this.userNumber + " " + this.amount + this.currency.toString();
+                }
             }
         } catch (Exception e) {
             System.out.println("Error: " + e);
@@ -49,19 +59,34 @@ public class ClientRequestUtil {
     public void decodeRequest(String encodedRequest) {
         // Split the encoded request and perform decoding/validation
         String[] parts = encodedRequest.trim().split("\\s+");
+        String operation = parts[0];
 
-        if (parts[0].equals("A")) {
-            this.selectedRequest = requestMappings.get(parts[0]);
-            this.pin = decodePIN(parts[1]);
-            this.userNumber = decodeUserNumber(parts[2]);
+        switch (operation){
+            case "A":
+                this.selectedRequest = requestMappings.get(parts[0]);
+                this.pin = decodePIN(parts[1]);
+                this.userNumber = decodeUserNumber(parts[2]);
 
-            if (this.selectedRequest != null && this.pin != null && this.userNumber != null) {
-                this.isRequestValid = true;
-                return;
-            } else {
-                this.isRequestValid = false;
-                return;
-            }
+                if (this.selectedRequest != null && this.pin != null && this.userNumber != null) {
+                    this.isRequestValid = true;
+                    return;
+                } else {
+                    this.isRequestValid = false;
+                    return;
+                }
+            case "W":
+                this.selectedRequest = requestMappings.get(parts[0]);
+                this.userNumber = decodeUserNumber(parts[1]);
+                this.amount = decodeAmount(parts[2]);
+                this.currency = decodeCurrency(parts[3]);
+
+                if (this.selectedRequest != null && this.userNumber != null && this.amount != null && this.currency != null) {
+                    this.isRequestValid = true;
+                    return;
+                } else {
+                    this.isRequestValid = false;
+                    return;
+                }
         }
     }
 
@@ -89,17 +114,21 @@ public class ClientRequestUtil {
         return null;
     }
 
-    private static String decodeArguments(String encodedArguments) {
+    private String decodeArguments(String encodedArguments) {
         // Split the encoded arguments and perform decoding/validation
         String[] parts = encodedArguments.trim().split("\\s+");
 
         if (parts.length == 3) {
-            String decodedPIN = decodePIN(parts[0]);
-            String decodedAmount = decodeAmount(parts[1]);
-            String decodedCurrency = decodeCurrency(parts[2]);
+            this.pin = decodePIN(parts[0]);
+            this.amount = decodeAmount(parts[1]);
+            this.currency = decodeCurrency(parts[2]);
 
-            if (decodedPIN != null && decodedAmount != null && decodedCurrency != null) {
-                return decodedPIN + " " + decodedAmount + " " + decodedCurrency;
+            if (this.pin != null && this.amount != null && this.currency != null) {
+                this.isRequestValid = true;
+                return this.pin + " " + this.amount + " " + this.currency.toString();
+            } else {
+                this.isRequestValid = false;
+                return "";
             }
         }
 
@@ -130,10 +159,12 @@ public class ClientRequestUtil {
         return null;
     }
 
-    private static String decodeCurrency(String encodedCurrency) {
+    private static MoneyInfoStorage.Currency decodeCurrency(String encodedCurrency) {
         // Perform decoding/validation of currency and return decoded value
-        if (encodedCurrency.matches("EUR|PLN")) {
-            return encodedCurrency;
+        if (encodedCurrency.matches("PLN")) {
+            return MoneyInfoStorage.Currency.PLN;
+        } else if (encodedCurrency.matches("EUR")) {
+            return MoneyInfoStorage.Currency.EUR;
         }
         return null;
     }
@@ -150,16 +181,27 @@ public class ClientRequestUtil {
         this.userNumber = userNumber;
     }
 
-    public String getSelectedRequest() {
-        return this.selectedRequest;
+    public boolean getIsRequestValid() {
+        return this.isRequestValid;
     }
 
-    public String getPin() {
-        return this.pin;
+    public String getSelectedRequest() {
+        return this.selectedRequest;
     }
 
     public String getUserNumber() {
         return this.userNumber;
     }
 
+    public MoneyInfoStorage.Currency getCurrency() {
+        return this.currency;
+    }
+
+    public int getAmount() {
+        return Integer.parseInt(this.amount);
+    }
+
+    public String getPin() {
+        return this.pin;
+    }
 }
