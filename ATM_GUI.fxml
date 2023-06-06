@@ -14,7 +14,7 @@
    <children>
       <AnchorPane layoutX="25.0" layoutY="25.0" prefHeight="750.0" prefWidth="650.0" style="-fx-background-color: #2b3f61;" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
          <children>
-            <AnchorPane layoutX="25.0" layoutY="14.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #b4b6b5;" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
+            <AnchorPane layoutX="25.0" layoutY="14.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #b4b6b5;" AnchorPane.bottomAnchor="425.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
                <children>
                   <AnchorPane layoutX="75.0" layoutY="50.0" prefHeight="300.0" prefWidth="450.0" style="-fx-background-color: #5788de;" />
                   <Button fx:id="SB3" accessibleText="SB3" layoutX="14.0" layoutY="225.0" mnemonicParsing="false" styleClass="screen_button" stylesheets="@ATM.css" AnchorPane.leftAnchor="14.0">
@@ -182,7 +182,32 @@
                   </GridPane>
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="75.0" layoutY="447.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #b4b6b5;" />
+            <AnchorPane layoutX="75.0" layoutY="447.0" prefHeight="50.0" prefWidth="500.0" style="-fx-background-color: #b4b6b5;" AnchorPane.bottomAnchor="350.0" AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="75.0" AnchorPane.topAnchor="450.0">
+               <children>
+                  <AnchorPane layoutX="25.0" layoutY="10.0" prefHeight="30.0" prefWidth="450.0" style="-fx-background-color: #757877;">
+                     <children>
+                        <AnchorPane layoutX="25.0" layoutY="20.0" prefHeight="10.0" prefWidth="400.0" style="-fx-background-color: #191a19;" />
+                     </children>
+                  </AnchorPane>
+               </children></AnchorPane>
+            <AnchorPane layoutX="398.0" layoutY="575.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #b4b6b5;" AnchorPane.rightAnchor="50.0">
+               <children>
+                  <AnchorPane layoutX="25.0" layoutY="15.0" prefHeight="20.0" prefWidth="150.0" style="-fx-background-color: #757877;">
+                     <children>
+                        <AnchorPane layoutX="25.0" layoutY="11.0" prefHeight="10.0" prefWidth="100.0" style="-fx-background-color: #191a19;" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="400.0" layoutY="715.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #b4b6b5;" AnchorPane.rightAnchor="50.0">
+               <children>
+                  <AnchorPane layoutX="25.0" layoutY="15.0" prefHeight="20.0" prefWidth="150.0" style="-fx-background-color: #757877;">
+                     <children>
+                        <AnchorPane layoutY="16.0" prefHeight="10.0" prefWidth="150.0" style="-fx-background-color: #191a19;" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
          </children>
       </AnchorPane>
    </children>
