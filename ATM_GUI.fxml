@@ -3,7 +3,10 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -16,12 +19,37 @@
          <children>
             <AnchorPane layoutX="25.0" layoutY="14.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #b4b6b5;" AnchorPane.bottomAnchor="425.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
                <children>
-                  <AnchorPane layoutX="75.0" layoutY="50.0" prefHeight="300.0" prefWidth="450.0" style="-fx-background-color: #5788de;" />
-                  <Button fx:id="SB3" accessibleText="SB3" layoutX="14.0" layoutY="225.0" mnemonicParsing="false" styleClass="screen_button" stylesheets="@ATM.css" AnchorPane.leftAnchor="14.0">
+                  <AnchorPane layoutX="75.0" layoutY="50.0" prefHeight="300.0" prefWidth="450.0" style="-fx-background-color: #5788de;">
+                     <children>
+                        <Label fx:id="SL1" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="93.0" styleClass="screen_label" text="Label" AnchorPane.leftAnchor="14.0" />
+                        <Label fx:id="SL2" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="150.0" styleClass="screen_label" text="Labe2" AnchorPane.leftAnchor="14.0" />
+                        <Label fx:id="SL3" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="208.0" styleClass="screen_label" text="Labe3" AnchorPane.leftAnchor="14.0" />
+                        <Label fx:id="SL4" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="262.0" styleClass="screen_label" text="Labe4" AnchorPane.leftAnchor="14.0" />
+                        <Label fx:id="SL5" layoutX="375.0" layoutY="93.0" styleClass="screen_label" text="Labe5" AnchorPane.rightAnchor="14.0" />
+                        <Label fx:id="SL6" layoutX="375.0" layoutY="150.0" styleClass="screen_label" text="Labe6" AnchorPane.rightAnchor="14.0" />
+                        <Label fx:id="SL7" layoutX="375.0" layoutY="208.0" styleClass="screen_label" text="Labe7" AnchorPane.rightAnchor="14.0" />
+                        <Label fx:id="SL8" layoutX="408.0" layoutY="262.0" styleClass="screen_label" text="Labe8" AnchorPane.rightAnchor="14.0" />
+                        <AnchorPane prefHeight="40.0" prefWidth="450.0" style="-fx-background-color: orange;">
+                           <children>
+                              <Label fx:id="Bankname" alignment="CENTER_RIGHT" layoutX="17.0" layoutY="7.0" styleClass="screen_label" text="Bankname" AnchorPane.leftAnchor="14.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="hello" layoutX="79.0" layoutY="44.0" prefHeight="254.0" prefWidth="293.0">
+                           <children>
+                              <Label layoutX="32.0" layoutY="14.0" styleClass="screen_label" text="Proszę włożyć karte" />
+                              <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="72.0" layoutY="52.0">
+                                 <image>
+                                    <Image url="@resources/helloicon.jpg" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </AnchorPane>
+                     </children></AnchorPane>
+                  <Button fx:id="SB3" accessibleText="SB3" layoutX="14.0" layoutY="245.0" mnemonicParsing="false" styleClass="screen_button" stylesheets="@ATM.css" AnchorPane.leftAnchor="14.0">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Button>
-                  <Button fx:id="SB2" accessibleText="SB2" layoutX="14.0" layoutY="150.0" mnemonicParsing="false" styleClass="screen_button" stylesheets="@ATM.css" AnchorPane.leftAnchor="14.0">
+                  <Button fx:id="SB2" accessibleText="SB2" layoutX="14.0" layoutY="185.0" mnemonicParsing="false" styleClass="screen_button" stylesheets="@ATM.css" AnchorPane.leftAnchor="14.0">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Button>
@@ -29,19 +57,19 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Button>
-                  <Button fx:id="SB1" accessibleText="SB1" layoutX="14.0" layoutY="75.0" mnemonicParsing="false" styleClass="screen_button" stylesheets="@ATM.css" AnchorPane.leftAnchor="14.0">
+                  <Button fx:id="SB1" accessibleText="SB1" layoutX="14.0" layoutY="130.0" mnemonicParsing="false" styleClass="screen_button" stylesheets="@ATM.css" AnchorPane.leftAnchor="14.0">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Button>
-                  <Button fx:id="SB5" accessibleText="SB5" layoutX="534.0" layoutY="75.0" mnemonicParsing="false" styleClass="screen_button" stylesheets="@ATM.css" AnchorPane.rightAnchor="14.0">
+                  <Button fx:id="SB5" accessibleText="SB5" layoutX="546.0" layoutY="130.0" mnemonicParsing="false" styleClass="screen_button" stylesheets="@ATM.css" AnchorPane.rightAnchor="14.0">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Button>
-                  <Button fx:id="SB6" accessibleText="SB6" layoutX="554.0" layoutY="150.0" mnemonicParsing="false" styleClass="screen_button" stylesheets="@ATM.css" AnchorPane.rightAnchor="14.0">
+                  <Button fx:id="SB6" accessibleText="SB6" layoutX="546.0" layoutY="185.0" mnemonicParsing="false" styleClass="screen_button" stylesheets="@ATM.css" AnchorPane.rightAnchor="14.0">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Button>
-                  <Button fx:id="SB7" accessibleText="SB7" layoutX="554.0" layoutY="225.0" mnemonicParsing="false" styleClass="screen_button" stylesheets="@ATM.css" AnchorPane.rightAnchor="14.0">
+                  <Button fx:id="SB7" accessibleText="SB7" layoutX="546.0" layoutY="245.0" mnemonicParsing="false" styleClass="screen_button" stylesheets="@ATM.css" AnchorPane.rightAnchor="14.0">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Button>
@@ -190,7 +218,7 @@
                      </children>
                   </AnchorPane>
                </children></AnchorPane>
-            <AnchorPane layoutX="398.0" layoutY="575.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #b4b6b5;" AnchorPane.rightAnchor="50.0">
+            <AnchorPane layoutX="400.0" layoutY="525.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #b4b6b5;" AnchorPane.rightAnchor="50.0">
                <children>
                   <AnchorPane layoutX="25.0" layoutY="15.0" prefHeight="20.0" prefWidth="150.0" style="-fx-background-color: #757877;">
                      <children>
@@ -199,7 +227,7 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="400.0" layoutY="715.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #b4b6b5;" AnchorPane.rightAnchor="50.0">
+            <AnchorPane layoutX="401.0" layoutY="709.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #b4b6b5;" AnchorPane.rightAnchor="49.0">
                <children>
                   <AnchorPane layoutX="25.0" layoutY="15.0" prefHeight="20.0" prefWidth="150.0" style="-fx-background-color: #757877;">
                      <children>
@@ -208,6 +236,17 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
+            <Button fx:id="creditcard" layoutX="430.0" layoutY="582.0" mnemonicParsing="false" prefHeight="91.0" prefWidth="141.0" rotate="90.0" styleClass="creditcard">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="receipt" layoutX="401.0" layoutY="717.0" mnemonicParsing="false" prefHeight="119.0" prefWidth="200.0" styleClass="receipt">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="cash" layoutX="125.0" layoutY="475.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="400.0" styleClass="cash" text="CASH" />
          </children>
       </AnchorPane>
    </children>

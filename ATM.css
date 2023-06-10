@@ -73,3 +73,31 @@
 	-fx-background-size: 60 60;
 	-fx-background-color: #b4b6b5;
 }
+.screen_label{
+	-fx-font-family: "Lucida Console";
+	-fx-font-size: 20;
+	-fx-text-fill: white;
+}
+.creditcard{
+	-fx-background-image: url("resources/creditcard.png");
+	-fx-background-size: 213 120;
+	-fx-background-color: transparent;
+	-fx-background-position: center;
+}
+.receipt{
+	-fx-background-image: url("resources/receipt.png");
+	-fx-background-size: 213 120;
+	-fx-background-color: transparent;
+	-fx-background-position: center;
+}
+.receiptwindow{
+	-fx-font-family: "Lucida Console";
+	-fx-font-size: 20;
+	-fx-text-fill: white;
+}
+.cash{
+	-fx-background-image: url("resources/cash.png");
+	-fx-background-size: 400 100;
+	-fx-background-color: transparent;
+	-fx-background-position: center;
+}
