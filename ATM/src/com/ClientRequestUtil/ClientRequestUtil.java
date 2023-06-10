@@ -16,7 +16,7 @@ public class ClientRequestUtil {
 
     /* Withdrawal variables */
     private String amount = null;
-    private MoneyInfoStorage.Currency currency = null;
+    private MoneyInfoStorage moneyInfo = null;
 
 
     private static final Map<String, String> requestMappings = new HashMap<>();
@@ -51,7 +51,7 @@ public class ClientRequestUtil {
                     return "A " + this.pin + " " + this.userNumber;
                 }
                 case "W": {
-                    return "W " + this.userNumber + " " + this.amount + this.currency.toString();
+                    return "W " + this.userNumber + " " + this.amount + this.moneyInfo.getCurrency().toString();
                 }
             }
         } catch (Exception e) {
@@ -82,9 +82,9 @@ public class ClientRequestUtil {
                 this.selectedRequest = requestMappings.get(parts[0]);
                 this.userNumber = decodeUserNumber(parts[1]);
                 this.amount = decodeAmount(parts[2]);
-                this.currency = decodeCurrency(parts[3]);
+                this.moneyInfo.setCurrency(decodeCurrency(parts[3]));
 
-                if (this.selectedRequest != null && this.userNumber != null && this.amount != null && this.currency != null) {
+                if (this.selectedRequest != null && this.userNumber != null && this.amount != null && this.moneyInfo.getCurrency() != null) {
                     this.isRequestValid = true;
                     return;
                 } else {
@@ -125,11 +125,11 @@ public class ClientRequestUtil {
         if (parts.length == 3) {
             this.pin = decodePIN(parts[0]);
             this.amount = decodeAmount(parts[1]);
-            this.currency = decodeCurrency(parts[2]);
+            this.moneyInfo.setCurrency(decodeCurrency(parts[2]));
 
-            if (this.pin != null && this.amount != null && this.currency != null) {
+            if (this.pin != null && this.amount != null && this.moneyInfo.getCurrency() != null) {
                 this.isRequestValid = true;
-                return this.pin + " " + this.amount + " " + this.currency.toString();
+                return this.pin + " " + this.amount + " " + this.moneyInfo.getCurrency().toString();
             } else {
                 this.isRequestValid = false;
                 return "";
@@ -202,7 +202,7 @@ public class ClientRequestUtil {
     }
 
     public MoneyInfoStorage.Currency getCurrency() {
-        return this.currency;
+        return this.moneyInfo.getCurrency();
     }
 
     public int getAmount() {

@@ -73,6 +73,17 @@ class ClientHandler implements Runnable {
             case "balance":
                 result = balanceHandler(clientRequestUtil.getUserNumber());
                 break;
+            case "history":
+                /* TODO: Create handler */
+                //result = historyHandler(clientRequestUtil.getUserNumber());
+                break;
+            case "changepin":
+                result = changePinHandler(clientRequestUtil.getUserNumber(), clientRequestUtil.getPin());
+                break;
+            case "topup":
+                /* TODO: Create handler */
+                break;
+
 
         }
         if (true == result) {
@@ -142,9 +153,23 @@ class ClientHandler implements Runnable {
             return false;
         }
         if (userIsAuthenticated) {
+            final int groszInPLN = 100;
             int accountBalance = databaseHandler.getBalanceForUser(userNumber);
-            clientRequestUtil.setAmount(accountBalance);
+            MoneyInfoStorage zloteASkromne = new MoneyInfoStorage(MoneyInfoStorage.Currency.PLN, accountBalance / groszInPLN, accountBalance % groszInPLN);
+            clientRequestUtil.setMoneyInfo(zloteASkromne);
             return true;
+        }else {
+            return false;
+        }
+    }
+
+    private boolean changePinHandler(String userNumber, String newPin) {
+        if (false == clientRequestUtil.getIsRequestValid()){
+            return false;
+        }
+        if (userIsAuthenticated) {
+            boolean result = databaseHandler.changePinForUser(userNumber, newPin);
+            return result;
         }else {
             return false;
         }

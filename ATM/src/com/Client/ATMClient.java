@@ -18,8 +18,7 @@ public class ATMClient {
         this.clientID = clientID;
         this.clientAddress = serverAddress;
         this.clientPort = serverPort;
-        //clientSocketHandler = new ClientSocketHandler(serverAddress, serverPort);
-        clientRequestUtil = new ClientRequestUtil();
+        clientSocketHandler = new ClientSocketHandler(serverAddress, serverPort);
 
         if(null == clientSocketHandler){
             System.out.println("Could not connect to server");
@@ -34,10 +33,11 @@ public class ATMClient {
         // Fake authentication request
         String userInput = "2137";
         String userNumber = "1";
-        String action = "Authenticate";
+        String request = "Authenticate";
 
-        clientRequestUtil.setRequest(action);
+        clientRequestUtil.setRequest(request);
         clientRequestUtil.setPin(userInput);
+        clientRequestUtil.setUserNumber(userNumber);
         String clientRequest = clientRequestUtil.encodeRequest();
 
         if (clientRequest != "Error"){

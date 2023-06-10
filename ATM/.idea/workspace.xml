@@ -2,20 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cc448ad0-3d8b-41cf-b4a5-e87f2ace518e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/ATM.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/Client/GUI/MainViewBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/Server/DatabaseHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/description.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/project-template.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ATM/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/Client/ATMClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Client/ATMClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/Client/ClientSocketHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Client/ClientSocketHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/ClientRequestUtil/ClientRequestUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/ClientRequestUtil/ClientRequestUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/Run/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Run/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/Server/ATMServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Server/ATMServer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,9 +40,19 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Server">
+    <configuration name="Client" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="corretto-19" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="com.Run.Main" />
+      <module name="ATM" />
+      <option name="PROGRAM_PARAMETERS" value="c" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Server" type="Application" factoryName="Application">
-      <option name="ALTERNATIVE_JRE_PATH" value="openjdk-17" />
+      <option name="ALTERNATIVE_JRE_PATH" value="corretto-19" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="com.Run.Main" />
       <module name="ATM" />
@@ -62,6 +61,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.Server" />
+      <item itemvalue="Application.Client" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -74,7 +77,10 @@
       <workItem from="1685375312524" duration="270000" />
       <workItem from="1685375611287" duration="5691000" />
       <workItem from="1685788196743" duration="4368000" />
-      <workItem from="1685792643625" duration="1663000" />
+      <workItem from="1685792643625" duration="1969000" />
+      <workItem from="1685795730745" duration="118000" />
+      <workItem from="1685795884129" duration="5451000" />
+      <workItem from="1686305558144" duration="3228000" />
     </task>
     <servers />
   </component>
