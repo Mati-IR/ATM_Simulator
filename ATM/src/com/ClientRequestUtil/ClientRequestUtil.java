@@ -29,6 +29,8 @@ public class ClientRequestUtil {
         requestMappings.put("history", "H");
         requestMappings.put("changepin", "C");
         requestMappings.put("topup", "T");
+        requestMappings.put("success", "S");
+        requestMappings.put("failure", "F");
         requestMappings.put("A", "authenticate");
         requestMappings.put("W", "withdraw");
         requestMappings.put("D", "deposit");
@@ -36,6 +38,8 @@ public class ClientRequestUtil {
         requestMappings.put("H", "history");
         requestMappings.put("C", "changepin");
         requestMappings.put("T", "topup");
+        requestMappings.put("S", "success");
+        requestMappings.put("F", "failure");
     }
 
 
@@ -167,6 +171,10 @@ public class ClientRequestUtil {
             return MoneyInfoStorage.Currency.EUR;
         }
         return null;
+    }
+
+    public void setMoneyInfo(MoneyInfoStorage moneyInfo) {
+        this.moneyInfo = moneyInfo;
     }
 
     public void setRequest(String Request) {

@@ -38,8 +38,9 @@ class ClientHandler implements Runnable {
             System.out.println("Received request from client: " + request);
 
             // Process client request and send response
-            String response = processRequest(request);
-            out.println(response);
+            processRequest(request);
+            // Send response to client
+            out.println(clientRequestUtil.encodeRequest());
 
             // Close streams and socket
             in.close();
@@ -51,7 +52,7 @@ class ClientHandler implements Runnable {
         }
     }
 
-    private String processRequest(String request) {
+    private boolean processRequest(String request) {
         // TODO: Implement the logic for processing client requests and generating a response
         // TODO: Parse the client request to identify the operation type and required parameters
         clientRequestUtil.decodeRequest(request);
@@ -69,20 +70,17 @@ class ClientHandler implements Runnable {
             case "deposit":
                 result = depositHandler(clientRequestUtil.getUserNumber(), clientRequestUtil.getAmount(), clientRequestUtil.getCurrency());
                 break;
+            case "balance":
+                result = balanceHandler(clientRequestUtil.getUserNumber());
+                break;
+
         }
         if (true == result) {
-            System.out.println("Authentification successful");
+            clientRequestUtil.setRequest("success");
         } else {
-            System.out.println("Authentification failed");
+            clientRequestUtil.setRequest("failure");
         }
-
-        // Example operations: withdrawing money, depositing money, checking balance, etc.
-
-        // TODO: Update account balances, transaction history, and any relevant data structures
-
-        // TODO: Generate the appropriate response based on the operation result or error messages
-
-        return "response";
+        return result;
     }
 
     private boolean authentificationHandler(String userNumber, String userInputPin) {
@@ -134,6 +132,19 @@ class ClientHandler implements Runnable {
             int newBalance = accountBalance + amountToDeposit;
             boolean result = databaseHandler.changeBalanceForUser(userNumber, String.valueOf(newBalance));
             return result;
+        }else {
+            return false;
+        }
+    }
+
+    private boolean balanceHandler(String userNumber) {
+        if (false == clientRequestUtil.getIsRequestValid()){
+            return false;
+        }
+        if (userIsAuthenticated) {
+            int accountBalance = databaseHandler.getBalanceForUser(userNumber);
+            clientRequestUtil.setAmount(accountBalance);
+            return true;
         }else {
             return false;
         }

@@ -19,6 +19,7 @@ public class Main {
         if(args[0].equals("c")){
             System.out.println("Building client...");
             ATMClient atmClient = new ATMClient(1, "localhost", 1234);
+            atmClient.run();
         } else if(args[0].equals("s")){
             System.out.println("Building server...");
             ATMServer atmServer = new ATMServer();
