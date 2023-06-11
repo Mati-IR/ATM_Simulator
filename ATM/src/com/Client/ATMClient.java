@@ -1,16 +1,18 @@
 package com.Client;
 
 import ClientRequestUtil.ClientRequestUtil;
+import com.Client.GUI.AtmGui;
 
 public class ATMClient {
     private enum ClientState {
         NOT_CONNECTED, CONNECTED, AUTHENTICATED
     }
 
-    private ClientState         clientState = ClientState.NOT_CONNECTED;
-    private int                 clientID = 0;
     private ClientSocketHandler clientSocketHandler;
     private ClientRequestUtil   clientRequestUtil;
+    private AtmGui              atmGui;
+    private ClientState         clientState = ClientState.NOT_CONNECTED;
+    private int                 clientID = 0;
     private int                 clientPort = 0;
     private String              clientAddress = "";
 
@@ -19,6 +21,8 @@ public class ATMClient {
         this.clientAddress = serverAddress;
         this.clientPort = serverPort;
         clientSocketHandler = new ClientSocketHandler(serverAddress, serverPort);
+        clientRequestUtil = new ClientRequestUtil();
+        atmGui = new AtmGui();
 
         if(null == clientSocketHandler){
             System.out.println("Could not connect to server");
@@ -48,17 +52,20 @@ public class ATMClient {
     }
 
     public int run() {
+        atmGui.main(new String[0]);
+        clientRequestUtil.setRequest("history");
+        clientSocketHandler.sendRequest(clientRequestUtil.encodeRequest());
+
         while (true) {
             secureConnection();
             if (ClientState.CONNECTED != this.clientState){
                 System.out.println("Connection lost. Reconnecting...");
             } else {
-                System.out.println("Connection established.");
+                clientSocketHandler.sendRequest(clientRequestUtil.encodeRequest());
             }
 
-            //wait one second
             try {
-                Thread.sleep(1000); // wait 1 second
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

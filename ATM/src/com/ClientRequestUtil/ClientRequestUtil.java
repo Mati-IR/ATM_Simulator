@@ -53,6 +53,10 @@ public class ClientRequestUtil {
                 case "W": {
                     return "W " + this.userNumber + " " + this.amount + this.moneyInfo.getCurrency().toString();
                 }
+                /* TODO: Skipped few handlers */
+                case "H": {
+                    return "H " + this.userNumber;
+                }
             }
         } catch (Exception e) {
             System.out.println("Error: " + e);

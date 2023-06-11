@@ -1,16 +1,13 @@
 package com.Client;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
 
 public class ClientSocketHandler {
     private Socket clientSocket;
     private BufferedReader in;
-    private PrintWriter out;
+    private PrintStream out;
 
     private String serverAddress = "";
     private int serverPort = 0;
@@ -20,6 +17,7 @@ public class ClientSocketHandler {
         this.serverPort = serverPort;
         try {
             this.clientSocket = new Socket(serverAddress, serverPort);
+            clientSocket.setKeepAlive(true);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Could not create socket\nAddress: " + serverAddress + "\nPort: " + serverPort);
@@ -36,7 +34,7 @@ public class ClientSocketHandler {
                 }
             }
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            out = new PrintWriter(clientSocket.getOutputStream(), true);
+            out = new PrintStream(clientSocket.getOutputStream(), true);
             System.out.println("Connected to server...");
         } catch (ConnectException e) {
             System.out.println("Could not connect to server...");
@@ -48,7 +46,12 @@ public class ClientSocketHandler {
     }
 
     public void sendRequest(String request) {
-        out.println(request);
+        try (PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
+            out.println(request);
+        } catch (IOException e) {
+            System.out.println("Could not write message to server...");
+            e.printStackTrace();
+        }
     }
 
     public String receiveResponse() {

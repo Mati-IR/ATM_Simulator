@@ -53,12 +53,11 @@ class ClientHandler implements Runnable {
     }
 
     private boolean processRequest(String request) {
-        // TODO: Implement the logic for processing client requests and generating a response
-        // TODO: Parse the client request to identify the operation type and required parameters
+        /* Extract information from incoming message */
         clientRequestUtil.decodeRequest(request);
         String selectedRequest = clientRequestUtil.getSelectedRequest();
 
-        // TODO: Based on the operation type, perform the necessary actions
+        /* Based on the operation type, perform the necessary actions */
         boolean result = false;
         switch (selectedRequest) {
             case "authenticate":
