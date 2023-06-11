@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="700.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -21,27 +22,150 @@
                <children>
                   <AnchorPane layoutX="75.0" layoutY="50.0" prefHeight="300.0" prefWidth="450.0" style="-fx-background-color: #5788de;">
                      <children>
-                        <Label fx:id="SL1" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="93.0" styleClass="screen_label" stylesheets="@ATM.css" text="Label" AnchorPane.leftAnchor="14.0" />
-                        <Label fx:id="SL2" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="150.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe2" AnchorPane.leftAnchor="14.0" />
-                        <Label fx:id="SL3" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="208.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe3" AnchorPane.leftAnchor="14.0" />
-                        <Label fx:id="SL4" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="262.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe4" AnchorPane.leftAnchor="14.0" />
-                        <Label fx:id="SL5" layoutX="375.0" layoutY="93.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe5" AnchorPane.rightAnchor="14.0" />
-                        <Label fx:id="SL6" layoutX="375.0" layoutY="150.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe6" AnchorPane.rightAnchor="14.0" />
-                        <Label fx:id="SL7" layoutX="375.0" layoutY="208.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe7" AnchorPane.rightAnchor="14.0" />
-                        <Label fx:id="SL8" layoutX="408.0" layoutY="262.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe8" AnchorPane.rightAnchor="14.0" />
                         <AnchorPane prefHeight="40.0" prefWidth="450.0" style="-fx-background-color: orange;">
                            <children>
                               <Label fx:id="Bankname" alignment="CENTER_RIGHT" layoutX="17.0" layoutY="7.0" styleClass="screen_label" stylesheets="@ATM.css" text="Bankname" AnchorPane.leftAnchor="14.0" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="hello" layoutX="79.0" layoutY="44.0" prefHeight="254.0" prefWidth="293.0">
+                        <AnchorPane fx:id="hello" layoutY="40.0" prefHeight="254.0" prefWidth="450.0" visible="false">
                            <children>
-                              <Label layoutX="32.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Proszę włożyć karte" />
-                              <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="72.0" layoutY="52.0">
+                              <Label layoutX="108.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Proszę włożyć karte" />
+                              <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="148.0" layoutY="63.0">
                                  <image>
                                     <Image url="@resources/helloicon.jpg" />
                                  </image>
                               </ImageView>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="givepin" layoutY="40.0" prefHeight="254.0" prefWidth="450.0" visible="false">
+                           <children>
+                              <Label layoutX="98.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Proszę wprowadzić pin" />
+                              <Label layoutX="375.0" layoutY="106.0" styleClass="screen_label" stylesheets="@ATM.css" text="ZATWIERDŹ--&gt;" AnchorPane.rightAnchor="14.0" />
+                              <Label fx:id="pinlabel1" layoutX="189.0" layoutY="100.0" style="-fx-background-color: #4154b0;" styleClass="pin_label" stylesheets="@ATM.css" text="****">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="againpin" layoutY="40.0" prefHeight="254.0" prefWidth="450.0" visible="false">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="105.0" layoutY="13.0" prefHeight="79.0" prefWidth="241.0" styleClass="screen_label" stylesheets="@ATM.css" text="Podany pin jest niepoprawny spróbuj ponownie" wrapText="true" />
+                              <Label layoutX="375.0" layoutY="106.0" styleClass="screen_label" stylesheets="@ATM.css" text="ZATWIERDŹ--&gt;" AnchorPane.rightAnchor="14.0" />
+                              <Label fx:id="pinlabel2" layoutX="189.0" layoutY="100.0" style="-fx-background-color: #4154b0;" styleClass="pin_label" stylesheets="@ATM.css" text="****">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="blockcard" layoutY="40.0" prefHeight="254.0" prefWidth="450.0" visible="false">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="98.0" layoutY="14.0" prefHeight="50.0" prefWidth="254.0" styleClass="screen_label" stylesheets="@ATM.css" text="Twoja karta została zablokowana" wrapText="true" />
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="98.0" layoutY="77.0" prefHeight="100.0" prefWidth="254.0" styleClass="screen_label" text="Aby ją odblokować udaj się do najbliższej placówki twojego banku" wrapText="true" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="operationchoice" layoutY="40.0" prefHeight="254.0" prefWidth="450.0" visible="false">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="38.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Proszę wybrać rodzaj tranzakcji" wrapText="true" />
+                              <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="52.0" styleClass="screen_label" stylesheets="@ATM.css" text="&lt;--WYPŁATA PLN" AnchorPane.leftAnchor="14.0" />
+                              <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="106.0" styleClass="screen_label" stylesheets="@ATM.css" text="&lt;--WYPŁATA EUR" AnchorPane.leftAnchor="14.0" />
+                              <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="159.0" prefHeight="50.0" prefWidth="136.0" styleClass="screen_label" stylesheets="@ATM.css" text="&lt;--DOSTĘPNE     ŚRODKI" wrapText="true" AnchorPane.leftAnchor="14.0" />
+                              <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="219.0" styleClass="screen_label" stylesheets="@ATM.css" text="&lt;--WPŁATA" AnchorPane.leftAnchor="14.0" />
+                              <Label layoutX="327.0" layoutY="159.0" prefHeight="50.0" prefWidth="109.0" styleClass="screen_label" stylesheets="@ATM.css" text="WYDRUK--&gt;OPERACJI" wrapText="true" AnchorPane.rightAnchor="14.0" />
+                              <Label layoutX="267.0" layoutY="48.0" prefHeight="50.0" prefWidth="169.0" styleClass="screen_label" stylesheets="@ATM.css" text="DOŁADOWANIE--&gt;TELE" wrapText="true" AnchorPane.rightAnchor="14.0" />
+                              <Label layoutX="279.0" layoutY="106.0" styleClass="screen_label" stylesheets="@ATM.css" text="ZMIANA PIN--&gt;" AnchorPane.rightAnchor="14.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="howmanycash" layoutY="40.0" prefHeight="254.0" prefWidth="450.0" visible="false">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="60.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Proszę wybrać kwote wypłaty" wrapText="true" />
+                              <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="52.0" styleClass="screen_label" stylesheets="@ATM.css" text="&lt;--50" AnchorPane.leftAnchor="14.0" />
+                              <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="106.0" styleClass="screen_label" stylesheets="@ATM.css" text="&lt;--100" AnchorPane.leftAnchor="14.0" />
+                              <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="163.0" styleClass="screen_label" stylesheets="@ATM.css" text="&lt;--150" AnchorPane.leftAnchor="14.0" />
+                              <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="219.0" styleClass="screen_label" stylesheets="@ATM.css" text="&lt;--200" AnchorPane.leftAnchor="14.0" />
+                              <Label layoutX="375.0" layoutY="219.0" styleClass="screen_label" stylesheets="@ATM.css" text="INNA KWOTA--&gt;" AnchorPane.rightAnchor="14.0" />
+                              <Label layoutX="375.0" layoutY="163.0" styleClass="screen_label" stylesheets="@ATM.css" text="500--&gt;" AnchorPane.rightAnchor="14.0" />
+                              <Label layoutX="375.0" layoutY="106.0" styleClass="screen_label" stylesheets="@ATM.css" text="400--&gt;" AnchorPane.rightAnchor="14.0" />
+                              <Label layoutX="375.0" layoutY="52.0" styleClass="screen_label" stylesheets="@ATM.css" text="300--&gt;" AnchorPane.rightAnchor="14.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="cashinputw" layoutY="40.0" prefHeight="254.0" prefWidth="450.0" visible="false">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="98.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Proszę wprowadzić kwote" wrapText="true" />
+                              <Label layoutX="375.0" layoutY="106.0" styleClass="screen_label" stylesheets="@ATM.css" text="ZATWIERDŹ--&gt;" AnchorPane.rightAnchor="14.0" />
+                              <Label fx:id="cashinput" layoutX="189.0" layoutY="100.0" style="-fx-background-color: #4154b0;" styleClass="pin_label" stylesheets="@ATM.css" text="****">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="errorinputcash" layoutY="40.0" prefHeight="254.0" prefWidth="450.0" visible="false">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="111.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Podano błedną kwote" wrapText="true" />
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="27.0" layoutY="65.0" styleClass="screen_label" stylesheets="@ATM.css" text="Kwota musi być podzielna przez 10" wrapText="true" />
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="112.0" layoutY="106.0" styleClass="screen_label" stylesheets="@ATM.css" text="i mniejsza niz 1000" wrapText="true" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="choicereceipt" layoutY="40.0" prefHeight="254.0" prefWidth="450.0" visible="false">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="50.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Czy wydrukować potwierdzenie?" wrapText="true" />
+                              <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="106.0" styleClass="screen_label" stylesheets="@ATM.css" text="&lt;--TAK" AnchorPane.leftAnchor="14.0" />
+                              <Label layoutX="375.0" layoutY="106.0" styleClass="screen_label" stylesheets="@ATM.css" text="NIE--&gt;" AnchorPane.rightAnchor="14.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="accountbalance" layoutY="40.0" prefHeight="254.0" prefWidth="450.0" visible="false">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="86.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Twój stan konta wynosi: " wrapText="true" />
+                              <Label fx:id="accountbalance" layoutX="98.0" layoutY="63.0" styleClass="pin_label" stylesheets="@ATM.css" text="accountbalance" AnchorPane.rightAnchor="98.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="waitforcash" layoutY="40.0" prefHeight="254.0" prefWidth="450.0" visible="false">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="44.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Bankomat przygowtowuje wypłate" wrapText="true" />
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="127.0" styleClass="screen_label" stylesheets="@ATM.css" text="Odbierz kartę i zaczekaj na gotówke" wrapText="true" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="changepin" layoutY="40.0" prefHeight="254.0" prefWidth="450.0" visible="false">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="50.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Proszę wprowadzić nowy pinpin" wrapText="true" />
+                              <Label layoutX="375.0" layoutY="106.0" styleClass="screen_label" stylesheets="@ATM.css" text="ZATWIERDŹ--&gt;" AnchorPane.rightAnchor="14.0" />
+                              <Label fx:id="newpin" layoutX="171.0" layoutY="100.0" styleClass="pin_label" stylesheets="@ATM.css" text="newpin" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="pinsuccess" layoutY="40.0" prefHeight="254.0" prefWidth="450.0" visible="false">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="49.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Pin został pomyślnie zmieniony" wrapText="true" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="operationprint" layoutY="40.0" prefHeight="254.0" prefWidth="450.0" visible="false">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="62.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Wydruk ostatnich 5 operacji" wrapText="true" />
+                              <Label fx:id="operation1" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="50.0" styleClass="screen_label" stylesheets="@ATM.css" text="operation1" />
+                              <Label fx:id="operation2" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="82.0" styleClass="screen_label" stylesheets="@ATM.css" text="operation2" />
+                              <Label fx:id="operation3" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="113.0" styleClass="screen_label" stylesheets="@ATM.css" text="operation3" />
+                              <Label fx:id="operation4" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="144.0" styleClass="screen_label" stylesheets="@ATM.css" text="operation4" />
+                              <Label fx:id="operation5" layoutX="14.0" layoutY="175.0" styleClass="screen_label" stylesheets="@ATM.css" text="operation5" AnchorPane.rightAnchor="315.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="givetele" layoutY="40.0" prefHeight="254.0" prefWidth="450.0" visible="false">
+                           <children>
+                              <Label fx:id="telenum" layoutX="162.0" layoutY="57.0" styleClass="pin_label" stylesheets="@ATM.css" text="telenum" />
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="32.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Proszę wprowadzić numer telefonu" wrapText="true" />
+                              <Label layoutX="375.0" layoutY="106.0" styleClass="screen_label" stylesheets="@ATM.css" text="ZATWIERDŹ--&gt;" AnchorPane.rightAnchor="14.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="teleamount" layoutY="40.0" prefHeight="254.0" prefWidth="450.0" visible="false">
+                           <children>
+                              <Label fx:id="telecash" layoutX="162.0" layoutY="57.0" styleClass="pin_label" stylesheets="@ATM.css" text="telecash" />
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="12.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Proszę wprowadzić kwote doładowania" wrapText="true" />
+                              <Label layoutX="375.0" layoutY="106.0" styleClass="screen_label" stylesheets="@ATM.css" text="ZATWIERDŹ--&gt;" AnchorPane.rightAnchor="14.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="telesuccess" layoutY="40.0" prefHeight="254.0" prefWidth="450.0" visible="false">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="74.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Telefon został doładowany" wrapText="true" />
                            </children>
                         </AnchorPane>
                      </children></AnchorPane>
@@ -251,6 +375,24 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="givepin1" layoutX="743.0" layoutY="25.0" prefHeight="254.0" prefWidth="450.0">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="98.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Proszę wprowadzić pin" wrapText="true" />
+            <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="148.0" layoutY="63.0">
+               <image>
+                  <Image url="@resources/helloicon.jpg" />
+               </image>
+            </ImageView>
+            <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="52.0" styleClass="screen_label" stylesheets="@ATM.css" text="Label" AnchorPane.leftAnchor="14.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="106.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe2" AnchorPane.leftAnchor="14.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="163.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe3" AnchorPane.leftAnchor="14.0" />
+            <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="219.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe4" AnchorPane.leftAnchor="14.0" />
+            <Label layoutX="375.0" layoutY="219.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe8" AnchorPane.rightAnchor="14.0" />
+            <Label layoutX="375.0" layoutY="163.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe7" AnchorPane.rightAnchor="14.0" />
+            <Label layoutX="375.0" layoutY="106.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe6" AnchorPane.rightAnchor="14.0" />
+            <Label layoutX="375.0" layoutY="52.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe5" AnchorPane.rightAnchor="14.0" />
          </children>
       </AnchorPane>
    </children>
