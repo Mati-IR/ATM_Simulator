@@ -23,6 +23,12 @@ public class ATMClient {
         clientSocketHandler = new ClientSocketHandler(serverAddress, serverPort);
         clientRequestUtil = new ClientRequestUtil();
         atmGui = new AtmGui();
+        Thread guiThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                atmGui.main(new String[0]);
+            }
+        });
 
         if(null == clientSocketHandler){
             System.out.println("Could not connect to server");
