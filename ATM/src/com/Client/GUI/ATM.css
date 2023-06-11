@@ -101,3 +101,9 @@
 	-fx-background-color: transparent;
 	-fx-background-position: center;
 }
+.pin_label{
+	-fx-font-family: "Lucida Console";
+	-fx-font-size: 30;
+	-fx-text-fill: white;
+	-fx-background-color:  #4154b0;
+}
