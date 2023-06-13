@@ -1,7 +1,8 @@
 package com.Client;
 
 import ClientRequestUtil.ClientRequestUtil;
-import com.Client.GUI.AtmApplication;
+import com.Client.Peripherials.KeyboardHandler.KeyboardKeys;
+import com.Client.Peripherials.PeripherialsHandler;
 
 public class ATMClient {
     private enum ClientState {
@@ -13,7 +14,7 @@ public class ATMClient {
 
     private ClientSocketHandler clientSocketHandler;
     private ClientRequestUtil   clientRequestUtil;
-    private AtmApplication atmApplication;
+    private PeripherialsHandler peripherialsHandler;
     private ClientState         clientState = ClientState.NOT_CONNECTED;
     private int                 clientID = 0;
     private int                 clientPort = 0;
@@ -32,6 +33,7 @@ public class ATMClient {
         this.clientPort = serverPort;
         clientSocketHandler = new ClientSocketHandler(serverAddress, serverPort);
         clientRequestUtil = new ClientRequestUtil();
+        peripherialsHandler = new PeripherialsHandler();
 
         if(null == clientSocketHandler){
             System.out.println("Could not connect to server");
@@ -46,14 +48,43 @@ public class ATMClient {
     }
 
     public void run() {
-        int a = 0;
         while (true) {
-            a += 1;
-            if (a == 10){
-                a -= 1;
+            ClientState previousState = this.clientState;
+            // ping server every 50 ms
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+                clientSocketHandler.connectToServer();
+                if(clientSocketHandler.isConnected()) {
+                    this.clientState = ClientState.CONNECTED;
+                    this.clientSocketHandler.disconnectFromServer();
+                    if (previousState != this.clientState) {
+                        System.out.println("Connected to server");
+                    }
+                }
+                else {
+                    this.clientState = ClientState.NOT_CONNECTED;
+                    try {
+                        Thread.sleep(5000);
+                        System.out.println("Connection lost. Reconnecting...");
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
         }
     }
+
+    public void handleKeyboardInput(KeyboardKeys key) {
+        peripherialsHandler.handleKeyboardInput(key);
+    }
+
+    public void handleCardReaderInput(String cardNumber) {
+        peripherialsHandler.handleCardReaderInput(cardNumber);
+    }
+
+
     /* Below code is probably obsolete */
     /*
     public int run() {

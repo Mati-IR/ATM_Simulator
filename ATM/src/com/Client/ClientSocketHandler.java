@@ -75,7 +75,7 @@ public class ClientSocketHandler {
     }
 
     public boolean isConnected() {
-        if (null == clientSocket){
+        if (null == clientSocket || clientSocket.isClosed()){
             return false;
         }
         return clientSocket.isConnected();

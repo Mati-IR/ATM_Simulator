@@ -1,6 +1,6 @@
 package com.Run;
 import com.Server.ATMServer;
-import com.Client.ATMClient;
+import com.Client.GUI.AtmApplication;
 
 public class Main {
 
@@ -18,8 +18,8 @@ public class Main {
 	    // if argument is equal to "c" build client, if it is "s", build server
         if(args[0].equals("c")){
             System.out.println("Building client...");
-            ATMClient atmClient = new ATMClient(1, "localhost", 1234);
-            atmClient.run();
+            AtmApplication atmApp = new AtmApplication();
+            atmApp.main(args);
         } else if(args[0].equals("s")){
             System.out.println("Building server...");
             ATMServer atmServer = new ATMServer();

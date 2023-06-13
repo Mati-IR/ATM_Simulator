@@ -14,13 +14,13 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="700.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="700.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.Client.GUI.MainController">
    <children>
       <AnchorPane layoutX="25.0" layoutY="25.0" prefHeight="750.0" prefWidth="650.0" style="-fx-background-color: #2b3f61;" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
          <children>
             <AnchorPane layoutX="25.0" layoutY="14.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #b4b6b5;" AnchorPane.bottomAnchor="425.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
                <children>
-                  <AnchorPane layoutX="75.0" layoutY="50.0" prefHeight="300.0" prefWidth="450.0" style="-fx-background-color: #5788de;">
+                  <AnchorPane layoutX="82.0" layoutY="50.0" prefHeight="300.0" prefWidth="450.0" style="-fx-background-color: #5788de;">
                      <children>
                         <AnchorPane prefHeight="40.0" prefWidth="450.0" style="-fx-background-color: orange;">
                            <children>
@@ -168,6 +168,24 @@
                               <Label alignment="CENTER" contentDisplay="CENTER" layoutX="74.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Telefon został doładowany" wrapText="true" />
                            </children>
                         </AnchorPane>
+                        <AnchorPane fx:id="givepin1" layoutX="3.0" layoutY="40.0" prefHeight="254.0" prefWidth="450.0">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="98.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Proszę wprowadzić pin" wrapText="true" />
+                              <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="148.0" layoutY="63.0">
+                                 <image>
+                                    <Image url="@resources/helloicon.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="52.0" styleClass="screen_label" stylesheets="@ATM.css" text="Label" AnchorPane.leftAnchor="14.0" />
+                              <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="106.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe2" AnchorPane.leftAnchor="14.0" />
+                              <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="163.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe3" AnchorPane.leftAnchor="14.0" />
+                              <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="219.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe4" AnchorPane.leftAnchor="14.0" />
+                              <Label layoutX="375.0" layoutY="219.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe8" AnchorPane.rightAnchor="14.0" />
+                              <Label layoutX="375.0" layoutY="163.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe7" AnchorPane.rightAnchor="14.0" />
+                              <Label layoutX="375.0" layoutY="106.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe6" AnchorPane.rightAnchor="14.0" />
+                              <Label layoutX="375.0" layoutY="52.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe5" AnchorPane.rightAnchor="14.0" />
+                           </children>
+                        </AnchorPane>
                      </children></AnchorPane>
                   <Button fx:id="SB3" accessibleText="SB3" layoutX="14.0" layoutY="245.0" mnemonicParsing="false" styleClass="screen_button" stylesheets="@ATM.css" AnchorPane.leftAnchor="14.0">
                      <cursor>
@@ -181,7 +199,7 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Button>
-                  <Button fx:id="SB1" accessibleText="SB1" layoutX="14.0" layoutY="130.0" mnemonicParsing="false" styleClass="screen_button" stylesheets="@ATM.css" AnchorPane.leftAnchor="14.0">
+                  <Button fx:id="SB1" accessibleText="SB1" layoutX="14.0" layoutY="130.0" mnemonicParsing="false" onAction="#handlePB1" styleClass="screen_button" stylesheets="@ATM.css" AnchorPane.leftAnchor="14.0">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Button>
@@ -375,24 +393,6 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-         </children>
-      </AnchorPane>
-      <AnchorPane fx:id="givepin1" layoutX="743.0" layoutY="25.0" prefHeight="254.0" prefWidth="450.0">
-         <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="98.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Proszę wprowadzić pin" wrapText="true" />
-            <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="148.0" layoutY="63.0">
-               <image>
-                  <Image url="@resources/helloicon.jpg" />
-               </image>
-            </ImageView>
-            <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="52.0" styleClass="screen_label" stylesheets="@ATM.css" text="Label" AnchorPane.leftAnchor="14.0" />
-            <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="106.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe2" AnchorPane.leftAnchor="14.0" />
-            <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="163.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe3" AnchorPane.leftAnchor="14.0" />
-            <Label alignment="CENTER_RIGHT" layoutX="14.0" layoutY="219.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe4" AnchorPane.leftAnchor="14.0" />
-            <Label layoutX="375.0" layoutY="219.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe8" AnchorPane.rightAnchor="14.0" />
-            <Label layoutX="375.0" layoutY="163.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe7" AnchorPane.rightAnchor="14.0" />
-            <Label layoutX="375.0" layoutY="106.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe6" AnchorPane.rightAnchor="14.0" />
-            <Label layoutX="375.0" layoutY="52.0" styleClass="screen_label" stylesheets="@ATM.css" text="Labe5" AnchorPane.rightAnchor="14.0" />
          </children>
       </AnchorPane>
    </children>
