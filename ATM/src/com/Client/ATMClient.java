@@ -1,34 +1,37 @@
 package com.Client;
 
 import ClientRequestUtil.ClientRequestUtil;
-import com.Client.GUI.AtmGui;
+import com.Client.GUI.AtmApplication;
 
 public class ATMClient {
     private enum ClientState {
         NOT_CONNECTED, CONNECTED, AUTHENTICATED
     }
 
+    // instance
+    private static ATMClient instance = null;
+
     private ClientSocketHandler clientSocketHandler;
     private ClientRequestUtil   clientRequestUtil;
-    private AtmGui              atmGui;
+    private AtmApplication atmApplication;
     private ClientState         clientState = ClientState.NOT_CONNECTED;
     private int                 clientID = 0;
     private int                 clientPort = 0;
     private String              clientAddress = "";
 
-    public ATMClient(int clientID, String serverAddress, int serverPort) {
+    public static ATMClient getInstance() {
+        if (instance == null) {
+            instance = new ATMClient(1, "localhost", 1234);
+        }
+        return instance;
+    }
+
+    private ATMClient(int clientID, String serverAddress, int serverPort) {
         this.clientID = clientID;
         this.clientAddress = serverAddress;
         this.clientPort = serverPort;
         clientSocketHandler = new ClientSocketHandler(serverAddress, serverPort);
         clientRequestUtil = new ClientRequestUtil();
-        atmGui = new AtmGui();
-        Thread guiThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                atmGui.main(new String[0]);
-            }
-        });
 
         if(null == clientSocketHandler){
             System.out.println("Could not connect to server");
@@ -38,8 +41,23 @@ public class ATMClient {
         clientSocketHandler.connectToServer();
         if(clientSocketHandler.isConnected()){
             this.clientState = ClientState.CONNECTED;
+            this.clientSocketHandler.disconnectFromServer();
         }
+    }
 
+    public void run() {
+        int a = 0;
+        while (true) {
+            a += 1;
+            if (a == 10){
+                a -= 1;
+            }
+        }
+    }
+    /* Below code is probably obsolete */
+    /*
+    public int run() {
+        atmApplication.main(new String[0]);
         // Fake authentication request
         String userInput = "2137";
         String userNumber = "1";
@@ -55,10 +73,7 @@ public class ATMClient {
         } else {
             System.out.println("Error: Invalid request");
         }
-    }
 
-    public int run() {
-        atmGui.main(new String[0]);
         clientRequestUtil.setRequest("history");
         clientSocketHandler.sendRequest(clientRequestUtil.encodeRequest());
 
@@ -120,5 +135,6 @@ public class ATMClient {
         }
         System.out.println("ATMClient no. " + this.clientID + " object destroyed.");
     }
+    */
 }
 

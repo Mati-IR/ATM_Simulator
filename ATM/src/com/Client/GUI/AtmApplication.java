@@ -21,6 +21,7 @@ public class AtmGui extends Application {
             stage.setScene(scene);
             stage.setMaximized(false);
             stage.setResizable(false);
+            
             stage.show();
         } catch (Exception e){
             System.out.println("Error: " + e.getMessage());
