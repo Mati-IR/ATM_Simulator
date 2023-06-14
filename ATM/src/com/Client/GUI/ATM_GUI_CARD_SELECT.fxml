@@ -7,14 +7,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.Client.GUI.MainController">
    <children>
       <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: #5788de;">
          <children>
             <Label layoutX="20.0" prefHeight="78.0" prefWidth="141.0" styleClass="screen_label" stylesheets="@ATM.css" text="Podaj numer karty" textAlignment="CENTER" wrapText="true" />
             <TextField fx:id="cardnumber" layoutX="16.0" layoutY="78.0" />
-            <Button fx:id="okcardnumber" layoutX="50.0" layoutY="127.0" mnemonicParsing="false" stylesheets="@ATM.css" text="Zatwierdź">
+            <Button fx:id="okcardnumber" layoutX="50.0" layoutY="127.0" mnemonicParsing="false" onAction="#handleCardNumberFromUser" stylesheets="@ATM.css" text="Zatwierdź">
                <font>
                   <Font name="Lucida Console" size="12.0" />
                </font>

@@ -199,7 +199,7 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Button>
-                  <Button fx:id="SB1" accessibleText="SB1" layoutX="14.0" layoutY="130.0" mnemonicParsing="false" onAction="#handlePB1" styleClass="screen_button" stylesheets="@ATM.css" AnchorPane.leftAnchor="14.0">
+                  <Button fx:id="SB1" accessibleText="SB1" layoutX="14.0" layoutY="130.0" mnemonicParsing="false" styleClass="screen_button" stylesheets="@ATM.css" AnchorPane.leftAnchor="14.0">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Button>
@@ -237,7 +237,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button fx:id="PB1" accessibleText="PB1" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="pad_1" stylesheets="@ATM.css">
+                        <Button fx:id="PB1" accessibleText="PB1" mnemonicParsing="false" onAction="#handlePinButton1" prefHeight="60.0" prefWidth="60.0" styleClass="pad_1" stylesheets="@ATM.css">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
@@ -252,7 +252,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="PB2" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="pad_2" stylesheets="@ATM.css" GridPane.columnIndex="1">
+                        <Button fx:id="PB2" mnemonicParsing="false" onAction="#handlePinButton2" prefHeight="60.0" prefWidth="60.0" styleClass="pad_2" stylesheets="@ATM.css" GridPane.columnIndex="1">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
@@ -260,7 +260,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="PB3" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="pad_3" stylesheets="@ATM.css" GridPane.columnIndex="2">
+                        <Button fx:id="PB3" mnemonicParsing="false" onAction="#handlePinButton3" prefHeight="60.0" prefWidth="60.0" styleClass="pad_3" stylesheets="@ATM.css" GridPane.columnIndex="2">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
@@ -268,7 +268,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="PBR" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="pad_red" stylesheets="@ATM.css" GridPane.columnIndex="3">
+                        <Button fx:id="PBR" mnemonicParsing="false" onAction="#handlePinButtonCancel" prefHeight="60.0" prefWidth="60.0" styleClass="pad_red" stylesheets="@ATM.css" GridPane.columnIndex="3">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
@@ -276,7 +276,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="PB4" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="pad_4" stylesheets="@ATM.css" GridPane.rowIndex="1">
+                        <Button fx:id="PB4" mnemonicParsing="false" onAction="#handlePinButton4" prefHeight="60.0" prefWidth="60.0" styleClass="pad_4" stylesheets="@ATM.css" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
@@ -284,7 +284,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="PB5" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="pad_5" stylesheets="@ATM.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Button fx:id="PB5" mnemonicParsing="false" onAction="#handlePinButton5" prefHeight="60.0" prefWidth="60.0" styleClass="pad_5" stylesheets="@ATM.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
@@ -292,7 +292,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="PB6" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="pad_6" stylesheets="@ATM.css" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <Button fx:id="PB6" mnemonicParsing="false" onAction="#handlePinButton6" prefHeight="60.0" prefWidth="60.0" styleClass="pad_6" stylesheets="@ATM.css" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
@@ -300,7 +300,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="PBY" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="pad_yellow" stylesheets="@ATM.css" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                        <Button fx:id="PBY" mnemonicParsing="false" onAction="#handlePinButtonClear" prefHeight="60.0" prefWidth="60.0" styleClass="pad_yellow" stylesheets="@ATM.css" GridPane.columnIndex="3" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
@@ -308,7 +308,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="PB7" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="pad_7" stylesheets="@ATM.css" GridPane.rowIndex="2">
+                        <Button fx:id="PB7" mnemonicParsing="false" onAction="#handlePinButton7" prefHeight="60.0" prefWidth="60.0" styleClass="pad_7" stylesheets="@ATM.css" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
@@ -316,7 +316,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="PB8" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="pad_8" stylesheets="@ATM.css" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Button fx:id="PB8" mnemonicParsing="false" onAction="#handlePinButton8" prefHeight="60.0" prefWidth="60.0" styleClass="pad_8" stylesheets="@ATM.css" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
@@ -324,7 +324,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="PB9" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="pad_9" stylesheets="@ATM.css" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <Button fx:id="PB9" mnemonicParsing="false" onAction="#handlePinButton9" prefHeight="60.0" prefWidth="60.0" styleClass="pad_9" stylesheets="@ATM.css" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
@@ -332,7 +332,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="PBG" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="pad_green" stylesheets="@ATM.css" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                        <Button fx:id="PBG" mnemonicParsing="false" onAction="#handlePinButtonEnter" prefHeight="60.0" prefWidth="60.0" styleClass="pad_green" stylesheets="@ATM.css" GridPane.columnIndex="3" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
@@ -340,7 +340,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="PB0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" styleClass="pad_0" stylesheets="@ATM.css" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <Button fx:id="PB0" mnemonicParsing="false" onAction="#handlePinButton0" prefHeight="60.0" prefWidth="60.0" styleClass="pad_0" stylesheets="@ATM.css" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <GridPane.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </GridPane.margin>
@@ -378,7 +378,7 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <Button fx:id="creditcard" layoutX="430.0" layoutY="582.0" mnemonicParsing="false" prefHeight="91.0" prefWidth="141.0" rotate="90.0" styleClass="creditcard" stylesheets="@ATM.css">
+            <Button fx:id="creditCard" layoutX="430.0" layoutY="582.0" mnemonicParsing="false" prefHeight="91.0" prefWidth="141.0" rotate="90.0" styleClass="creditcard" stylesheets="@ATM.css">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>

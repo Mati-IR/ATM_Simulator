@@ -5,9 +5,36 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
 import com.Client.Peripherials.KeyboardHandler.KeyboardKeys;
+import javafx.scene.control.TextField;
 
 public class MainController {
-    ATMClient atmClient = ATMClient.getInstance();
+    private ATMClient atmClient = ATMClient.getInstance();
+    String cardNumber = "";
+
+    @FXML
+    private TextField cardNumberButton;
+
+    @FXML
+    private Button creditCard;
+
+    @FXML
+    private void handleCardNumberFromUser() {
+        cardNumber = cardNumberButton.textProperty().get();
+    }
+
+    @FXML
+    private void handleCreditCardPressed() {
+        atmClient.handleCardReaderInput(cardNumber);
+    }
+
+    public void clearCardNumber() {
+        cardNumber = "";
+        cardNumberButton.setText("");
+    }
+
+    public void setCreditCardVisible(boolean visible) {
+        creditCard.setVisible(visible);
+    }
 
     @FXML
     private void handlePinButton1() {
