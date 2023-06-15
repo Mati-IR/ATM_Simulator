@@ -24,16 +24,30 @@ public class AtmApplication extends Application {
             stage.setResizable(false);
 
             // start client backend
-            Thread guiThread = new Thread(new Runnable() {
+            Thread backendThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     atmClient.run();
                 }
             });
-            guiThread.setDaemon(true);
-            guiThread.start();
+            backendThread.setDaemon(true);
+            backendThread.start();
 
             stage.show();
+
+
+            Stage cardSelectionStage = new Stage();
+            cardSelectionStage.setTitle("Card Selection");
+            Parent cardSelectionRoot = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ATM_GUI_CARD_SELECT.fxml")));
+            Scene cardSelectionScene = new Scene(cardSelectionRoot, 180, 180);
+            cardSelectionStage.setScene(cardSelectionScene);
+            cardSelectionStage.setMaximized(false);
+            cardSelectionStage.setResizable(false);
+            //set modality to application modal
+            cardSelectionStage.initOwner(stage);
+            cardSelectionStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+            cardSelectionStage.show();
+
         } catch (Exception e){
             System.out.println("Error: " + e.getMessage());
         }
