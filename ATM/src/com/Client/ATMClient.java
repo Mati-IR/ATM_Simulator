@@ -1,12 +1,13 @@
 package com.Client;
 
 import ClientRequestUtil.ClientRequestUtil;
+import com.Client.GUI.MainController;
 import com.Client.Peripherials.KeyboardHandler.KeyboardKeys;
 import com.Client.Peripherials.PeripherialsHandler;
 
 public class ATMClient {
     private enum ClientState {
-        NOT_CONNECTED, CONNECTED, AUTHENTICATED
+        NOT_CONNECTED, CONNECTED,
     }
 
     // instance
@@ -33,7 +34,7 @@ public class ATMClient {
         this.clientPort = serverPort;
         clientSocketHandler = new ClientSocketHandler(serverAddress, serverPort);
         clientRequestUtil = new ClientRequestUtil();
-        peripherialsHandler = new PeripherialsHandler();
+        peripherialsHandler = PeripherialsHandler.getInstance();
 
         if(null == clientSocketHandler){
             System.out.println("Could not connect to server");
@@ -74,14 +75,6 @@ public class ATMClient {
                     }
                 }
         }
-    }
-
-    public void handleKeyboardInput(KeyboardKeys key) {
-        peripherialsHandler.handleKeyboardInput(key);
-    }
-
-    public void handleCardReaderInput(String cardNumber) {
-        peripherialsHandler.handleCardReaderInput(cardNumber);
     }
 
 
