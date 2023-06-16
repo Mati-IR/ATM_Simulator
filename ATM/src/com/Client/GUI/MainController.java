@@ -224,7 +224,7 @@ public class MainController {
     @FXML
     private void handleSB6() {
         if (AtmState.INPUT_PIN == atmState) {
-            peripherialsHandler.handleKeyboardInput(KeyboardKeys.KEY_ENTER);
+            handlePinButtonEnter();
         }
     }
 
@@ -269,15 +269,15 @@ public class MainController {
             case AUTHENTICATION_ONGOING -> {
                 setScreenAnchorPaneVisible(wait, true);
             }
-            case AUTHENTICATION_FAILED -> {
+            /*case AUTHENTICATION_FAILED -> {
                 setScreenAnchorPaneVisible(blockcard, true);
-            }
+            }*/
             case OPERATION_CHOICE -> {
                 setScreenAnchorPaneVisible(operationchoice, true);
             }
-            case WITHDRAW -> {
+            /*case WITHDRAW -> {
                 setScreenAnchorPaneVisible(howmanycash, true);
-            }
+            }*/
 
 
 
