@@ -1,4 +1,4 @@
-package ClientRequestUtil;
+package com.ClientRequestUtil;
 
 import MoneyInfoStorage.MoneyInfoStorage;
 
@@ -56,6 +56,13 @@ public class ClientRequestUtil {
                 case "H": {
                     return "H " + this.cardNumber;
                 }
+                /* TODO: Skipped few handlers */
+                case "S": {
+                    return "S";
+                }
+                case "F": {
+                    return "F";
+                }
             }
         } catch (Exception e) {
             System.out.println("Error: " + e);
@@ -94,6 +101,11 @@ public class ClientRequestUtil {
                     this.isRequestValid = false;
                     return;
                 }
+            case "S":
+            case "F":
+                this.selectedRequest = requestMappings.get(parts[0]);
+                    this.isRequestValid = true;
+                    return;
         }
     }
 
