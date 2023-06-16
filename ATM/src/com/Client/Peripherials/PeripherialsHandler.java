@@ -76,6 +76,12 @@ public class PeripherialsHandler {
         cardReaderHandler.clear();
     }
 
+    /****** Side buttons ******/
+    public void handleSideButton(int buttonNumber) {
+        sideButtonHandler.handleSideButton(buttonNumber);
+        run();
+    }
+
 
 
     /* STATE MACHINE */

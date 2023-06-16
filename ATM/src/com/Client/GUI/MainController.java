@@ -207,7 +207,9 @@ public class MainController {
     }
 
     @FXML
-    private void handleSB1() {}
+    private void handleSB1() {
+        peripherialsHandler.handleSideButton(1);
+    }
 
     @FXML
     private void handleSB2() {}
