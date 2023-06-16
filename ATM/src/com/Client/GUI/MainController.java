@@ -292,7 +292,7 @@ public class MainController {
                 setCreditCardVisible(true);
                 setReceiptVisible(false);
                 setCashVisible(false);
-                clearCardNumber();
+                //clearCardNumber();
             }
             case INPUT_PIN -> {
                 setScreenAnchorPaneVisible(givepin, true);
@@ -302,6 +302,9 @@ public class MainController {
             }
             case AUTHENTICATION_ONGOING -> {
                 setScreenAnchorPaneVisible(wait, true);
+            }
+            case OPERATION_CHOICE -> {
+                setScreenAnchorPaneVisible(operationchoice, true);
             }
         }
     }

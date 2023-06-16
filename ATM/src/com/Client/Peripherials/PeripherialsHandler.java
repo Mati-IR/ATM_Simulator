@@ -3,6 +3,7 @@ package com.Client.Peripherials;
 import com.Client.ATMClient;
 import com.Client.GUI.MainController;
 import com.Client.Peripherials.KeyboardHandler.*;
+import com.ClientRequestUtil.ClientRequestUtil;
 
 import java.util.Objects;
 
@@ -15,8 +16,11 @@ public class PeripherialsHandler {
     private static PeripherialsHandler instance;
     private KeyboardHandler keyboardHandler = new KeyboardHandler();
     private CardReaderHandler cardReaderHandler = new CardReaderHandler();
-    boolean firstRun = true;
     private MainController controller;
+    private ClientRequestUtil clientRequestUtil = new ClientRequestUtil();
+
+    private boolean firstRun = true;
+    private boolean requestActive = false;
 
     public static PeripherialsHandler getInstance() {
         if (instance == null) {
@@ -31,6 +35,13 @@ public class PeripherialsHandler {
 
     public void setController(MainController controller) {
         this.controller = controller;
+    }
+
+    public void setMessage(String message) {
+        if (message != null) {
+            this.clientRequestUtil.decodeRequest(message);
+            System.out.println("Message: " + message);
+        }
     }
 
     /****** Keyboard ******/
@@ -67,14 +78,7 @@ public class PeripherialsHandler {
 
 
 
-
-
-
-
-
-
     /* STATE MACHINE */
-
 
     private boolean evaluateCommonEvents() {
         if (Objects.equals(keyboardHandler.getKeyboardState(), KeyboardState.CLEAR)) {
@@ -105,8 +109,14 @@ public class PeripherialsHandler {
             case INPUT_PIN -> {
                 if (Objects.equals(keyboardHandler.getKeyboardState(), KeyboardState.ENTER)) {
                     atmState = AtmState.AUTHENTICATION_ONGOING;
-                    atmClient.setPin(keyboardHandler.getInput());
-                    keyboardHandler.clear();
+                }
+            }
+            case AUTHENTICATION_ONGOING -> {
+                if (clientRequestUtil.getIsRequestValid() && clientRequestUtil.getSelectedRequest().equalsIgnoreCase("success")) {
+                    atmState = AtmState.OPERATION_CHOICE;
+                } else if (clientRequestUtil.getIsRequestValid() && clientRequestUtil.getSelectedRequest().equalsIgnoreCase("failure")) {
+                    atmState = AtmState.AUTHENTICATION_FAILED;
+                    System.out.println("Authentication failed");
                 }
             }
 
@@ -123,19 +133,22 @@ public class PeripherialsHandler {
                 controller.handleAtmState(atmState);
                 controller.setPinStars(keyboardHandler.getInput().length());
                 atmClient.setRequest("authenticate");
+                atmClient.setCardNumber(cardReaderHandler.getCardNumber());
                 if (Objects.equals(keyboardHandler.getKeyboardState(), KeyboardState.ENTER)) {
                     atmClient.setPin(keyboardHandler.getInput());
+                    atmClient.sendRequest();
                 }
             }
             case AUTHENTICATION_ONGOING -> {
-                keyboardHandler.clear();
+                atmClient.setPin(keyboardHandler.getInput());
                 controller.handleAtmState(atmState);
-                //atmClient.authenticate();
-                //if (atmClient.isAuthenticated()) {
-                //    atmState = AtmState.OPERATION_CHOICE;
-                //} else {
-                //    atmState = AtmState.AUTHENTICATION_FAILED;
-                //}
+                if (false == requestActive) {
+                    atmClient.sendRequest();
+                    requestActive = true;
+                }
+            }
+            case OPERATION_CHOICE -> {
+                controller.handleAtmState(atmState);
             }
         }
     }

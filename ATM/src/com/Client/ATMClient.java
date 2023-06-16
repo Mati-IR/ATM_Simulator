@@ -1,6 +1,6 @@
 package com.Client;
 
-import ClientRequestUtil.ClientRequestUtil;
+import com.ClientRequestUtil.ClientRequestUtil;
 import com.Client.GUI.MainController;
 import com.Client.Peripherials.PeripherialsHandler;
 
@@ -47,33 +47,8 @@ public class ATMClient {
         }
     }
 
+    /* is this function necessary? */
     public void run() {
-        while (true) {
-            ClientState previousState = this.clientState;
-            // ping server every 50 ms
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-                clientSocketHandler.connectToServer();
-                if(clientSocketHandler.isConnected()) {
-                    this.clientState = ClientState.CONNECTED;
-                    this.clientSocketHandler.disconnectFromServer();
-                    if (previousState != this.clientState) {
-                        System.out.println("Connected to server");
-                    }
-                }
-                else {
-                    this.clientState = ClientState.NOT_CONNECTED;
-                    try {
-                        Thread.sleep(5000);
-                        System.out.println("Connection lost. Reconnecting...");
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-        }
     }
 
     public void clear() {
@@ -96,88 +71,22 @@ public class ATMClient {
         peripherialsHandler.setController(controller);
     }
 
-
-    /* Below code is probably obsolete */
-    /*
-    public int run() {
-        atmApplication.main(new String[0]);
-        // Fake authentication request
-        String userInput = "2137";
-        String userNumber = "1";
-        String request = "Authenticate";
-
-        clientRequestUtil.setRequest(request);
-        clientRequestUtil.setPin(userInput);
-        clientRequestUtil.setUserNumber(userNumber);
+    public void sendRequest() {
         String clientRequest = clientRequestUtil.encodeRequest();
-
         if (clientRequest != "Error"){
-            clientSocketHandler.sendRequest(clientRequest);
+            String response = clientSocketHandler.sendRequestAndReceiveResponse(clientRequest);
+            if (response != null) {
+                // Process the received message, perform actions, or update UI
+                System.out.println("Received message from server: " + response);
+                peripherialsHandler.setMessage(response);
+                peripherialsHandler.run();
+            } else {
+                // Handle disconnection or error
+                System.out.println("Lost connection to the server");
+            }
         } else {
             System.out.println("Error: Invalid request");
         }
-
-        clientRequestUtil.setRequest("history");
-        clientSocketHandler.sendRequest(clientRequestUtil.encodeRequest());
-
-        while (true) {
-            secureConnection();
-            if (ClientState.CONNECTED != this.clientState){
-                System.out.println("Connection lost. Reconnecting...");
-            } else {
-                clientSocketHandler.sendRequest(clientRequestUtil.encodeRequest());
-            }
-
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
     }
-
-    private boolean secureConnection(){
-        if (null == clientSocketHandler) {
-            this.reconnect();
-            return this.clientState == ClientState.CONNECTED;
-        }
-        if (false == clientSocketHandler.isConnected()) {
-            this.reconnect();
-            return this.clientState == ClientState.CONNECTED;
-        }
-        return this.clientState == ClientState.CONNECTED;
-    }
-    private void reconnect(){
-        {
-            System.out.println("Connection lost. Reconnecting...");
-            if (clientSocketHandler == null) {
-                clientSocketHandler = new ClientSocketHandler(this.clientAddress, this.clientPort);
-                if (clientSocketHandler == null) {
-                    //System.out.println("Could not connect to server");
-                    this.clientState = ClientState.NOT_CONNECTED;
-                    return;
-                }
-            }
-            clientSocketHandler.connectToServer();
-            if (clientSocketHandler.isConnected()) {
-                //System.out.println("Reconnected.");
-                this.clientState = ClientState.CONNECTED;
-            } else {
-                //System.out.println("Could not reconnect.");
-                this.clientState = ClientState.NOT_CONNECTED;
-            }
-        }
-    }
-
-    // destructor
-    protected void finalize() throws Throwable {
-        try {
-            //clientSocketHandler.disconnectFromServer();
-        } finally {
-            super.finalize();
-        }
-        System.out.println("ATMClient no. " + this.clientID + " object destroyed.");
-    }
-    */
 }
 

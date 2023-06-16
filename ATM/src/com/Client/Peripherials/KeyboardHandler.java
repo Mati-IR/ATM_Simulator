@@ -56,7 +56,9 @@ public class KeyboardHandler {
             case KEY_8:
             case KEY_9:
                 keyboardState = KeyboardState.OK;
-                input += keysMappings.get(key.toString());
+                if (input.length() < 4) { // 4 is max pin length
+                    input += keysMappings.get(key.toString());
+                }
                 break;
             default:
                 keyboardState = KeyboardState.ERROR;

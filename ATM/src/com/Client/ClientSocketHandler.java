@@ -36,6 +36,11 @@ public class ClientSocketHandler {
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             out = new PrintStream(clientSocket.getOutputStream(), true);
             System.out.println("Connected to server...");
+
+            //clean up
+            in.close();
+            out.close();
+            clientSocket.close();
         } catch (ConnectException e) {
             System.out.println("Could not connect to server...");
         } catch (IOException e) {
@@ -43,25 +48,65 @@ public class ClientSocketHandler {
         } catch (NullPointerException e) {
             System.out.println("Null pointer - Could not connect to server...");
         }
+
     }
 
-    public void sendRequest(String request) {
+    public String sendRequestAndReceiveResponse(String request) {
+        try {
+            if (null == clientSocket || clientSocket.isClosed()) {
+                //Open a new socket
+                clientSocket = new Socket(serverAddress, serverPort);
+                if (clientSocket == null) {
+                    System.out.println("Could not connect to server...");
+                    return "s";
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // try with resources with printwriter and bufferedreader
         try (PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
             out.println(request);
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))){
+                return in.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } catch (IOException e) {
             System.out.println("Could not write message to server...");
             e.printStackTrace();
         }
+        return null;
     }
 
     public String receiveResponse() {
         try {
-            return in.readLine();
+            if (null == clientSocket || clientSocket.isClosed()) {
+                // Open a new socket
+                clientSocket = new Socket(serverAddress, serverPort);
+                if (clientSocket == null) {
+                    System.out.println("Could not connect to server...");
+                    return null;
+                }
+
+                // Initialize the BufferedReader after opening the socket
+                in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            }
+
+            // Check if the BufferedReader is ready for reading
+            if (in.ready()) {
+                return in.readLine();
+            } else {
+                // Handle the case when the stream is not ready
+                //System.out.println("Stream is not ready...");
+                return null;
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
+
 
     public void disconnectFromServer() {
         try {

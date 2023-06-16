@@ -8,11 +8,12 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import MoneyInfoStorage.MoneyInfoStorage;
+import com.ClientRequestUtil.ClientRequestUtil;
 
 class ClientHandler implements Runnable {
     boolean userIsAuthenticated = false;
     private Socket clientSocket;
-    private ClientRequestUtil.ClientRequestUtil clientRequestUtil;
+    private ClientRequestUtil clientRequestUtil;
     private DatabaseHandler databaseHandler;
     MoneyInfoStorage moneyInfoStorage;
 
@@ -20,7 +21,7 @@ class ClientHandler implements Runnable {
     //private MoneyInfoStorage moneyInfoStorage;
 
     public ClientHandler(Socket clientSocket, DatabaseHandler databaseHandler) {
-        clientRequestUtil = new ClientRequestUtil.ClientRequestUtil();
+        clientRequestUtil = new ClientRequestUtil();
         this.clientSocket = clientSocket;
         this.databaseHandler = databaseHandler;
         this.moneyInfoStorage = new MoneyInfoStorage();
