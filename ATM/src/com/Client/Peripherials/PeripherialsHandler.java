@@ -121,6 +121,7 @@ public class PeripherialsHandler {
             }
             case INPUT_PIN -> {
                 controller.handleAtmState(atmState);
+                controller.setPinStars(keyboardHandler.getInput().length());
                 atmClient.setRequest("authenticate");
                 if (Objects.equals(keyboardHandler.getKeyboardState(), KeyboardState.ENTER)) {
                     atmClient.setPin(keyboardHandler.getInput());
@@ -143,7 +144,6 @@ public class PeripherialsHandler {
         if (firstRun) {
             firstRun = false;
             atmClient = ATMClient.getInstance();
-            return;
         }
         evaluateStateChange();
         runState();

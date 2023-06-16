@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
 import com.Client.Peripherials.KeyboardHandler.KeyboardKeys;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -17,6 +18,7 @@ public class MainController {
     private static MainController instance = null;
     private PeripherialsHandler peripherialsHandler = PeripherialsHandler.getInstance();
     private static String cardNumber = "";
+
 
     @FXML
     private TextField cardnumber;
@@ -94,6 +96,15 @@ public class MainController {
     private AnchorPane wait;
 
     @FXML
+    private Label pinlabel1;
+
+    @FXML
+    private Button cash;
+
+    @FXML
+    private Button receipt;
+
+    @FXML
     private void handleCardNumberFromUser() {
         //save the card number
         cardNumber = cardnumber.textProperty().get();
@@ -120,6 +131,14 @@ public class MainController {
 
     public void setCreditCardVisible(boolean visible) {
         creditCard.setVisible(visible);
+    }
+
+    public void setCashVisible(boolean visible) {
+        cash.setVisible(visible);
+    }
+
+    public void setReceiptVisible(boolean visible) {
+        receipt.setVisible(visible);
     }
 
     @FXML
@@ -187,6 +206,43 @@ public class MainController {
         peripherialsHandler.handleKeyboardInput(KeyboardKeys.KEY_ENTER);
     }
 
+    @FXML
+    private void handleSB1() {}
+
+    @FXML
+    private void handleSB2() {}
+
+    @FXML
+    private void handleSB3() {}
+
+    @FXML
+    private void handleSB4() {}
+
+    @FXML
+    private void handleSB5() {}
+
+    @FXML
+    private void handleSB6() {
+        if (AtmState.INPUT_PIN == atmState) {
+            peripherialsHandler.handleKeyboardInput(KeyboardKeys.KEY_ENTER);
+        }
+    }
+
+    @FXML
+    private void handleSB7() {}
+
+    @FXML
+    private void handleSB8() {}
+
+
+    public void setPinStars(int stars) {
+        String starsString = "";
+        for (int i = 0; i < stars; i++) {
+            starsString += "*";
+        }
+        pinlabel1.setText(starsString);
+    }
+
     private void setScreenAnchorPaneVisible(AnchorPane anchorPane, boolean visible) {
         anchorPane.setVisible(visible);
         //set other anchor panes invisible
@@ -232,12 +288,20 @@ public class MainController {
         System.out.println("Atm state changed to " + atmState);
         switch (atmState){
             case HELLO -> {
+                setScreenAnchorPaneVisible(hello, true);
                 setCreditCardVisible(true);
+                setReceiptVisible(false);
+                setCashVisible(false);
                 clearCardNumber();
             }
             case INPUT_PIN -> {
                 setScreenAnchorPaneVisible(givepin, true);
                 setCreditCardVisible(false);
+                setReceiptVisible(false);
+                setCashVisible(false);
+            }
+            case AUTHENTICATION_ONGOING -> {
+                setScreenAnchorPaneVisible(wait, true);
             }
         }
     }
