@@ -2,7 +2,6 @@ package com.Client;
 
 import ClientRequestUtil.ClientRequestUtil;
 import com.Client.GUI.MainController;
-import com.Client.Peripherials.KeyboardHandler.KeyboardKeys;
 import com.Client.Peripherials.PeripherialsHandler;
 
 public class ATMClient {
@@ -75,6 +74,26 @@ public class ATMClient {
                     }
                 }
         }
+    }
+
+    public void clear() {
+
+    }
+
+    public void setCardNumber(String cardNumber) {
+        clientRequestUtil.setCardNumber(cardNumber);
+    }
+
+    public void setPin(String pin) {
+        clientRequestUtil.setPin(pin);
+    }
+
+    public void setRequest(String request) {
+        clientRequestUtil.setRequest(request);
+    }
+
+    public void setController(MainController controller) {
+        peripherialsHandler.setController(controller);
     }
 
 

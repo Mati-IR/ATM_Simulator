@@ -2,14 +2,13 @@ package ClientRequestUtil;
 
 import MoneyInfoStorage.MoneyInfoStorage;
 
-import java.util.Currency;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ClientRequestUtil {
     private boolean isRequestValid = false;
     private String selectedRequest = null;
-    private String userNumber = null;
+    private String cardNumber = null;
 
     /* Authentication variables */
     private String pin = null;
@@ -48,14 +47,14 @@ public class ClientRequestUtil {
 
             switch (this.selectedRequest) {
                 case "A": {
-                    return "A " + this.pin + " " + this.userNumber;
+                    return "A " + this.pin + " " + this.cardNumber;
                 }
                 case "W": {
-                    return "W " + this.userNumber + " " + this.amount + this.moneyInfo.getCurrency().toString();
+                    return "W " + this.cardNumber + " " + this.amount + this.moneyInfo.getCurrency().toString();
                 }
                 /* TODO: Skipped few handlers */
                 case "H": {
-                    return "H " + this.userNumber;
+                    return "H " + this.cardNumber;
                 }
             }
         } catch (Exception e) {
@@ -73,9 +72,9 @@ public class ClientRequestUtil {
             case "A":
                 this.selectedRequest = requestMappings.get(parts[0]);
                 this.pin = decodePIN(parts[1]);
-                this.userNumber = decodeUserNumber(parts[2]);
+                this.cardNumber = decodeUserNumber(parts[2]);
 
-                if (this.selectedRequest != null && this.pin != null && this.userNumber != null) {
+                if (this.selectedRequest != null && this.pin != null && this.cardNumber != null) {
                     this.isRequestValid = true;
                     return;
                 } else {
@@ -84,11 +83,11 @@ public class ClientRequestUtil {
                 }
             case "W":
                 this.selectedRequest = requestMappings.get(parts[0]);
-                this.userNumber = decodeUserNumber(parts[1]);
+                this.cardNumber = decodeUserNumber(parts[1]);
                 this.amount = decodeAmount(parts[2]);
                 this.moneyInfo.setCurrency(decodeCurrency(parts[3]));
 
-                if (this.selectedRequest != null && this.userNumber != null && this.amount != null && this.moneyInfo.getCurrency() != null) {
+                if (this.selectedRequest != null && this.cardNumber != null && this.amount != null && this.moneyInfo.getCurrency() != null) {
                     this.isRequestValid = true;
                     return;
                 } else {
@@ -189,8 +188,8 @@ public class ClientRequestUtil {
         this.pin = pin;
     }
 
-    public void setUserNumber(String userNumber) {
-        this.userNumber = userNumber;
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
     }
 
     public boolean getIsRequestValid() {
@@ -201,8 +200,8 @@ public class ClientRequestUtil {
         return this.selectedRequest;
     }
 
-    public String getUserNumber() {
-        return this.userNumber;
+    public String getCardNumber() {
+        return this.cardNumber;
     }
 
     public MoneyInfoStorage.Currency getCurrency() {

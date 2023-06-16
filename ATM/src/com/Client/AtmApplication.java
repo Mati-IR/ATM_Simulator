@@ -1,5 +1,6 @@
-package com.Client.GUI;
+package com.Client;
 
+import com.Client.GUI.MainController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -17,7 +18,10 @@ public class AtmApplication extends Application {
         try {
             // set up the stage
             stage.setTitle("ATM");
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ATM_GUI.fxml")));
+            FXMLLoader fxmlLoader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("GUI/ATM_GUI.fxml")));
+
+            Parent root = fxmlLoader.load();
+            MainController mainController = fxmlLoader.getController();
             Scene scene = new Scene(root, 700, 900);
             stage.setScene(scene);
             stage.setMaximized(false);
@@ -27,6 +31,7 @@ public class AtmApplication extends Application {
             Thread backendThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    atmClient.setController(mainController);
                     atmClient.run();
                 }
             });
@@ -38,7 +43,7 @@ public class AtmApplication extends Application {
 
             Stage cardSelectionStage = new Stage();
             cardSelectionStage.setTitle("Card Selection");
-            Parent cardSelectionRoot = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("ATM_GUI_CARD_SELECT.fxml")));
+            Parent cardSelectionRoot = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("GUI/ATM_GUI_CARD_SELECT.fxml")));
             Scene cardSelectionScene = new Scene(cardSelectionRoot, 180, 180);
             cardSelectionStage.setScene(cardSelectionScene);
             cardSelectionStage.setMaximized(false);

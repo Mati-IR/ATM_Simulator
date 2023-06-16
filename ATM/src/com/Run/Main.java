@@ -1,6 +1,6 @@
 package com.Run;
 import com.Server.ATMServer;
-import com.Client.GUI.AtmApplication;
+import com.Client.AtmApplication;
 
 public class Main {
 

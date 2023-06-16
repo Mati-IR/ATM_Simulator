@@ -1,2 +1,4 @@
-package com.Client.Peripherials;public class ScreenHandler {
+package com.Client.Peripherials;
+
+public class ScreenHandler {
 }

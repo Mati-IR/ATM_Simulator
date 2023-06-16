@@ -61,23 +61,23 @@ class ClientHandler implements Runnable {
         boolean result = false;
         switch (selectedRequest) {
             case "authenticate":
-                result = authentificationHandler(clientRequestUtil.getUserNumber(), clientRequestUtil.getPin());
+                result = authentificationHandler(clientRequestUtil.getCardNumber(), clientRequestUtil.getPin());
                 break;
             case "withdraw":
-                result = withdrawHandler(clientRequestUtil.getUserNumber(), clientRequestUtil.getAmount(), clientRequestUtil.getCurrency());
+                result = withdrawHandler(clientRequestUtil.getCardNumber(), clientRequestUtil.getAmount(), clientRequestUtil.getCurrency());
                 break;
             case "deposit":
-                result = depositHandler(clientRequestUtil.getUserNumber(), clientRequestUtil.getAmount(), clientRequestUtil.getCurrency());
+                result = depositHandler(clientRequestUtil.getCardNumber(), clientRequestUtil.getAmount(), clientRequestUtil.getCurrency());
                 break;
             case "balance":
-                result = balanceHandler(clientRequestUtil.getUserNumber());
+                result = balanceHandler(clientRequestUtil.getCardNumber());
                 break;
             case "history":
                 /* TODO: Create handler */
                 //result = historyHandler(clientRequestUtil.getUserNumber());
                 break;
             case "changepin":
-                result = changePinHandler(clientRequestUtil.getUserNumber(), clientRequestUtil.getPin());
+                result = changePinHandler(clientRequestUtil.getCardNumber(), clientRequestUtil.getPin());
                 break;
             case "topup":
                 /* TODO: Create handler */
