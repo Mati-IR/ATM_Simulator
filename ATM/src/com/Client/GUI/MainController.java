@@ -208,33 +208,46 @@ public class MainController {
 
     @FXML
     private void handleSB1() {
-        peripherialsHandler.handleSideButton(1);
+        peripherialsHandler.handleSideButton(1,atmState);
     }
 
     @FXML
-    private void handleSB2() {}
+    private void handleSB2() {
+        peripherialsHandler.handleSideButton(2,atmState);
+    }
 
     @FXML
-    private void handleSB3() {}
+    private void handleSB3() {
+        peripherialsHandler.handleSideButton(3,atmState);
+    }
 
     @FXML
-    private void handleSB4() {}
+    private void handleSB4() {
+        peripherialsHandler.handleSideButton(4,atmState);
+    }
 
     @FXML
-    private void handleSB5() {}
+    private void handleSB5() {
+        peripherialsHandler.handleSideButton(5,atmState);
+    }
 
     @FXML
     private void handleSB6() {
         if (AtmState.INPUT_PIN == atmState) {
             handlePinButtonEnter();
         }
+        peripherialsHandler.handleSideButton(6,atmState);
     }
 
     @FXML
-    private void handleSB7() {}
+    private void handleSB7() {
+        peripherialsHandler.handleSideButton(7,atmState);
+    }
 
     @FXML
-    private void handleSB8() {}
+    private void handleSB8() {
+        peripherialsHandler.handleSideButton(8,atmState);
+    }
 
 
     public void setPinStars(int stars) {
