@@ -9,7 +9,10 @@ import java.util.Objects;
 
 public class PeripherialsHandler {
     public enum AtmState {
-        HELLO, INPUT_PIN, AGAIN_PIN, AUTHENTICATION_ONGOING, OPERATION_CHOICE, WITHDRAW_PLN, WITHDRAW_EUR, DEPOSIT, TOP_UP_PHONE, BALANCE, EXIT
+        HELLO, INPUT_PIN, AGAIN_PIN, AUTHENTICATION_ONGOING, OPERATION_CHOICE,
+        WITHDRAW_PLN, WITHDRAW_EUR, DEPOSIT, TOP_UP_PHONE, BALANCE,
+        OPERATION_PRINT, PIN_CHANGE, HOW_MANY_CASH, CHOICE_RECEIPT,
+        CASH_INPUT_W, GIVE_TELE, TELE_AMOUNT, EXIT
     }
     private AtmState atmState = AtmState.HELLO;
     private ATMClient atmClient;
@@ -74,6 +77,12 @@ public class PeripherialsHandler {
 
     public void clearCardReader() {
         cardReaderHandler.clear();
+    }
+
+    /****** Side buttons ******/
+    public void handleSideButton(int buttonNumber,AtmState atmState ) {
+        sideButtonHandler.handleSideButton(buttonNumber,atmState);
+        run();
     }
 
 
