@@ -17,6 +17,7 @@ class ClientHandler implements Runnable {
     private DatabaseHandler databaseHandler;
     MoneyInfoStorage moneyInfoStorage;
 
+    private String history = "";
 
     //private MoneyInfoStorage moneyInfoStorage;
 
@@ -74,14 +75,13 @@ class ClientHandler implements Runnable {
                 result = balanceHandler(clientRequestUtil.getCardNumber());
                 break;
             case "history":
-                /* TODO: Create handler */
-                //result = historyHandler(clientRequestUtil.getUserNumber());
+                result = historyHandler(clientRequestUtil.getCardNumber());
                 break;
             case "changepin":
                 result = changePinHandler(clientRequestUtil.getCardNumber(), clientRequestUtil.getPin());
                 break;
             case "topup":
-                /* TODO: Create handler */
+                result = topupHandler(clientRequestUtil.getCardNumber(), clientRequestUtil.getAmount(), clientRequestUtil.getCurrency());
                 break;
 
 
@@ -174,4 +174,36 @@ class ClientHandler implements Runnable {
             return false;
         }
     }
+
+    private boolean historyHandler(String userNumber) {
+        if (false == clientRequestUtil.getIsRequestValid()) {
+            return false;
+        }
+        if (userIsAuthenticated) {
+            history = databaseHandler.getHistoryForUser(userNumber);
+            System.out.println(history);
+            return history != null;
+        }
+        return false;
+    }
+
+    private boolean topupHandler(String userNumber, int amount, MoneyInfoStorage.Currency currency) {
+        if (false == clientRequestUtil.getIsRequestValid()){
+            return false;
+        }
+        if (userIsAuthenticated) {
+            int accountBalance = databaseHandler.getBalanceForUser(userNumber);
+            int amountToDeposit = amount;
+            if (currency == MoneyInfoStorage.Currency.EUR) { /* Only PLN deposits are allowed for now */
+                amountToDeposit *= moneyInfoStorage.getExchangeRate();
+            }
+            int newBalance = accountBalance + amountToDeposit;
+            boolean result = databaseHandler.changeBalanceForUser(userNumber, String.valueOf(newBalance));
+            return result;
+        }else {
+            return false;
+        }
+    }
+
+
 }
