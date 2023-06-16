@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class PeripherialsHandler {
     public enum AtmState {
-        HELLO, INPUT_PIN, AGAIN_PIN, AUTHENTICATION_ONGOING, AUTHENTICATION_FAILED, OPERATION_CHOICE, WITHDRAW, DEPOSIT, TOP_UP_PHONE, BALANCE, EXIT
+        HELLO, INPUT_PIN, AGAIN_PIN, AUTHENTICATION_ONGOING, OPERATION_CHOICE, WITHDRAW_PLN, WITHDRAW_EUR, DEPOSIT, TOP_UP_PHONE, BALANCE, EXIT
     }
     private AtmState atmState = AtmState.HELLO;
     private ATMClient atmClient;
@@ -115,7 +115,7 @@ public class PeripherialsHandler {
                 if (clientRequestUtil.getIsRequestValid() && clientRequestUtil.getSelectedRequest().equalsIgnoreCase("success")) {
                     atmState = AtmState.OPERATION_CHOICE;
                 } else if (clientRequestUtil.getIsRequestValid() && clientRequestUtil.getSelectedRequest().equalsIgnoreCase("failure")) {
-                    atmState = AtmState.AUTHENTICATION_FAILED;
+                    atmState = AtmState.AGAIN_PIN;
                     System.out.println("Authentication failed");
                 }
             }
