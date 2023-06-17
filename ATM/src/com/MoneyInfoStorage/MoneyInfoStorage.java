@@ -1,4 +1,4 @@
-package MoneyInfoStorage;
+package com.MoneyInfoStorage;
 
 /**
  * Represents a currency value consisting of a currency type (PLN, EUR) and an amount of money.

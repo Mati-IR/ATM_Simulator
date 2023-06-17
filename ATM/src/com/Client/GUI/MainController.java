@@ -321,6 +321,9 @@ public class MainController {
             case OPERATION_CHOICE -> {
                 setScreenAnchorPaneVisible(operationchoice, true);
             }
+            case WITHDRAW_PLN -> {
+                setScreenAnchorPaneVisible(howmanycash, true);
+            }
         }
     }
 }

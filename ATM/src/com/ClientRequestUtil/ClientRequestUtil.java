@@ -1,6 +1,6 @@
 package com.ClientRequestUtil;
 
-import MoneyInfoStorage.MoneyInfoStorage;
+import com.MoneyInfoStorage.MoneyInfoStorage;
 
 import java.util.HashMap;
 import java.util.Map;

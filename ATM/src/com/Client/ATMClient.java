@@ -3,6 +3,7 @@ package com.Client;
 import com.ClientRequestUtil.ClientRequestUtil;
 import com.Client.GUI.MainController;
 import com.Client.Peripherials.PeripherialsHandler;
+import com.MoneyInfoStorage.MoneyInfoStorage;
 
 public class ATMClient {
     private enum ClientState {
@@ -65,6 +66,10 @@ public class ATMClient {
 
     public void setRequest(String request) {
         clientRequestUtil.setRequest(request);
+    }
+
+    public void setMoneyInfo(MoneyInfoStorage moneyInfo) {
+        clientRequestUtil.setMoneyInfo(moneyInfo);
     }
 
     public void setController(MainController controller) {

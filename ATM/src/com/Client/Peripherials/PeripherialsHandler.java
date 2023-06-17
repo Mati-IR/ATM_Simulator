@@ -3,9 +3,15 @@ package com.Client.Peripherials;
 import com.Client.ATMClient;
 import com.Client.GUI.MainController;
 import com.Client.Peripherials.KeyboardHandler.*;
+import com.Client.Peripherials.SideButtonHandler.SideButtonState;
 import com.ClientRequestUtil.ClientRequestUtil;
+import com.MoneyInfoStorage.MoneyInfoStorage;
 
 import java.util.Objects;
+
+import static com.Client.Peripherials.SideButtonHandler.SideButtonState;
+import static com.Client.Peripherials.SideButtonHandler.SideButtonState.*;
+//import static com.Client.Peripherials.SideButtonHandler.SideButtonState.WITHDRAW_PLN;
 
 public class PeripherialsHandler {
     public enum AtmState {
@@ -16,9 +22,11 @@ public class PeripherialsHandler {
     }
     private AtmState atmState = AtmState.HELLO;
     private ATMClient atmClient;
+    private MoneyInfoStorage moneyInfoStorage = new MoneyInfoStorage();
     private static PeripherialsHandler instance;
     private KeyboardHandler keyboardHandler = new KeyboardHandler();
     private CardReaderHandler cardReaderHandler = new CardReaderHandler();
+    private SideButtonHandler sideButtonHandler = new SideButtonHandler();
     private MainController controller;
     private ClientRequestUtil clientRequestUtil = new ClientRequestUtil();
 
@@ -88,6 +96,16 @@ public class PeripherialsHandler {
 
 
     /* STATE MACHINE */
+    private boolean isSideButtonStateAnAmountChoice(SideButtonState state) {
+        switch (state) {
+            case CHOICE_50, CHOICE_100, CHOICE_150, CHOICE_200, CHOICE_300, CHOICE_400, CHOICE_500 -> {
+                return true;
+            }
+            default -> {
+                return false;
+            }
+        }
+    }
 
     private boolean evaluateCommonEvents() {
         if (Objects.equals(keyboardHandler.getKeyboardState(), KeyboardState.CLEAR)) {
@@ -128,10 +146,38 @@ public class PeripherialsHandler {
                     System.out.println("Authentication failed");
                 }
             }
+            case OPERATION_CHOICE -> {
+                SideButtonState sideButtonState = sideButtonHandler.getSideButtonState();
+                switch (sideButtonState) {
+                    case WITHDRAW_PLN -> {
+                        atmState = AtmState.WITHDRAW_PLN;
+                    }
+                    case WITHDRAW_EUR -> {
+                        atmState = AtmState.WITHDRAW_EUR;
+                    }
+                    case DEPOSIT -> {
+                        atmState = AtmState.DEPOSIT;
+                    }
+                    case TOP_UP_PHONE -> {
+                        atmState = AtmState.TOP_UP_PHONE;
+                    }
+                    case BALANCE -> {
+                        atmState = AtmState.BALANCE;
+                    }
+                    case OPERATION_PRINT -> {
+                        atmState = AtmState.OPERATION_PRINT;
+                    }
+                    case PIN_CHANGE -> {
+                        atmState = AtmState.PIN_CHANGE;
+                    }
+                }
 
-
+            }
         }
+
+
     }
+
 
     private void runState() {
         switch (atmState){
@@ -157,9 +203,33 @@ public class PeripherialsHandler {
                 }
             }
             case OPERATION_CHOICE -> {
+                requestActive = false;
                 controller.handleAtmState(atmState);
             }
+            case WITHDRAW_PLN -> {
+                moneyInfoStorage.setCurrency(MoneyInfoStorage.Currency.PLN);
+                controller.handleAtmState(atmState);
+                atmClient.setRequest("withdraw");
+                if (true == isSideButtonStateAnAmountChoice(sideButtonHandler.getSideButtonState()) && false == requestActive) {
+                    moneyInfoStorage.setWholeUnits(Long.parseLong(sideButtonHandler.getAmount()));
+                    atmClient.setMoneyInfo(moneyInfoStorage);
+                    atmClient.sendRequest();
+                    requestActive = true;
+                }
+            }
+            case WITHDRAW_EUR -> {
+                moneyInfoStorage.setCurrency(MoneyInfoStorage.Currency.EUR);
+                controller.handleAtmState(atmState);
+                atmClient.setRequest("withdraw");
+                if (true == isSideButtonStateAnAmountChoice(sideButtonHandler.getSideButtonState()) && false == requestActive) {
+                    moneyInfoStorage.setWholeUnits(Long.parseLong(sideButtonHandler.getAmount()));
+                    atmClient.setMoneyInfo(moneyInfoStorage);
+                    atmClient.sendRequest();
+                    requestActive = true;
+                }
+            }
         }
+        /* It is forbidden to write any instructions after this line in this method */
     }
 
     public void run() {
@@ -169,5 +239,6 @@ public class PeripherialsHandler {
         }
         evaluateStateChange();
         runState();
+        /* It is forbidden to write any instructions after this line in this method */
     }
 }

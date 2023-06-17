@@ -1,80 +1,107 @@
 package com.Client.Peripherials;
+import com.Client.Peripherials.PeripherialsHandler.AtmState;
 
+import static com.Client.Peripherials.PeripherialsHandler.AtmState.*;
 
 public class SideButtonHandler {
-    public enum ButtonState {
-        EMPTY, OK, YES, NO , 50, 100, 150, 200, 300, 400, 500, OTHER,
+    public enum SideButtonState {
+        EMPTY, OK, YES, NO , CHOICE_50, CHOICE_100, CHOICE_150, CHOICE_200, CHOICE_300, CHOICE_400, CHOICE_500, OTHER,
         WITHDRAW_PLN, WITHDRAW_EUR, DEPOSIT, TOP_UP_PHONE, BALANCE,
         OPERATION_PRINT, PIN_CHANGE, ERROR
     }
-   private ButtonState buttonState = ButtonState.EMPTY;
-    public void handleSideButton(int buttonNumber,AtmState atmState) {
+   private SideButtonState sideButtonState = SideButtonState.EMPTY;
+    public void handleSideButton(int buttonNumber, AtmState atmState) {
         switch (buttonNumber){
             case 1:
-                if(atmState==OPERATION_CHOICE)
-                    buttonState=ButtonState.WITHDRAW_PLN;
+                if(atmState == OPERATION_CHOICE)
+                    sideButtonState = SideButtonState.WITHDRAW_PLN;
                 else if (atmState==HOW_MANY_CASH)
-                    buttonState=ButtonState.50;
+                    sideButtonState = SideButtonState.CHOICE_50;
                 else
-                    buttonState=ButtonState.EMPTY;
+                    sideButtonState = SideButtonState.EMPTY;
             case 2:
                 if(atmState==OPERATION_CHOICE)
-                    buttonState=ButtonState.WITHDRAW_EUR;
+                    sideButtonState = SideButtonState.WITHDRAW_EUR;
                 else if (atmState==HOW_MANY_CASH)
-                    buttonState=ButtonState.100;
+                    sideButtonState = SideButtonState.CHOICE_100;
                 else if (atmState==CHOICE_RECEIPT)
-                    buttonState=ButtonState.YES;
+                    sideButtonState = SideButtonState.YES;
                 else
-                    buttonState=ButtonState.EMPTY;
+                    sideButtonState = SideButtonState.EMPTY;
             case 3:
                 if(atmState==OPERATION_CHOICE)
-                    buttonState=ButtonState.BALANCE;
+                    sideButtonState = SideButtonState.BALANCE;
                 else if (atmState==HOW_MANY_CASH)
-                    buttonState=ButtonState.150;
+                    sideButtonState = SideButtonState.CHOICE_150;
                 else
-                    buttonState=ButtonState.EMPTY;
+                    sideButtonState = SideButtonState.EMPTY;
             case 4:
                 if(atmState==OPERATION_CHOICE)
-                    buttonState=ButtonState.DEPOSIT;
+                    sideButtonState = SideButtonState.DEPOSIT;
                 else if (atmState==HOW_MANY_CASH)
-                    buttonState=ButtonState.200;
+                    sideButtonState = SideButtonState.CHOICE_200;
                 else
-                    buttonState=ButtonState.EMPTY;
+                    sideButtonState = SideButtonState.EMPTY;
             case 5:
                 if(atmState==OPERATION_CHOICE)
-                    buttonState=ButtonState.TOP_UP_PHONE;
+                    sideButtonState = SideButtonState.TOP_UP_PHONE;
                 else if (atmState==HOW_MANY_CASH)
-                    buttonState=ButtonState.300;
+                    sideButtonState = SideButtonState.CHOICE_300;
                 else
-                    buttonState=ButtonState.EMPTY;
+                    sideButtonState = SideButtonState.EMPTY;
             case 6:
                 if(atmState==INPUT_PIN || atmState==AGAIN_PIN || atmState==CASH_INPUT_W
                         || atmState==PIN_CHANGE || atmState==GIVE_TELE
                         || atmState==TELE_AMOUNT || atmState==DEPOSIT)
-                    buttonState=ButtonState.OK;
+                    sideButtonState = SideButtonState.OK;
                 else if (atmState==OPERATION_CHOICE)
-                    buttonState=ButtonState.PIN_CHANGE;
+                    sideButtonState = SideButtonState.PIN_CHANGE;
                 else if (atmState==HOW_MANY_CASH)
-                    buttonState=ButtonState.400;
+                    sideButtonState = SideButtonState.CHOICE_400;
                 else if (atmState==CHOICE_RECEIPT)
-                    buttonState=ButtonState.NO;
+                    sideButtonState = SideButtonState.NO;
                 else
-                    buttonState=ButtonState.EMPTY;
+                    sideButtonState = SideButtonState.EMPTY;
             case 7:
                 if(atmState==OPERATION_CHOICE)
-                    buttonState=ButtonState.OPERATION_PRINT;
+                    sideButtonState = SideButtonState.OPERATION_PRINT;
                 else if (atmState==HOW_MANY_CASH)
-                    buttonState=ButtonState.500;
+                    sideButtonState = SideButtonState.CHOICE_500;
                 else
-                    buttonState=ButtonState.EMPTY;
+                    sideButtonState = SideButtonState.EMPTY;
             case 8:
                 if(atmState==HOW_MANY_CASH)
-                    buttonState=ButtonState.OTHER;
+                    sideButtonState = SideButtonState.OTHER;
                 else
-                    buttonState=ButtonState.EMPTY;
+                    sideButtonState = SideButtonState.EMPTY;
             default:
-                buttonState = ButtonState.ERROR;
+                sideButtonState = SideButtonState.ERROR;
                 break;
+        }
+    }
+
+    public SideButtonState getSideButtonState() {
+        return sideButtonState;
+    }
+
+    public String getAmount() {
+        switch (sideButtonState) {
+            case CHOICE_50:
+                return "50";
+            case CHOICE_100:
+                return "100";
+            case CHOICE_150:
+                return "150";
+            case CHOICE_200:
+                return "200";
+            case CHOICE_300:
+                return "300";
+            case CHOICE_400:
+                return "400";
+            case CHOICE_500:
+                return "500";
+            default:
+                return "";
         }
     }
 }
