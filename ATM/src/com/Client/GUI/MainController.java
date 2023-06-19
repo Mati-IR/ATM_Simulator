@@ -107,6 +107,9 @@ public class MainController {
     private Label withdrawAmount;
 
     @FXML
+    private Label accountBalance;
+
+    @FXML
     private Button cash;
 
     @FXML
@@ -148,6 +151,10 @@ public class MainController {
 
     public void setReceiptVisible(boolean visible) {
         receipt.setVisible(visible);
+    }
+
+    public void setAccountbalance(String balance) {
+        accountBalance.setText(balance);
     }
 
     @FXML
@@ -365,6 +372,9 @@ public class MainController {
             }
             case WITHDRAW_OTHER_AMOUNT -> {
                 setScreenAnchorPaneVisible(howMuchCashOut, true);
+            }
+            case BALANCE -> {
+                setScreenAnchorPaneVisible(accountbalance, true);
             }
         }
     }

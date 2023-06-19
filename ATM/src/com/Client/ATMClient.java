@@ -72,6 +72,10 @@ public class ATMClient {
         clientRequestUtil.setMoneyInfo(moneyInfo);
     }
 
+    public int getMoneyAmount() {
+        return clientRequestUtil.getAmount();
+    }
+
     public void setController(MainController controller) {
         peripherialsHandler.setController(controller);
     }
