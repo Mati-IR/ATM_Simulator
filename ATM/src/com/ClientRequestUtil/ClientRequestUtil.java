@@ -54,7 +54,7 @@ public class ClientRequestUtil {
                 }
                 /* TODO: Skipped few handlers */
                 case "B": {
-                    return "B " + this.cardNumber;
+                    return "B " + this.cardNumber + this.amount;
                 }
                 case "H": {
                     return "H " + this.cardNumber;
@@ -107,6 +107,9 @@ public class ClientRequestUtil {
             case "B":{
                 this.selectedRequest = requestMappings.get(parts[0]);
                 this.cardNumber = decodeUserNumber(parts[1]);
+                if (parts.length == 3) {
+                    this.amount = decodeAmount(parts[2]);
+                }
 
                 if (this.selectedRequest != null && this.cardNumber != null) {
                     this.isRequestValid = true;
