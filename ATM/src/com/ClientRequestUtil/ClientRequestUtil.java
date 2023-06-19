@@ -15,7 +15,7 @@ public class ClientRequestUtil {
 
     /* Withdrawal variables */
     private String amount = null;
-    private MoneyInfoStorage moneyInfo = null;
+    private MoneyInfoStorage moneyInfo = new MoneyInfoStorage();
 
 
     private static final Map<String, String> requestMappings = new HashMap<>();

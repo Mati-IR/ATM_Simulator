@@ -7,11 +7,11 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import MoneyInfoStorage.MoneyInfoStorage;
+import com.MoneyInfoStorage.MoneyInfoStorage;
 import com.ClientRequestUtil.ClientRequestUtil;
 
 class ClientHandler implements Runnable {
-    boolean userIsAuthenticated = false;
+    boolean userIsAuthenticated = true;
     private Socket clientSocket;
     private ClientRequestUtil clientRequestUtil;
     private DatabaseHandler databaseHandler;

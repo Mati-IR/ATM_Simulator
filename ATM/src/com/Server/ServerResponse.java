@@ -1,6 +1,6 @@
 package com.Server;
 
-import MoneyInfoStorage.MoneyInfoStorage;
+import com.MoneyInfoStorage.MoneyInfoStorage;
 
 public class ServerResponse {
     public enum OperationType {
