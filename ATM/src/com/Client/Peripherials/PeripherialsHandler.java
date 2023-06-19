@@ -8,19 +8,18 @@ import com.ClientRequestUtil.ClientRequestUtil;
 import com.MoneyInfoStorage.MoneyInfoStorage;
 
 import java.util.Objects;
-
-import static com.Client.Peripherials.SideButtonHandler.SideButtonState;
-import static com.Client.Peripherials.SideButtonHandler.SideButtonState.*;
 //import static com.Client.Peripherials.SideButtonHandler.SideButtonState.WITHDRAW_PLN;
 
 public class PeripherialsHandler {
     public enum AtmState {
         HELLO, INPUT_PIN, AGAIN_PIN, AUTHENTICATION_ONGOING, OPERATION_CHOICE,
-        WITHDRAW_PLN, WITHDRAW_EUR, DEPOSIT, TOP_UP_PHONE, BALANCE,
-        OPERATION_PRINT, PIN_CHANGE, HOW_MANY_CASH, CHOICE_RECEIPT,
+        WITHDRAW_PLN, WITHDRAW_EUR, INSUFFICIENT_FUNDS, DEPOSIT, TOP_UP_PHONE, BALANCE, WITHDRAW_OTHER_AMOUNT,
+        OPERATION_PRINT, PIN_CHANGE, AMOUNT_CHOICE, CHOOSE_RECEIPT, PRINT_RECEIPT, NO_RECEIPT, PRINT_CASH,
         CASH_INPUT_W, GIVE_TELE, TELE_AMOUNT, EXIT
     }
     private AtmState atmState = AtmState.HELLO;
+    private AtmState previousState = AtmState.HELLO;
+
     private ATMClient atmClient;
     private MoneyInfoStorage moneyInfoStorage = new MoneyInfoStorage();
     private static PeripherialsHandler instance;
@@ -32,6 +31,8 @@ public class PeripherialsHandler {
 
     private boolean firstRun = true;
     private boolean requestActive = false;
+    private boolean cashPressed = false;
+    private boolean cardPressed = false;
 
     public static PeripherialsHandler getInstance() {
         if (instance == null) {
@@ -75,6 +76,7 @@ public class PeripherialsHandler {
 
     /****** Card Reader ******/
     public void handleCardReaderInput(String cardNumber) {
+        cardPressed = true;
         cardReaderHandler.handleCardReaderInput(cardNumber);
         run();
     }
@@ -88,11 +90,16 @@ public class PeripherialsHandler {
     }
 
     /****** Side buttons ******/
-    public void handleSideButton(int buttonNumber,AtmState atmState ) {
-        sideButtonHandler.handleSideButton(buttonNumber,atmState);
+    public void handleSideButton(int buttonNumber) {
+        sideButtonHandler.handleSideButton(buttonNumber, atmState);
         run();
     }
 
+    /****** Cash ******/
+    public void handleCashButton() {
+        cashPressed = true;
+        run();
+    }
 
 
     /* STATE MACHINE */
@@ -147,19 +154,13 @@ public class PeripherialsHandler {
                 }
             }
             case OPERATION_CHOICE -> {
+                requestActive = false;
+                cardPressed = false;
                 SideButtonState sideButtonState = sideButtonHandler.getSideButtonState();
                 switch (sideButtonState) {
-                    case WITHDRAW_PLN -> {
-                        atmState = AtmState.WITHDRAW_PLN;
-                    }
-                    case WITHDRAW_EUR -> {
-                        atmState = AtmState.WITHDRAW_EUR;
-                    }
-                    case DEPOSIT -> {
-                        atmState = AtmState.DEPOSIT;
-                    }
-                    case TOP_UP_PHONE -> {
-                        atmState = AtmState.TOP_UP_PHONE;
+                    case WITHDRAW_PLN, WITHDRAW_EUR, DEPOSIT, TOP_UP_PHONE -> {
+                        previousState = atmState;
+                        atmState = AtmState.AMOUNT_CHOICE;
                     }
                     case BALANCE -> {
                         atmState = AtmState.BALANCE;
@@ -173,6 +174,38 @@ public class PeripherialsHandler {
                 }
 
             }
+            case AMOUNT_CHOICE -> {
+                if(SideButtonState.OTHER == sideButtonHandler.getSideButtonState()) {
+                    atmState = AtmState.WITHDRAW_OTHER_AMOUNT;
+                    return;
+                }
+                if ("success".equals(clientRequestUtil.getSelectedRequest())) {
+                    atmState = AtmState.CHOOSE_RECEIPT;
+                    requestActive = false;
+                } else if ("failure".equals(clientRequestUtil.getSelectedRequest())) {
+                    atmState = AtmState.INSUFFICIENT_FUNDS;
+                    requestActive = false;
+                }
+            }
+            case CHOOSE_RECEIPT -> {
+                if (Objects.equals(sideButtonHandler.getSideButtonState(), SideButtonState.YES)) {
+                    atmState = AtmState.PRINT_RECEIPT;
+                } else if (Objects.equals(sideButtonHandler.getSideButtonState(), SideButtonState.NO)) {
+                    atmState = AtmState.NO_RECEIPT;
+                }
+            }
+            case NO_RECEIPT, PRINT_RECEIPT -> {
+                if (true == cashPressed) {
+                    atmState = AtmState.HELLO;
+                }
+                cashPressed = false;
+            }
+            case INSUFFICIENT_FUNDS -> {
+                if (true == cardPressed) {
+                    atmState = AtmState.HELLO;
+                }
+            }
+
         }
 
 
@@ -183,16 +216,16 @@ public class PeripherialsHandler {
         switch (atmState){
             case HELLO -> {
                 controller.handleAtmState(atmState);
+                requestActive = false;
+                cardPressed = false;
+                cashPressed = false;
+                keyboardHandler.clear();
             }
             case INPUT_PIN -> {
                 controller.handleAtmState(atmState);
                 controller.setPinStars(keyboardHandler.getInput().length());
                 atmClient.setRequest("authenticate");
                 atmClient.setCardNumber(cardReaderHandler.getCardNumber());
-                if (Objects.equals(keyboardHandler.getKeyboardState(), KeyboardState.ENTER)) {
-                    atmClient.setPin(keyboardHandler.getInput());
-                    atmClient.sendRequest();
-                }
             }
             case AUTHENTICATION_ONGOING -> {
                 atmClient.setPin(keyboardHandler.getInput());
@@ -205,6 +238,8 @@ public class PeripherialsHandler {
             case OPERATION_CHOICE -> {
                 requestActive = false;
                 controller.handleAtmState(atmState);
+                clientRequestUtil.clear();
+                keyboardHandler.clear();
             }
             case WITHDRAW_PLN -> {
                 moneyInfoStorage.setCurrency(MoneyInfoStorage.Currency.PLN);
@@ -228,6 +263,59 @@ public class PeripherialsHandler {
                     requestActive = true;
                 }
             }
+            case WITHDRAW_OTHER_AMOUNT -> {
+                controller.handleAtmState(atmState);
+                atmClient.setRequest("withdraw");
+                if (KeyboardState.ENTER == keyboardHandler.getKeyboardState()
+                && false == requestActive) {
+                    moneyInfoStorage.setWholeUnits(Long.parseLong(sideButtonHandler.getAmount()));
+                    atmClient.setMoneyInfo(moneyInfoStorage);
+                    atmClient.sendRequest();
+                    requestActive = true;
+                } else {
+                    controller.setCashOutAmount(keyboardHandler.getInput());
+                }
+            }
+            case CHOOSE_RECEIPT -> {
+                requestActive = false;
+                controller.handleAtmState(atmState);
+            }
+            case INSUFFICIENT_FUNDS -> {
+                requestActive = false;
+                controller.handleAtmState(atmState);
+            }
+            case AMOUNT_CHOICE -> {
+                controller.handleAtmState(atmState);
+                if (true == isSideButtonStateAnAmountChoice(sideButtonHandler.getSideButtonState()) && false == requestActive) {
+                    moneyInfoStorage.setWholeUnits(Long.parseLong(sideButtonHandler.getAmount()));
+                    atmClient.setMoneyInfo(moneyInfoStorage);
+                    atmClient.setRequest("withdraw");
+                    atmClient.sendRequest();
+                    requestActive = true;
+                }
+            }
+            case NO_RECEIPT -> {
+                controller.handleAtmState(atmState);
+                requestActive = false;
+                if (true == cardPressed) {
+                    controller.setCreditCardVisible(false);
+                    controller.setReceiptVisible(false);
+                    controller.setCashVisible(true);
+                }
+                cashPressed = false;
+            }
+
+            case PRINT_RECEIPT -> {
+                controller.handleAtmState(atmState);
+                requestActive = false;
+                if (true == cardPressed) {
+                    controller.setCreditCardVisible(false);
+                    controller.setReceiptVisible(true);
+                    controller.setCashVisible(true);
+                }
+                cashPressed = false;
+            }
+
         }
         /* It is forbidden to write any instructions after this line in this method */
     }

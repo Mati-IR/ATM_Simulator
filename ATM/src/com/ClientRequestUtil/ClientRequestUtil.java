@@ -50,7 +50,7 @@ public class ClientRequestUtil {
                     return "A " + this.pin + " " + this.cardNumber;
                 }
                 case "W": {
-                    return "W " + this.cardNumber + " " + this.amount + this.moneyInfo.getCurrency().toString();
+                    return "W " + this.cardNumber + " " + this.moneyInfo.getWholeUnits()+ " " + this.moneyInfo.getCurrency().toString();
                 }
                 /* TODO: Skipped few handlers */
                 case "H": {
@@ -226,5 +226,13 @@ public class ClientRequestUtil {
 
     public String getPin() {
         return this.pin;
+    }
+
+    public void clear() {
+        this.selectedRequest = "";
+        this.pin = "";
+        this.cardNumber = "";
+        this.amount = "";
+        this.isRequestValid = false;
     }
 }

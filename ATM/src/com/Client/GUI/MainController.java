@@ -1,6 +1,5 @@
 package com.Client.GUI;
 
-import com.Client.ATMClient;
 import com.Client.Peripherials.PeripherialsHandler;
 import com.Client.Peripherials.PeripherialsHandler.AtmState;
 
@@ -45,7 +44,7 @@ public class MainController {
     private AnchorPane operationchoice;
 
     @FXML
-    private AnchorPane howmanycash;
+    private AnchorPane selectAmount;
 
     @FXML
     private AnchorPane cashinputw;
@@ -81,7 +80,10 @@ public class MainController {
     private AnchorPane telesuccess;
 
     @FXML
-    private AnchorPane howmanycashin;
+    private AnchorPane howMuchCashIn;
+
+    @FXML
+    private AnchorPane howMuchCashOut;
 
     @FXML
     private AnchorPane errorin;
@@ -96,13 +98,20 @@ public class MainController {
     private AnchorPane wait;
 
     @FXML
+    private AnchorPane insufficientFunds;
+
+    @FXML
     private Label pinlabel1;
+
+    @FXML
+    private Label withdrawAmount;
 
     @FXML
     private Button cash;
 
     @FXML
     private Button receipt;
+
 
     @FXML
     private void handleCardNumberFromUser() {
@@ -208,45 +217,55 @@ public class MainController {
 
     @FXML
     private void handleSB1() {
-        peripherialsHandler.handleSideButton(1,atmState);
+        peripherialsHandler.handleSideButton(1);
     }
 
     @FXML
     private void handleSB2() {
-        peripherialsHandler.handleSideButton(2,atmState);
+        peripherialsHandler.handleSideButton(2);
     }
 
     @FXML
     private void handleSB3() {
-        peripherialsHandler.handleSideButton(3,atmState);
+        peripherialsHandler.handleSideButton(3);
     }
 
     @FXML
     private void handleSB4() {
-        peripherialsHandler.handleSideButton(4,atmState);
+        peripherialsHandler.handleSideButton(4);
     }
 
     @FXML
     private void handleSB5() {
-        peripherialsHandler.handleSideButton(5,atmState);
+        peripherialsHandler.handleSideButton(5);
     }
 
     @FXML
     private void handleSB6() {
-        if (AtmState.INPUT_PIN == atmState) {
+        if (AtmState.INPUT_PIN == atmState || AtmState.WITHDRAW_OTHER_AMOUNT == atmState) {
             handlePinButtonEnter();
         }
-        peripherialsHandler.handleSideButton(6,atmState);
+        peripherialsHandler.handleSideButton(6);
     }
 
     @FXML
     private void handleSB7() {
-        peripherialsHandler.handleSideButton(7,atmState);
+        peripherialsHandler.handleSideButton(7);
     }
 
     @FXML
     private void handleSB8() {
-        peripherialsHandler.handleSideButton(8,atmState);
+        peripherialsHandler.handleSideButton(8);
+    }
+
+    @FXML
+    private void handleCashButton() {
+        peripherialsHandler.handleCashButton();
+    }
+
+    @FXML
+    private void handleReceiptButton() {
+        setReceiptVisible(false);
     }
 
 
@@ -258,11 +277,15 @@ public class MainController {
         pinlabel1.setText(starsString);
     }
 
+    public void setCashOutAmount(String amount) {
+        withdrawAmount.setText(amount);
+    }
+
     private void setScreenAnchorPaneVisible(AnchorPane anchorPane, boolean visible) {
         anchorPane.setVisible(visible);
         //set other anchor panes invisible
         if (visible) {
-            for (AnchorPane pane : new AnchorPane[]{hello, givepin, againpin, blockcard, operationchoice, howmanycash, cashinputw, errorinputcash, choicereceipt, accountbalance, waitforcash, changepin, pinsuccess, operationprint, givetele, teleamount, telesuccess, howmanycashin, errorin, cashinwait, insuccess, wait}) {
+            for (AnchorPane pane : new AnchorPane[]{hello, givepin, againpin, blockcard, operationchoice, selectAmount, cashinputw, errorinputcash, choicereceipt, accountbalance, waitforcash, changepin, pinsuccess, operationprint, givetele, teleamount, telesuccess, howMuchCashIn, errorin, cashinwait, insuccess, wait, insufficientFunds, howMuchCashOut}) {
                 if (pane != anchorPane) {
                     pane.setVisible(false);
                 }
@@ -321,8 +344,27 @@ public class MainController {
             case OPERATION_CHOICE -> {
                 setScreenAnchorPaneVisible(operationchoice, true);
             }
-            case WITHDRAW_PLN -> {
-                setScreenAnchorPaneVisible(howmanycash, true);
+            case AMOUNT_CHOICE -> {
+                setScreenAnchorPaneVisible(selectAmount, true);
+            }
+            case CHOOSE_RECEIPT -> {
+                setScreenAnchorPaneVisible(choicereceipt, true);
+            }
+            case NO_RECEIPT -> {
+                setScreenAnchorPaneVisible(waitforcash, true);
+                setCreditCardVisible(true);
+                setReceiptVisible(false);
+            }
+            case PRINT_RECEIPT -> {
+                setScreenAnchorPaneVisible(waitforcash, true);
+                setCreditCardVisible(true);
+            }
+            case INSUFFICIENT_FUNDS -> {
+                setScreenAnchorPaneVisible(insufficientFunds, true);
+                setCreditCardVisible(true);
+            }
+            case WITHDRAW_OTHER_AMOUNT -> {
+                setScreenAnchorPaneVisible(howMuchCashOut, true);
             }
         }
     }

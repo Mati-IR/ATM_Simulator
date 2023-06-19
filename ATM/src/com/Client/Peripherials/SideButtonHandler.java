@@ -12,71 +12,80 @@ public class SideButtonHandler {
    private SideButtonState sideButtonState = SideButtonState.EMPTY;
     public void handleSideButton(int buttonNumber, AtmState atmState) {
         switch (buttonNumber){
-            case 1:
-                if(atmState == OPERATION_CHOICE)
+            case 1 -> {
+                if (atmState == OPERATION_CHOICE)
                     sideButtonState = SideButtonState.WITHDRAW_PLN;
-                else if (atmState==HOW_MANY_CASH)
+                else if (atmState == AMOUNT_CHOICE)
                     sideButtonState = SideButtonState.CHOICE_50;
                 else
                     sideButtonState = SideButtonState.EMPTY;
-            case 2:
-                if(atmState==OPERATION_CHOICE)
+            }
+            case 2 -> {
+                if (atmState == OPERATION_CHOICE)
                     sideButtonState = SideButtonState.WITHDRAW_EUR;
-                else if (atmState==HOW_MANY_CASH)
+                else if (atmState == AMOUNT_CHOICE)
                     sideButtonState = SideButtonState.CHOICE_100;
-                else if (atmState==CHOICE_RECEIPT)
+                else if (atmState == CHOOSE_RECEIPT)
                     sideButtonState = SideButtonState.YES;
                 else
                     sideButtonState = SideButtonState.EMPTY;
-            case 3:
-                if(atmState==OPERATION_CHOICE)
+            }
+            case 3 -> {
+                if (atmState == OPERATION_CHOICE)
                     sideButtonState = SideButtonState.BALANCE;
-                else if (atmState==HOW_MANY_CASH)
+                else if (atmState == AMOUNT_CHOICE)
                     sideButtonState = SideButtonState.CHOICE_150;
                 else
                     sideButtonState = SideButtonState.EMPTY;
-            case 4:
-                if(atmState==OPERATION_CHOICE)
+            }
+            case 4 -> {
+                if (atmState == OPERATION_CHOICE)
                     sideButtonState = SideButtonState.DEPOSIT;
-                else if (atmState==HOW_MANY_CASH)
+                else if (atmState == AMOUNT_CHOICE)
                     sideButtonState = SideButtonState.CHOICE_200;
                 else
                     sideButtonState = SideButtonState.EMPTY;
-            case 5:
-                if(atmState==OPERATION_CHOICE)
+            }
+            case 5 -> {
+                if (atmState == OPERATION_CHOICE)
                     sideButtonState = SideButtonState.TOP_UP_PHONE;
-                else if (atmState==HOW_MANY_CASH)
+                else if (atmState == AMOUNT_CHOICE)
                     sideButtonState = SideButtonState.CHOICE_300;
                 else
                     sideButtonState = SideButtonState.EMPTY;
-            case 6:
-                if(atmState==INPUT_PIN || atmState==AGAIN_PIN || atmState==CASH_INPUT_W
-                        || atmState==PIN_CHANGE || atmState==GIVE_TELE
-                        || atmState==TELE_AMOUNT || atmState==DEPOSIT)
+            }
+            case 6 -> {
+                if (atmState == INPUT_PIN || atmState == AGAIN_PIN || atmState == CASH_INPUT_W
+                        || atmState == PIN_CHANGE || atmState == GIVE_TELE
+                        || atmState == TELE_AMOUNT || atmState == DEPOSIT)
                     sideButtonState = SideButtonState.OK;
-                else if (atmState==OPERATION_CHOICE)
+                else if (atmState == OPERATION_CHOICE)
                     sideButtonState = SideButtonState.PIN_CHANGE;
-                else if (atmState==HOW_MANY_CASH)
+                else if (atmState == AMOUNT_CHOICE)
                     sideButtonState = SideButtonState.CHOICE_400;
-                else if (atmState==CHOICE_RECEIPT)
+                else if (atmState == CHOOSE_RECEIPT)
                     sideButtonState = SideButtonState.NO;
                 else
                     sideButtonState = SideButtonState.EMPTY;
-            case 7:
-                if(atmState==OPERATION_CHOICE)
+            }
+            case 7 -> {
+                if (atmState == OPERATION_CHOICE)
                     sideButtonState = SideButtonState.OPERATION_PRINT;
-                else if (atmState==HOW_MANY_CASH)
+                else if (atmState == AMOUNT_CHOICE)
                     sideButtonState = SideButtonState.CHOICE_500;
                 else
                     sideButtonState = SideButtonState.EMPTY;
-            case 8:
-                if(atmState==HOW_MANY_CASH)
+            }
+
+            case 8 ->{
+                if (atmState == AMOUNT_CHOICE)
                     sideButtonState = SideButtonState.OTHER;
                 else
                     sideButtonState = SideButtonState.EMPTY;
-            default:
+            }
+            default -> {
                 sideButtonState = SideButtonState.ERROR;
-                break;
+            }
         }
     }
 
