@@ -54,7 +54,7 @@ public class ClientRequestUtil {
                 }
                 /* TODO: Skipped few handlers */
                 case "B": {
-                    return "B " + this.cardNumber + this.amount;
+                    return "B " + this.cardNumber + " " + this.amount;
                 }
                 case "H": {
                     return "H " + this.cardNumber;
@@ -135,12 +135,8 @@ public class ClientRequestUtil {
         return null;
     }
 
-    private static String encodeAmount(String amount) {
-        // Perform amount validation and return encoded value
-        if (amount.matches("\\d+")) {
-            return amount;
-        }
-        return null;
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 
     private static String encodeCurrency(String currency) {

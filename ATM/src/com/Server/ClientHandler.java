@@ -86,7 +86,10 @@ class ClientHandler implements Runnable {
 
 
         }
-        if (true == result) {
+        if (clientRequestUtil.getSelectedRequest() == "balance") {
+            clientRequestUtil.setRequest("balance");
+        }
+        else if (true == result) {
             clientRequestUtil.setRequest("success");
         } else {
             clientRequestUtil.setRequest("failure");
@@ -155,8 +158,7 @@ class ClientHandler implements Runnable {
         if (userIsAuthenticated) {
             final int groszInPLN = 100;
             int accountBalance = databaseHandler.getBalanceForUser(userNumber);
-            MoneyInfoStorage zloteASkromne = new MoneyInfoStorage(MoneyInfoStorage.Currency.PLN, accountBalance / groszInPLN, accountBalance % groszInPLN);
-            clientRequestUtil.setMoneyInfo(zloteASkromne);
+            clientRequestUtil.setAmount(Integer.toString(accountBalance));
             return true;
         }else {
             return false;
