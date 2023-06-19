@@ -53,6 +53,9 @@ public class ClientRequestUtil {
                     return "W " + this.cardNumber + " " + this.moneyInfo.getWholeUnits()+ " " + this.moneyInfo.getCurrency().toString();
                 }
                 /* TODO: Skipped few handlers */
+                case "B": {
+                    return "B " + this.cardNumber;
+                }
                 case "H": {
                     return "H " + this.cardNumber;
                 }
@@ -101,6 +104,18 @@ public class ClientRequestUtil {
                     this.isRequestValid = false;
                     return;
                 }
+            case "B":{
+                this.selectedRequest = requestMappings.get(parts[0]);
+                this.cardNumber = decodeUserNumber(parts[1]);
+
+                if (this.selectedRequest != null && this.cardNumber != null) {
+                    this.isRequestValid = true;
+                    return;
+                } else {
+                    this.isRequestValid = false;
+                    return;
+                }
+            }
             case "S":
             case "F":
                 this.selectedRequest = requestMappings.get(parts[0]);
