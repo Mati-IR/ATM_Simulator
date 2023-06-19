@@ -13,7 +13,7 @@ import java.util.Objects;
 public class PeripherialsHandler {
     public enum AtmState {
         HELLO, INPUT_PIN, AGAIN_PIN, AUTHENTICATION_ONGOING, OPERATION_CHOICE,
-        WITHDRAW_PLN, WITHDRAW_EUR, INSUFFICIENT_FUNDS, DEPOSIT, TOP_UP_PHONE, BALANCE, WITHDRAW_OTHER_AMOUNT,
+        WITHDRAW_PLN, WITHDRAW_EUR, INSUFFICIENT_FUNDS, DEPOSIT, TOP_UP_PHONE, BALANCE_REQUEST_ONGOING, BALANCE, WITHDRAW_OTHER_AMOUNT,
         OPERATION_PRINT, PIN_CHANGE, AMOUNT_CHOICE, CHOOSE_RECEIPT, PRINT_RECEIPT, NO_RECEIPT, PRINT_CASH,
         CASH_INPUT_W, GIVE_TELE, TELE_AMOUNT, EXIT
     }
@@ -52,7 +52,7 @@ public class PeripherialsHandler {
     public void setMessage(String message) {
         if (message != null) {
             this.clientRequestUtil.decodeRequest(message);
-            System.out.println("Message: " + message);
+            //System.out.println("Message: " + message);
         }
     }
 
@@ -163,7 +163,8 @@ public class PeripherialsHandler {
                         atmState = AtmState.AMOUNT_CHOICE;
                     }
                     case BALANCE -> {
-                        atmState = AtmState.BALANCE;
+                        keyboardHandler.clear();
+                        atmState = AtmState.BALANCE_REQUEST_ONGOING;
                     }
                     case OPERATION_PRINT -> {
                         atmState = AtmState.OPERATION_PRINT;
@@ -202,6 +203,17 @@ public class PeripherialsHandler {
             }
             case INSUFFICIENT_FUNDS -> {
                 if (true == cardPressed) {
+                    atmState = AtmState.HELLO;
+                }
+            }
+            case BALANCE_REQUEST_ONGOING -> {
+                if ("balance".equals(clientRequestUtil.getSelectedRequest()) || "failure".equals(clientRequestUtil.getSelectedRequest()) || "success".equals(clientRequestUtil.getSelectedRequest())) {
+                    atmState = AtmState.BALANCE;
+                    requestActive = false;
+                }
+            }
+            case BALANCE -> {
+                if (keyboardHandler.getKeyboardState() != KeyboardState.OK || keyboardHandler.getInput() != "") {
                     atmState = AtmState.HELLO;
                 }
             }
@@ -315,7 +327,20 @@ public class PeripherialsHandler {
                 }
                 cashPressed = false;
             }
+            case BALANCE_REQUEST_ONGOING -> {
+                atmClient.setRequest("balance");
+                if (false == requestActive) {
+                    atmClient.sendRequest();
+                    requestActive = true;
+                }
+            }
 
+            case BALANCE -> {
+                controller.handleAtmState(atmState);
+                controller.setAccountbalance(Integer.toString(clientRequestUtil.getAmount()));
+                requestActive = false;
+
+            }
         }
         /* It is forbidden to write any instructions after this line in this method */
     }

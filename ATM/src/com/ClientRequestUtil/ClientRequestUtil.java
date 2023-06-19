@@ -14,7 +14,7 @@ public class ClientRequestUtil {
     private String pin = null;
 
     /* Withdrawal variables */
-    private String amount = null;
+    private String amount = "0";
     private MoneyInfoStorage moneyInfo = new MoneyInfoStorage();
 
 
@@ -54,7 +54,7 @@ public class ClientRequestUtil {
                 }
                 /* TODO: Skipped few handlers */
                 case "B": {
-                    return "B " + this.cardNumber + this.amount;
+                    return "B " + this.cardNumber + " " + this.amount;
                 }
                 case "H": {
                     return "H " + this.cardNumber;
@@ -107,9 +107,7 @@ public class ClientRequestUtil {
             case "B":{
                 this.selectedRequest = requestMappings.get(parts[0]);
                 this.cardNumber = decodeUserNumber(parts[1]);
-                if (parts.length == 3) {
-                    this.amount = decodeAmount(parts[2]);
-                }
+                this.amount = decodeAmount(parts[2]);
 
                 if (this.selectedRequest != null && this.cardNumber != null) {
                     this.isRequestValid = true;
