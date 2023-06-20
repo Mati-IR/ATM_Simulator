@@ -15,7 +15,7 @@ public class SideButtonHandler {
             case 1 -> {
                 if (atmState == OPERATION_CHOICE)
                     sideButtonState = SideButtonState.WITHDRAW_PLN;
-                else if (atmState == AMOUNT_CHOICE)
+                else if (atmState == WITHDRAW_AMOUNT_CHOICE)
                     sideButtonState = SideButtonState.CHOICE_50;
                 else
                     sideButtonState = SideButtonState.EMPTY;
@@ -23,9 +23,9 @@ public class SideButtonHandler {
             case 2 -> {
                 if (atmState == OPERATION_CHOICE)
                     sideButtonState = SideButtonState.WITHDRAW_EUR;
-                else if (atmState == AMOUNT_CHOICE)
+                else if (atmState == WITHDRAW_AMOUNT_CHOICE)
                     sideButtonState = SideButtonState.CHOICE_100;
-                else if (atmState == CHOOSE_RECEIPT)
+                else if (atmState == CHOOSE_RECEIPT_WITHDRAWAL || atmState == CHOOSE_RECEIPT_DEPOSIT)
                     sideButtonState = SideButtonState.YES;
                 else
                     sideButtonState = SideButtonState.EMPTY;
@@ -33,7 +33,7 @@ public class SideButtonHandler {
             case 3 -> {
                 if (atmState == OPERATION_CHOICE)
                     sideButtonState = SideButtonState.BALANCE;
-                else if (atmState == AMOUNT_CHOICE)
+                else if (atmState == WITHDRAW_AMOUNT_CHOICE)
                     sideButtonState = SideButtonState.CHOICE_150;
                 else
                     sideButtonState = SideButtonState.EMPTY;
@@ -41,7 +41,7 @@ public class SideButtonHandler {
             case 4 -> {
                 if (atmState == OPERATION_CHOICE)
                     sideButtonState = SideButtonState.DEPOSIT;
-                else if (atmState == AMOUNT_CHOICE)
+                else if (atmState == WITHDRAW_AMOUNT_CHOICE)
                     sideButtonState = SideButtonState.CHOICE_200;
                 else
                     sideButtonState = SideButtonState.EMPTY;
@@ -49,21 +49,21 @@ public class SideButtonHandler {
             case 5 -> {
                 if (atmState == OPERATION_CHOICE)
                     sideButtonState = SideButtonState.TOP_UP_PHONE;
-                else if (atmState == AMOUNT_CHOICE)
+                else if (atmState == WITHDRAW_AMOUNT_CHOICE)
                     sideButtonState = SideButtonState.CHOICE_300;
                 else
                     sideButtonState = SideButtonState.EMPTY;
             }
             case 6 -> {
-                if (atmState == INPUT_PIN || atmState == AGAIN_PIN || atmState == CASH_INPUT_W
+                if (atmState == INPUT_PIN || atmState == AGAIN_PIN || atmState == INPUT_CASH
                         || atmState == PIN_CHANGE || atmState == GIVE_TELE
-                        || atmState == TELE_AMOUNT || atmState == DEPOSIT)
+                        || atmState == TELE_AMOUNT || atmState == DEPOSIT_AMOUNT_CHOICE)
                     sideButtonState = SideButtonState.OK;
                 else if (atmState == OPERATION_CHOICE)
                     sideButtonState = SideButtonState.PIN_CHANGE;
-                else if (atmState == AMOUNT_CHOICE)
+                else if (atmState == WITHDRAW_AMOUNT_CHOICE)
                     sideButtonState = SideButtonState.CHOICE_400;
-                else if (atmState == CHOOSE_RECEIPT)
+                else if (atmState == CHOOSE_RECEIPT_WITHDRAWAL || atmState == CHOOSE_RECEIPT_DEPOSIT)
                     sideButtonState = SideButtonState.NO;
                 else
                     sideButtonState = SideButtonState.EMPTY;
@@ -71,14 +71,14 @@ public class SideButtonHandler {
             case 7 -> {
                 if (atmState == OPERATION_CHOICE)
                     sideButtonState = SideButtonState.OPERATION_PRINT;
-                else if (atmState == AMOUNT_CHOICE)
+                else if (atmState == WITHDRAW_AMOUNT_CHOICE)
                     sideButtonState = SideButtonState.CHOICE_500;
                 else
                     sideButtonState = SideButtonState.EMPTY;
             }
 
             case 8 ->{
-                if (atmState == AMOUNT_CHOICE)
+                if (atmState == WITHDRAW_AMOUNT_CHOICE)
                     sideButtonState = SideButtonState.OTHER;
                 else
                     sideButtonState = SideButtonState.EMPTY;

@@ -110,10 +110,17 @@ public class MainController {
     private Label accountBalance;
 
     @FXML
+    private Label cashput;
+
+    @FXML
+    private Label depositedCash;
+
+    @FXML
     private Button cash;
 
     @FXML
     private Button receipt;
+
 
 
     @FXML
@@ -288,6 +295,14 @@ public class MainController {
         withdrawAmount.setText(amount);
     }
 
+    public void setDepostitAmount(String amount) {
+        cashput.setText(amount);
+    }
+
+    public void setDepositedCash(String amount) {
+        depositedCash.setText(amount);
+    }
+
     private void setScreenAnchorPaneVisible(AnchorPane anchorPane, boolean visible) {
         anchorPane.setVisible(visible);
         //set other anchor panes invisible
@@ -351,18 +366,18 @@ public class MainController {
             case OPERATION_CHOICE -> {
                 setScreenAnchorPaneVisible(operationchoice, true);
             }
-            case AMOUNT_CHOICE -> {
+            case WITHDRAW_AMOUNT_CHOICE -> {
                 setScreenAnchorPaneVisible(selectAmount, true);
             }
-            case CHOOSE_RECEIPT -> {
+            case CHOOSE_RECEIPT_WITHDRAWAL -> {
                 setScreenAnchorPaneVisible(choicereceipt, true);
             }
-            case NO_RECEIPT -> {
+            case NO_RECEIPT_WITHDRAWAL -> {
                 setScreenAnchorPaneVisible(waitforcash, true);
                 setCreditCardVisible(true);
                 setReceiptVisible(false);
             }
-            case PRINT_RECEIPT -> {
+            case PRINT_RECEIPT_WITHDRAWAL -> {
                 setScreenAnchorPaneVisible(waitforcash, true);
                 setCreditCardVisible(true);
             }
@@ -375,6 +390,22 @@ public class MainController {
             }
             case BALANCE -> {
                 setScreenAnchorPaneVisible(accountbalance, true);
+            }
+            case DEPOSIT_AMOUNT_CHOICE -> {
+                setScreenAnchorPaneVisible(howMuchCashIn, true);
+            }
+            case CHOOSE_RECEIPT_DEPOSIT -> {
+                setScreenAnchorPaneVisible(choicereceipt, true);
+            }
+            case NO_RECEIPT_DEPOSIT -> {
+                setScreenAnchorPaneVisible(insuccess, true);
+                setCreditCardVisible(true);
+                setReceiptVisible(false);
+            }
+            case PRINT_RECEIPT_DEPOSIT -> {
+                setScreenAnchorPaneVisible(insuccess, true);
+                setCreditCardVisible(true);
+                setReceiptVisible(true);
             }
         }
     }

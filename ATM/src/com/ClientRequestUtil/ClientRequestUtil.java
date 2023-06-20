@@ -52,7 +52,9 @@ public class ClientRequestUtil {
                 case "W": {
                     return "W " + this.cardNumber + " " + this.moneyInfo.getWholeUnits()+ " " + this.moneyInfo.getCurrency().toString();
                 }
-                /* TODO: Skipped few handlers */
+                case "D": {
+                    return "D " + this.cardNumber + " " + this.moneyInfo.getWholeUnits()+ " " + this.moneyInfo.getCurrency().toString();
+                }
                 case "B": {
                     return "B " + this.cardNumber + " " + this.amount;
                 }

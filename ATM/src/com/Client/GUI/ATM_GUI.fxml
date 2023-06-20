@@ -20,14 +20,14 @@
          <children>
             <AnchorPane layoutX="25.0" layoutY="14.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #b4b6b5;" AnchorPane.bottomAnchor="425.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
                <children>
-                  <AnchorPane layoutX="82.0" layoutY="50.0" prefHeight="300.0" prefWidth="450.0" style="-fx-background-color: #5788de;">
+                  <AnchorPane layoutX="59.0" layoutY="48.0" prefHeight="300.0" prefWidth="450.0" style="-fx-background-color: #5788de;">
                      <children>
-                        <AnchorPane prefHeight="40.0" prefWidth="450.0" style="-fx-background-color: orange;">
+                        <AnchorPane prefHeight="40.0" prefWidth="484.0" style="-fx-background-color: orange;">
                            <children>
-                              <Label fx:id="Bankname" alignment="CENTER_RIGHT" layoutX="17.0" layoutY="7.0" styleClass="screen_label" stylesheets="@ATM.css" text="Bankname" AnchorPane.leftAnchor="14.0" />
+                              <Label fx:id="Bankname" alignment="CENTER_RIGHT" layoutX="25.0" layoutY="10.0" styleClass="screen_label" stylesheets="@ATM.css" text="Bank of Strategic Deposit Management" textAlignment="CENTER" AnchorPane.leftAnchor="25.0" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="hello" layoutY="40.0" prefHeight="254.0" prefWidth="450.0">
+                        <AnchorPane fx:id="hello" layoutX="17.0" layoutY="40.0" prefHeight="254.0" prefWidth="450.0">
                            <children>
                               <Label layoutX="108.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Proszę włożyć karte" />
                               <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="148.0" layoutY="63.0">
@@ -115,7 +115,7 @@
                               <Label layoutX="375.0" layoutY="106.0" styleClass="screen_label" stylesheets="@ATM.css" text="NIE--&gt;" AnchorPane.rightAnchor="14.0" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="accountbalance" layoutY="40.0" prefHeight="254.0" prefWidth="450.0">
+                        <AnchorPane fx:id="accountbalance" layoutY="40.0" prefHeight="254.0" prefWidth="450.0" visible="false">
                            <children>
                               <Label alignment="CENTER" contentDisplay="CENTER" layoutX="86.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Twój stan konta wynosi: " wrapText="true" />
                               <Label fx:id="accountBalance" alignment="CENTER" layoutX="117.0" layoutY="63.0" styleClass="pin_label" stylesheets="@ATM.css" text="accountvalue" AnchorPane.leftAnchor="117.0" AnchorPane.rightAnchor="116.0" />
@@ -123,7 +123,7 @@
                         </AnchorPane>
                         <AnchorPane fx:id="waitforcash" layoutY="40.0" prefHeight="254.0" prefWidth="450.0" visible="false">
                            <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="44.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Bankomat przygowtowuje wypłate" wrapText="true" />
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="44.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Bankomat przygotowuje wypłate" wrapText="true" />
                               <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="43.0" styleClass="screen_label" stylesheets="@ATM.css" text="Odbierz kartę i zaczekaj na gotówke" wrapText="true" />
                               <ImageView fitHeight="150.0" fitWidth="150.0" layoutX="150.0" layoutY="78.0">
                                  <image>
@@ -201,7 +201,7 @@
                            <children>
                               <Label alignment="CENTER" contentDisplay="CENTER" layoutX="24.0" layoutY="14.0" styleClass="screen_label" stylesheets="@ATM.css" text="Operacja przeprowadzona pomyślnie" wrapText="true" />
                               <Label alignment="CENTER_RIGHT" layoutX="129.0" layoutY="52.0" styleClass="screen_label" stylesheets="@ATM.css" text="Konto zasilono o:" AnchorPane.leftAnchor="129.0" />
-                              <Label fx:id="addcash" alignment="CENTER_RIGHT" layoutX="172.0" layoutY="90.0" prefHeight="33.0" prefWidth="120.0" styleClass="pin_label" stylesheets="@ATM.css" text="addcash" AnchorPane.leftAnchor="172.0" />
+                              <Label fx:id="depositedCash" alignment="CENTER_RIGHT" layoutX="172.0" layoutY="90.0" prefHeight="33.0" prefWidth="120.0" styleClass="pin_label" stylesheets="@ATM.css" text="addcash" AnchorPane.leftAnchor="172.0" />
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="wait" layoutY="40.0" prefHeight="254.0" prefWidth="450.0" visible="false">
