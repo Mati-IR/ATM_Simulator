@@ -106,6 +106,20 @@ public class ClientRequestUtil {
                     this.isRequestValid = false;
                     return;
                 }
+            case "D":{
+                this.selectedRequest = requestMappings.get(parts[0]);
+                this.cardNumber = decodeUserNumber(parts[1]);
+                this.amount = decodeAmount(parts[2]);
+                this.moneyInfo.setCurrency(decodeCurrency(parts[3]));
+
+                if (this.selectedRequest != null && this.cardNumber != null && this.amount != null && this.moneyInfo.getCurrency() != null) {
+                    this.isRequestValid = true;
+                    return;
+                } else {
+                    this.isRequestValid = false;
+                    return;
+                }
+            }
             case "B":{
                 this.selectedRequest = requestMappings.get(parts[0]);
                 this.cardNumber = decodeUserNumber(parts[1]);
