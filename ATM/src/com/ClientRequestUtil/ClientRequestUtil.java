@@ -15,6 +15,7 @@ public class ClientRequestUtil {
 
     /* Withdrawal variables */
     private String amount = "0";
+    private String phoneNumber = "";
     private MoneyInfoStorage moneyInfo = new MoneyInfoStorage();
 
 
@@ -63,8 +64,7 @@ public class ClientRequestUtil {
                 }
                 /* TODO: Skipped few handlers */
                 case "T": {
-                    return "T " + this.cardNumber + " " + this.moneyInfo.getWholeUnits()+ " " + this.moneyInfo.getCurrency().toString();
-
+                    return "T " + this.cardNumber + " " + this.phoneNumber + " " + this.moneyInfo.getWholeUnits()+ " " + this.moneyInfo.getCurrency().toString();
                 }
                 case "S": {
                     return "S";
@@ -140,10 +140,11 @@ public class ClientRequestUtil {
             case "T": {
                 this.selectedRequest = requestMappings.get(parts[0]);
                 this.cardNumber = decodeUserNumber(parts[1]);
-                this.amount = decodeAmount(parts[2]);
-                this.moneyInfo.setCurrency(decodeCurrency(parts[3]));
+                this.phoneNumber = decodePhoneNumber(parts[2]);
+                this.amount = decodeAmount(parts[3]);
+                this.moneyInfo.setCurrency(decodeCurrency(parts[4]));
 
-                if (this.selectedRequest != null && this.cardNumber != null && this.amount != null && this.moneyInfo.getCurrency() != null) {
+                if (this.selectedRequest != null && this.cardNumber != null && this.amount != null && this.moneyInfo.getCurrency() != null && this.phoneNumber != null) {
                     this.isRequestValid = true;
                     return;
                 } else {
@@ -200,6 +201,13 @@ public class ClientRequestUtil {
         return "";
     }
 
+    private String decodePhoneNumber(String encodedPhoneNumber) {
+        // Perform decoding/validation of phone number and return decoded value
+        if (encodedPhoneNumber.matches("\\d+")) {
+            return encodedPhoneNumber;
+        }
+        return null;
+    }
     private static String decodePIN(String encodedPIN) {
         // Perform decoding/validation of PIN and return decoded value
         if (encodedPIN.matches("\\d{4}")) {
@@ -244,6 +252,10 @@ public class ClientRequestUtil {
 
     public void setPin(String pin) {
         this.pin = pin;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public void setCardNumber(String cardNumber) {
