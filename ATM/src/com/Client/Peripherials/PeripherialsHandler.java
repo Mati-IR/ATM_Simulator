@@ -13,8 +13,8 @@ import java.util.Objects;
 public class PeripherialsHandler {
     public enum AtmState {
         HELLO, INPUT_PIN, AGAIN_PIN, AUTHENTICATION_ONGOING, OPERATION_CHOICE,
-        WITHDRAW_PLN, WITHDRAW_EUR, INSUFFICIENT_FUNDS, DEPOSIT_AMOUNT_CHOICE, DEPOSIT_OTHER_AMOUNT, BALANCE_REQUEST_ONGOING, BALANCE, WITHDRAW_OTHER_AMOUNT,
-        OPERATION_PRINT, PIN_CHANGE, WITHDRAW_AMOUNT_CHOICE, CHOOSE_RECEIPT_WITHDRAWAL, CHOOSE_RECEIPT_DEPOSIT, PRINT_RECEIPT_WITHDRAWAL, NO_RECEIPT_WITHDRAWAL, PRINT_RECEIPT_DEPOSIT, NO_RECEIPT_DEPOSIT, PRINT_CASH,
+        WITHDRAW_PLN, WITHDRAW_EUR, INSUFFICIENT_FUNDS, DEPOSIT_AMOUNT_CHOICE, DEPOSIT_OTHER_AMOUNT, DEPOSIT_INCORRECT_AMOUNT, BALANCE_REQUEST_ONGOING, BALANCE, WITHDRAW_OTHER_AMOUNT, INCORRECT_AMOUNT,
+        OPERATION_PRINT, PIN_CHANGE, PIN_CHANGE_SUCCESS, WITHDRAW_AMOUNT_CHOICE, CHOOSE_RECEIPT_WITHDRAWAL, CHOOSE_RECEIPT_DEPOSIT, PRINT_RECEIPT_WITHDRAWAL, NO_RECEIPT_WITHDRAWAL, PRINT_RECEIPT_DEPOSIT, NO_RECEIPT_DEPOSIT, PRINT_CASH,
         TOP_UP_PHONE_NUMBER, TOP_UP_ONGOING, TOP_UP_AMOUNT, TOP_UP_SUCCESS, EXIT
     }
     private AtmState atmState = AtmState.HELLO;
@@ -147,6 +147,13 @@ public class PeripherialsHandler {
                     atmState = AtmState.AUTHENTICATION_ONGOING;
                 }
             }
+            case AGAIN_PIN -> {
+                if (Objects.equals(keyboardHandler.getKeyboardState(), KeyboardState.ENTER)) {
+                    previousState = atmState;
+                    atmState = AtmState.INPUT_PIN;
+                    requestActive = false;
+                }
+            }
             case AUTHENTICATION_ONGOING -> {
                 if (clientRequestUtil.getIsRequestValid() && clientRequestUtil.getSelectedRequest().equalsIgnoreCase("success")) {
                     previousState = atmState;
@@ -193,6 +200,7 @@ public class PeripherialsHandler {
             case WITHDRAW_AMOUNT_CHOICE -> {
                 if(SideButtonState.OTHER == sideButtonHandler.getSideButtonState()) {
                     previousState = atmState;
+                    keyboardHandler.clear();
                     atmState = AtmState.WITHDRAW_OTHER_AMOUNT;
                     return;
                 }
@@ -206,15 +214,64 @@ public class PeripherialsHandler {
                     requestActive = false;
                 }
             }
+            case WITHDRAW_OTHER_AMOUNT -> {
+                if (Objects.equals(keyboardHandler.getKeyboardState(), KeyboardState.ENTER)) {
+                    if (Integer.parseInt(keyboardHandler.getInput()) % 10 != 0 /* Input not divisible by 10 */
+                    ||  keyboardHandler.getInput().matches("^0.*")       /* Input starts with 0 */
+                    || keyboardHandler.getInput().equals("")) {                /* Input is empty */
+                        previousState = atmState;
+                        atmState = AtmState.INCORRECT_AMOUNT;
+                        keyboardHandler.clear();
+                    } else {
+                        previousState = atmState;
+                        atmState = AtmState.CHOOSE_RECEIPT_WITHDRAWAL;
+                    }
+                }
+            }
+            case INCORRECT_AMOUNT -> {
+                if (Objects.equals(keyboardHandler.getKeyboardState(), KeyboardState.ENTER)) {
+                    previousState = atmState;
+                    keyboardHandler.clear();
+                    atmState = AtmState.WITHDRAW_OTHER_AMOUNT;
+                }
+            }
             case DEPOSIT_AMOUNT_CHOICE -> {
+                if(keyboardHandler.getKeyboardState() == KeyboardState.ENTER) {
+                try {
+                    if (Integer.parseInt(keyboardHandler.getInput()) % 10 != 0 /* Input not divisible by 10 */
+                            || keyboardHandler.getInput().matches("^0.*")       /* Input starts with 0 */
+                            || keyboardHandler.getInput().equals("")) {                /* Input is empty */
+                        previousState = atmState;
+                        atmState = AtmState.DEPOSIT_INCORRECT_AMOUNT;
+                        keyboardHandler.clear();
+                        return;
+                    }
+                } catch (RuntimeException e) {
+                    previousState = atmState;
+                    atmState = AtmState.DEPOSIT_INCORRECT_AMOUNT;
+                    keyboardHandler.clear();
+                    return;
+                }
+                }
                 if ("success".equals(clientRequestUtil.getSelectedRequest())) {
                     previousState = atmState;
                     atmState = AtmState.CHOOSE_RECEIPT_DEPOSIT;
                     requestActive = false;
+                } else if ("failure".equals(clientRequestUtil.getSelectedRequest())) {
+                    previousState = atmState;
+                    atmState = AtmState.DEPOSIT_INCORRECT_AMOUNT;
+                    requestActive = false;
+                }
+            }
+            case DEPOSIT_INCORRECT_AMOUNT -> {
+                if (Objects.equals(keyboardHandler.getKeyboardState(), KeyboardState.ENTER)) {
+                    previousState = atmState;
+                    keyboardHandler.clear();
+                    atmState = AtmState.DEPOSIT_AMOUNT_CHOICE;
                 }
             }
             case CHOOSE_RECEIPT_WITHDRAWAL, CHOOSE_RECEIPT_DEPOSIT -> {
-                if (previousState == AtmState.WITHDRAW_AMOUNT_CHOICE) {
+                if (previousState == AtmState.WITHDRAW_AMOUNT_CHOICE || previousState == AtmState.WITHDRAW_OTHER_AMOUNT) {
                     if (Objects.equals(sideButtonHandler.getSideButtonState(), SideButtonState.YES)) {
                         previousState = atmState;
                         atmState = AtmState.PRINT_RECEIPT_WITHDRAWAL;
@@ -224,7 +281,7 @@ public class PeripherialsHandler {
                         atmState = AtmState.NO_RECEIPT_WITHDRAWAL;
                         break;
                     }
-                } else if (previousState == AtmState.DEPOSIT_AMOUNT_CHOICE) {
+                } else if (previousState == AtmState.DEPOSIT_AMOUNT_CHOICE || previousState == AtmState.DEPOSIT_OTHER_AMOUNT) {
                     if (Objects.equals(sideButtonHandler.getSideButtonState(), SideButtonState.YES)) {
                         previousState = atmState;
                         atmState = AtmState.PRINT_RECEIPT_DEPOSIT;
@@ -303,7 +360,26 @@ public class PeripherialsHandler {
                 }
                 cardPressed = false;
             }
-
+            case PIN_CHANGE -> {
+                controller.handleAtmState(atmState);
+                if ("success".equals(clientRequestUtil.getSelectedRequest())) {
+                    previousState = atmState;
+                    atmState = AtmState.PIN_CHANGE_SUCCESS;
+                    requestActive = false;
+                } else if ("failure".equals(clientRequestUtil.getSelectedRequest())) {
+                    previousState = atmState;
+                    //atmState = AtmState.PIN_CHANGE_FAILURE;
+                    requestActive = false;
+                }
+            }
+            case PIN_CHANGE_SUCCESS -> {
+                if (true == cardPressed) {
+                    keyboardHandler.clear();
+                    previousState = atmState;
+                    atmState = AtmState.HELLO;
+                }
+                cardPressed = false;
+            }
         }
 
 
@@ -324,6 +400,11 @@ public class PeripherialsHandler {
                 controller.setPinStars(keyboardHandler.getInput().length());
                 atmClient.setRequest("authenticate");
                 atmClient.setCardNumber(cardReaderHandler.getCardNumber());
+            }
+            case AGAIN_PIN -> {
+                controller.handleAtmState(atmState);
+                keyboardHandler.clear();
+                requestActive = false;
             }
             case AUTHENTICATION_ONGOING -> {
                 atmClient.setPin(keyboardHandler.getInput());
@@ -374,6 +455,10 @@ public class PeripherialsHandler {
                     controller.setCashOutAmount(keyboardHandler.getInput());
                 }
             }
+            case INCORRECT_AMOUNT -> {
+                keyboardHandler.clear();
+                controller.handleAtmState(atmState);
+            }
             case CHOOSE_RECEIPT_WITHDRAWAL -> {
                 requestActive = false;
                 controller.handleAtmState(atmState);
@@ -402,6 +487,10 @@ public class PeripherialsHandler {
                     atmClient.sendRequest();
                     requestActive = true;
                 }
+            }
+            case DEPOSIT_INCORRECT_AMOUNT -> {
+                controller.handleAtmState(atmState);
+                keyboardHandler.clear();
             }
             case CHOOSE_RECEIPT_DEPOSIT -> {
                 requestActive = false;
@@ -464,6 +553,20 @@ public class PeripherialsHandler {
                 }
             }
             case TOP_UP_SUCCESS -> {
+                controller.handleAtmState(atmState);
+                requestActive = false;
+            }
+            case PIN_CHANGE -> {
+                controller.setNewPin(keyboardHandler.getInput());
+                controller.handleAtmState(atmState);
+                atmClient.setRequest("changepin");
+                if (KeyboardState.ENTER == keyboardHandler.getKeyboardState() && false == requestActive) {
+                    atmClient.setPin(keyboardHandler.getInput());
+                    atmClient.sendRequest();
+                    requestActive = true;
+                }
+            }
+            case PIN_CHANGE_SUCCESS -> {
                 controller.handleAtmState(atmState);
                 requestActive = false;
             }

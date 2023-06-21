@@ -122,6 +122,9 @@ public class MainController {
     private Label telenum;
 
     @FXML
+    private Label newpin;
+
+    @FXML
     private Button cash;
 
     @FXML
@@ -262,8 +265,11 @@ public class MainController {
 
     @FXML
     private void handleSB6() {
-        if (AtmState.INPUT_PIN == atmState || AtmState.WITHDRAW_OTHER_AMOUNT == atmState) {
+        if (AtmState.INPUT_PIN == atmState || AtmState.WITHDRAW_OTHER_AMOUNT == atmState
+         || AtmState.AGAIN_PIN == atmState || AtmState.INCORRECT_AMOUNT == atmState
+         || AtmState.DEPOSIT_INCORRECT_AMOUNT == atmState) {
             handlePinButtonEnter();
+            return;
         }
         peripherialsHandler.handleSideButton(6);
     }
@@ -316,6 +322,10 @@ public class MainController {
         telecash.setText(amount);
     }
 
+    public void setNewPin(String pin) {
+        newpin.setText(pin);
+    }
+
     private void setScreenAnchorPaneVisible(AnchorPane anchorPane, boolean visible) {
         anchorPane.setVisible(visible);
         //set other anchor panes invisible
@@ -328,37 +338,9 @@ public class MainController {
         }
     }
 
-    private void screenStateUpdate(AtmState atmState) {
-        switch (atmState) {
-            case HELLO -> {
-                setScreenAnchorPaneVisible(hello, true);
-            }
-            case INPUT_PIN -> {
-                setScreenAnchorPaneVisible(givepin, true);
-            }
-            case AGAIN_PIN -> {
-                /* TODO: implement */
-            }
-            case AUTHENTICATION_ONGOING -> {
-                setScreenAnchorPaneVisible(wait, true);
-            }
-            /*case AUTHENTICATION_FAILED -> {
-                setScreenAnchorPaneVisible(blockcard, true);
-            }*/
-            case OPERATION_CHOICE -> {
-                setScreenAnchorPaneVisible(operationchoice, true);
-            }
-            /*case WITHDRAW -> {
-                setScreenAnchorPaneVisible(howmanycash, true);
-            }*/
-
-
-
-        }
-    }
-
     public void handleAtmState(AtmState atmState) {
         System.out.println("Atm state changed to " + atmState);
+        this.atmState = atmState;
         switch (atmState){
             case HELLO -> {
                 setScreenAnchorPaneVisible(hello, true);
@@ -369,6 +351,12 @@ public class MainController {
             }
             case INPUT_PIN -> {
                 setScreenAnchorPaneVisible(givepin, true);
+                setCreditCardVisible(false);
+                setReceiptVisible(false);
+                setCashVisible(false);
+            }
+            case AGAIN_PIN -> {
+                setScreenAnchorPaneVisible(againpin, true);
                 setCreditCardVisible(false);
                 setReceiptVisible(false);
                 setCashVisible(false);
@@ -407,6 +395,9 @@ public class MainController {
             case DEPOSIT_AMOUNT_CHOICE -> {
                 setScreenAnchorPaneVisible(howMuchCashIn, true);
             }
+            case DEPOSIT_INCORRECT_AMOUNT -> {
+                setScreenAnchorPaneVisible(errorinputcash, true);
+            }
             case CHOOSE_RECEIPT_DEPOSIT -> {
                 setScreenAnchorPaneVisible(choicereceipt, true);
             }
@@ -432,6 +423,16 @@ public class MainController {
             case TOP_UP_SUCCESS -> {
                 setScreenAnchorPaneVisible(telesuccess, true);
                 setCreditCardVisible(true);
+            }
+            case PIN_CHANGE -> {
+                setScreenAnchorPaneVisible(changepin, true);
+            }
+            case PIN_CHANGE_SUCCESS -> {
+                setScreenAnchorPaneVisible(pinsuccess, true);
+                setCreditCardVisible(true);
+            }
+            case INCORRECT_AMOUNT -> {
+                setScreenAnchorPaneVisible(errorinputcash, true);
             }
         }
     }

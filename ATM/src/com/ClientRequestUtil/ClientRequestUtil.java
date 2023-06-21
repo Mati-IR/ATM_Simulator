@@ -62,7 +62,9 @@ public class ClientRequestUtil {
                 case "H": {
                     return "H " + this.cardNumber;
                 }
-                /* TODO: Skipped few handlers */
+                case "C": {
+                    return "C " + this.cardNumber + " " + this.pin;
+                }
                 case "T": {
                     return "T " + this.cardNumber + " " + this.phoneNumber + " " + this.moneyInfo.getWholeUnits()+ " " + this.moneyInfo.getCurrency().toString();
                 }
