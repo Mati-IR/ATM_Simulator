@@ -13,9 +13,9 @@ import java.util.Objects;
 public class PeripherialsHandler {
     public enum AtmState {
         HELLO, INPUT_PIN, AGAIN_PIN, AUTHENTICATION_ONGOING, OPERATION_CHOICE,
-        WITHDRAW_PLN, WITHDRAW_EUR, INSUFFICIENT_FUNDS, DEPOSIT_AMOUNT_CHOICE, DEPOSIT_OTHER_AMOUNT, TOP_UP_PHONE, BALANCE_REQUEST_ONGOING, BALANCE, WITHDRAW_OTHER_AMOUNT,
+        WITHDRAW_PLN, WITHDRAW_EUR, INSUFFICIENT_FUNDS, DEPOSIT_AMOUNT_CHOICE, DEPOSIT_OTHER_AMOUNT, BALANCE_REQUEST_ONGOING, BALANCE, WITHDRAW_OTHER_AMOUNT,
         OPERATION_PRINT, PIN_CHANGE, WITHDRAW_AMOUNT_CHOICE, CHOOSE_RECEIPT_WITHDRAWAL, CHOOSE_RECEIPT_DEPOSIT, PRINT_RECEIPT_WITHDRAWAL, NO_RECEIPT_WITHDRAWAL, PRINT_RECEIPT_DEPOSIT, NO_RECEIPT_DEPOSIT, PRINT_CASH,
-        INPUT_CASH, GIVE_TELE, TELE_AMOUNT, EXIT
+        TOP_UP_PHONE_NUMBER, TOP_UP_ONGOING, TOP_UP_AMOUNT, TOP_UP_SUCCESS, EXIT
     }
     private AtmState atmState = AtmState.HELLO;
     private AtmState previousState = AtmState.HELLO;
@@ -162,7 +162,7 @@ public class PeripherialsHandler {
                 cardPressed = false;
                 SideButtonState sideButtonState = sideButtonHandler.getSideButtonState();
                 switch (sideButtonState) {
-                    case WITHDRAW_PLN, WITHDRAW_EUR, TOP_UP_PHONE -> {
+                    case WITHDRAW_PLN, WITHDRAW_EUR -> {
                         previousState = atmState;
                         atmState = AtmState.WITHDRAW_AMOUNT_CHOICE;
                     }
@@ -184,8 +184,11 @@ public class PeripherialsHandler {
                         previousState = atmState;
                         atmState = AtmState.PIN_CHANGE;
                     }
+                    case TOP_UP_PHONE -> {
+                        previousState = atmState;
+                        atmState = AtmState.TOP_UP_PHONE_NUMBER;
+                    }
                 }
-
             }
             case WITHDRAW_AMOUNT_CHOICE -> {
                 if(SideButtonState.OTHER == sideButtonHandler.getSideButtonState()) {
@@ -268,6 +271,37 @@ public class PeripherialsHandler {
                 if (keyboardHandler.getKeyboardState() != KeyboardState.OK || keyboardHandler.getInput() != "") {
                     atmState = AtmState.HELLO;
                 }
+            }
+            case TOP_UP_PHONE_NUMBER -> {
+                if (KeyboardState.ENTER == keyboardHandler.getKeyboardState() && false == requestActive) {
+                    atmClient.setPhoneNumber(keyboardHandler.getInput());
+                    keyboardHandler.clear();
+                    atmState = AtmState.TOP_UP_AMOUNT;
+                }
+            }
+            case TOP_UP_AMOUNT -> {
+                if (KeyboardState.ENTER == keyboardHandler.getKeyboardState() && false == requestActive) {
+                    atmState = AtmState.TOP_UP_ONGOING;
+                    requestActive = false;
+                }
+            }
+            case TOP_UP_ONGOING -> {
+                if ("success".equals(clientRequestUtil.getSelectedRequest())) {
+                    previousState = atmState;
+                    atmState = AtmState.TOP_UP_SUCCESS;
+                    requestActive = false;
+                } else if ("failure".equals(clientRequestUtil.getSelectedRequest())) {
+                    previousState = atmState;
+                    atmState = AtmState.TOP_UP_SUCCESS;
+                    requestActive = false;
+                }
+            }
+            case TOP_UP_SUCCESS -> {
+                if (true == cardPressed) {
+                    previousState = atmState;
+                    atmState = AtmState.HELLO;
+                }
+                cardPressed = false;
             }
 
         }
@@ -389,7 +423,6 @@ public class PeripherialsHandler {
                     controller.setCashVisible(false);
                 }
             }
-
             case PRINT_RECEIPT_WITHDRAWAL -> {
                 controller.handleAtmState(atmState);
                 requestActive = false;
@@ -410,6 +443,28 @@ public class PeripherialsHandler {
             case BALANCE -> {
                 controller.handleAtmState(atmState);
                 controller.setAccountbalance(Integer.toString(clientRequestUtil.getAmount()));
+                requestActive = false;
+            }
+            case TOP_UP_PHONE_NUMBER -> {
+                controller.handleAtmState(atmState);
+                controller.setPhoneNumber(keyboardHandler.getInput());
+                atmClient.setRequest("topup");
+            }
+            case TOP_UP_AMOUNT -> {
+                controller.handleAtmState(atmState);
+                controller.setPhoneAmount(keyboardHandler.getInput());
+            }
+            case TOP_UP_ONGOING -> {
+                controller.handleAtmState(atmState);
+                if (KeyboardState.ENTER == keyboardHandler.getKeyboardState() && false == requestActive) {
+                    moneyInfoStorage.setWholeUnits(Long.parseLong(keyboardHandler.getInput()));
+                    atmClient.setMoneyInfo(moneyInfoStorage);
+                    atmClient.sendRequest();
+                    requestActive = true;
+                }
+            }
+            case TOP_UP_SUCCESS -> {
+                controller.handleAtmState(atmState);
                 requestActive = false;
             }
         }

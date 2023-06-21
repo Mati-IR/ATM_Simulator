@@ -32,7 +32,6 @@ public class AtmApplication extends Application {
                 @Override
                 public void run() {
                     atmClient.setController(mainController);
-                    atmClient.run();
                 }
             });
             backendThread.setDaemon(true);

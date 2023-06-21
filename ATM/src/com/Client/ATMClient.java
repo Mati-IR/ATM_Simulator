@@ -48,20 +48,16 @@ public class ATMClient {
         }
     }
 
-    /* is this function necessary? */
-    public void run() {
-    }
-
-    public void clear() {
-
-    }
-
     public void setCardNumber(String cardNumber) {
         clientRequestUtil.setCardNumber(cardNumber);
     }
 
     public void setPin(String pin) {
         clientRequestUtil.setPin(pin);
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        clientRequestUtil.setPhoneNumber(phoneNumber);
     }
 
     public void setRequest(String request) {

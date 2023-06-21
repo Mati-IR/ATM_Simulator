@@ -24,7 +24,7 @@
                      <children>
                         <AnchorPane prefHeight="40.0" prefWidth="484.0" style="-fx-background-color: orange;">
                            <children>
-                              <Label fx:id="Bankname" alignment="CENTER_RIGHT" layoutX="25.0" layoutY="10.0" styleClass="screen_label" stylesheets="@ATM.css" text="Bank of Strategic Deposit Management" textAlignment="CENTER" AnchorPane.leftAnchor="25.0" />
+                              <Label fx:id="Bankname" alignment="CENTER_RIGHT" layoutX="25.0" layoutY="10.0" styleClass="screen_label" stylesheets="@ATM.css" text="Bank of Devious Schemes and Mischief" textAlignment="CENTER" AnchorPane.leftAnchor="25.0" />
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="hello" layoutX="17.0" layoutY="40.0" prefHeight="254.0" prefWidth="450.0">

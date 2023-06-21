@@ -116,6 +116,12 @@ public class MainController {
     private Label depositedCash;
 
     @FXML
+    private Label telecash;
+
+    @FXML
+    private Label telenum;
+
+    @FXML
     private Button cash;
 
     @FXML
@@ -303,6 +309,13 @@ public class MainController {
         depositedCash.setText(amount);
     }
 
+    public void setPhoneNumber(String number) {
+        telenum.setText(number);
+    }
+    public void setPhoneAmount(String amount) {
+        telecash.setText(amount);
+    }
+
     private void setScreenAnchorPaneVisible(AnchorPane anchorPane, boolean visible) {
         anchorPane.setVisible(visible);
         //set other anchor panes invisible
@@ -406,6 +419,19 @@ public class MainController {
                 setScreenAnchorPaneVisible(insuccess, true);
                 setCreditCardVisible(true);
                 setReceiptVisible(true);
+            }
+            case TOP_UP_PHONE_NUMBER -> {
+                setScreenAnchorPaneVisible(givetele, true);
+            }
+            case TOP_UP_AMOUNT -> {
+                setScreenAnchorPaneVisible(teleamount, true);
+            }
+            case TOP_UP_ONGOING -> {
+                setScreenAnchorPaneVisible(wait, true);
+            }
+            case TOP_UP_SUCCESS -> {
+                setScreenAnchorPaneVisible(telesuccess, true);
+                setCreditCardVisible(true);
             }
         }
     }

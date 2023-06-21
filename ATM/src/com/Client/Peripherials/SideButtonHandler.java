@@ -55,9 +55,9 @@ public class SideButtonHandler {
                     sideButtonState = SideButtonState.EMPTY;
             }
             case 6 -> {
-                if (atmState == INPUT_PIN || atmState == AGAIN_PIN || atmState == INPUT_CASH
-                        || atmState == PIN_CHANGE || atmState == GIVE_TELE
-                        || atmState == TELE_AMOUNT || atmState == DEPOSIT_AMOUNT_CHOICE)
+                if (atmState == INPUT_PIN || atmState == AGAIN_PIN
+                        || atmState == PIN_CHANGE || atmState == TOP_UP_PHONE_NUMBER
+                        || atmState == TOP_UP_ONGOING || atmState == DEPOSIT_AMOUNT_CHOICE)
                     sideButtonState = SideButtonState.OK;
                 else if (atmState == OPERATION_CHOICE)
                     sideButtonState = SideButtonState.PIN_CHANGE;
