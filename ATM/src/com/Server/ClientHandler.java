@@ -199,7 +199,7 @@ class ClientHandler implements Runnable {
             if (currency == MoneyInfoStorage.Currency.EUR) { /* Only PLN deposits are allowed for now */
                 amountToDeposit *= moneyInfoStorage.getExchangeRate();
             }
-            int newBalance = accountBalance + amountToDeposit;
+            int newBalance = accountBalance - amountToDeposit;
             boolean result = databaseHandler.changeBalanceForUser(userNumber, String.valueOf(newBalance));
             return result;
         }else {
