@@ -180,7 +180,7 @@ public class ClientRequestUtil {
             case "H": {
                 this.selectedRequest = requestMappings.get(parts[0]);
                 this.cardNumber = decodeUserNumber(parts[1]);
-                this.history = decodeHistory(parts[2]);
+                this.history = decodeHistory(parts);
 
                 if (this.selectedRequest != null && this.cardNumber != null && this.history != null) {
                     this.isRequestValid = true;
@@ -234,11 +234,16 @@ public class ClientRequestUtil {
         return "";
     }
 
-    private static String decodeHistory(String encodedHistory) {
+    private static String decodeHistory(String encodedHistory[]) {
         // Perform decoding/validation of history and return decoded value
         //if history is one or more characters and includes both letters and numbers
-        if (encodedHistory.matches("[a-zA-Z0-9]+")) {
-            return encodedHistory;
+        //ignore first two elements of array
+        String resultHistory = "";
+        for (int i = 2; i < encodedHistory.length; i++) {
+            resultHistory += encodedHistory[i] + " ";
+        }
+        if (resultHistory.length() > 0) {
+            return resultHistory;
         }
         return null;
     }

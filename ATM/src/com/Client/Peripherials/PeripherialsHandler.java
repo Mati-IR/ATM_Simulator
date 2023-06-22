@@ -14,7 +14,7 @@ public class PeripherialsHandler {
     public enum AtmState {
         HELLO, INPUT_PIN, AGAIN_PIN, AUTHENTICATION_ONGOING, OPERATION_CHOICE,
         WITHDRAW_PLN, WITHDRAW_EUR, INSUFFICIENT_FUNDS, DEPOSIT_AMOUNT_CHOICE, DEPOSIT_OTHER_AMOUNT, DEPOSIT_INCORRECT_AMOUNT, BALANCE_REQUEST_ONGOING, BALANCE, WITHDRAW_OTHER_AMOUNT, INCORRECT_AMOUNT,
-        OPERATION_PRINT, PIN_CHANGE, PIN_CHANGE_SUCCESS, WITHDRAW_AMOUNT_CHOICE, CHOOSE_RECEIPT_WITHDRAWAL, CHOOSE_RECEIPT_DEPOSIT, PRINT_RECEIPT_WITHDRAWAL, NO_RECEIPT_WITHDRAWAL, PRINT_RECEIPT_DEPOSIT, NO_RECEIPT_DEPOSIT, PRINT_CASH,
+        PRINT_HISTORY_ONGOING, PIN_CHANGE, PIN_CHANGE_SUCCESS, WITHDRAW_AMOUNT_CHOICE, CHOOSE_RECEIPT_WITHDRAWAL, CHOOSE_RECEIPT_DEPOSIT, PRINT_RECEIPT_WITHDRAWAL, NO_RECEIPT_WITHDRAWAL, PRINT_RECEIPT_DEPOSIT, NO_RECEIPT_DEPOSIT, PRINT_CASH,
         TOP_UP_PHONE_NUMBER, TOP_UP_ONGOING, TOP_UP_AMOUNT, TOP_UP_SUCCESS, EXIT
     }
     private AtmState atmState = AtmState.HELLO;
@@ -185,7 +185,8 @@ public class PeripherialsHandler {
                     }
                     case OPERATION_PRINT -> {
                         previousState = atmState;
-                        atmState = AtmState.OPERATION_PRINT;
+                        requestActive = false;
+                        atmState = AtmState.PRINT_HISTORY_ONGOING;
                     }
                     case PIN_CHANGE -> {
                         previousState = atmState;
@@ -380,6 +381,9 @@ public class PeripherialsHandler {
                 }
                 cardPressed = false;
             }
+            case PRINT_HISTORY_ONGOING -> {
+
+            }
         }
 
 
@@ -569,6 +573,15 @@ public class PeripherialsHandler {
             case PIN_CHANGE_SUCCESS -> {
                 controller.handleAtmState(atmState);
                 requestActive = false;
+            }
+            case PRINT_HISTORY_ONGOING -> {
+                if (false == requestActive) {
+                    requestActive = true;
+                    atmClient.setRequest("history");
+                    atmClient.sendRequest();
+                    controller.setHistory(clientRequestUtil.getHistory());
+                }
+                controller.handleAtmState(atmState);
             }
         }
         /* It is forbidden to write any instructions after this line in this method */

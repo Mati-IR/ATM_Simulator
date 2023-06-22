@@ -72,6 +72,10 @@ public class ATMClient {
         return clientRequestUtil.getAmount();
     }
 
+    public String getHistory() {
+        return clientRequestUtil.getHistory();
+    }
+
     public void setController(MainController controller) {
         peripherialsHandler.setController(controller);
     }

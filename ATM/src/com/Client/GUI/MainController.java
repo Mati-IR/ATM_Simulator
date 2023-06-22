@@ -17,6 +17,8 @@ public class MainController {
     private static MainController instance = null;
     private PeripherialsHandler peripherialsHandler = PeripherialsHandler.getInstance();
     private static String cardNumber = "";
+    private String history = "";
+
 
 
     @FXML
@@ -123,6 +125,21 @@ public class MainController {
 
     @FXML
     private Label newpin;
+
+    @FXML
+    private Label historyOperation1;
+
+    @FXML
+    private Label historyOperation2;
+
+    @FXML
+    private Label historyOperation3;
+
+    @FXML
+    private Label historyOperation4;
+
+    @FXML
+    private Label historyOperation5;
 
     @FXML
     private Button cash;
@@ -326,6 +343,10 @@ public class MainController {
         newpin.setText(pin);
     }
 
+    public void setHistory(String history) {
+        this.history = history;
+    }
+
     private void setScreenAnchorPaneVisible(AnchorPane anchorPane, boolean visible) {
         anchorPane.setVisible(visible);
         //set other anchor panes invisible
@@ -336,6 +357,81 @@ public class MainController {
                 }
             }
         }
+    }
+
+    private String extractHistory(String history[]) {
+        String operation = "";
+        switch (history[3]) {
+            case "1" -> operation = "Wypłata Zł";
+            case "2" -> operation = "Wpłata";
+            case "3" -> operation = "Wypłata EUR";
+            case "4" -> operation = "Stan konta";
+            case "5" -> operation = "Zmiana PIN";
+            case "6" -> operation = "Doładowanie telefonu";
+            case "7" -> operation = "Sprawdzenie historii";
+        }
+
+        String date = history[1];
+        String time = history[2];
+
+        return operation + " " + date + " " + time;
+    }
+
+    private void handleHistory() {
+        // each history record is seperated by a semicolon
+        String[] historyRecords = history.split(";");
+        System.out.println(historyRecords.toString());
+        System.out.println(historyRecords.length);
+        for (int i = 0; i < historyRecords.length; i++) {
+            switch (i) {
+                case 0 -> {
+                    if (historyRecords[i].equals("")) {
+                        historyOperation1.setVisible(false);
+                        break;
+                    } else {
+                        historyOperation1.setVisible(true);
+                    }
+                    historyOperation1.setText(extractHistory(historyRecords[i].split(" ")));
+                }
+                case 1 -> {
+                    if (historyRecords[i].equals("")) {
+                        historyOperation2.setVisible(false);
+                        break;
+                    } else {
+                        historyOperation2.setVisible(true);
+                    }
+                    historyOperation2.setText(extractHistory(historyRecords[i].split(" ")));
+                }
+                case 2 -> {
+                    if (historyRecords[i].equals("")) {
+                        historyOperation3.setVisible(false);
+                        break;
+                    } else {
+                        historyOperation3.setVisible(true);
+                    }
+                    historyOperation3.setText(extractHistory(historyRecords[i].split(" ")));
+                }
+                case 3 -> {
+                    if (historyRecords[i].equals("")) {
+                        historyOperation4.setVisible(false);
+                        break;
+                    } else {
+                        historyOperation4.setVisible(true);
+                    }
+                    historyOperation4.setText(extractHistory(historyRecords[i].split(" ")));
+                }
+                case 4 -> {
+                    if (historyRecords[i].equals("")) {
+                        historyOperation5.setVisible(false);
+                        break;
+                    } else {
+                        historyOperation5.setVisible(true);
+                    }
+                    historyOperation5.setText(extractHistory(historyRecords[i].split(" ")));
+                }
+            }
+        }
+
     }
 
     public void handleAtmState(AtmState atmState) {
@@ -433,6 +529,10 @@ public class MainController {
             }
             case INCORRECT_AMOUNT -> {
                 setScreenAnchorPaneVisible(errorinputcash, true);
+            }
+            case PRINT_HISTORY_ONGOING -> {
+                setScreenAnchorPaneVisible(operationprint, true);
+                handleHistory();
             }
         }
     }
