@@ -169,13 +169,11 @@ public class DatabaseHandler {
             if (isConnected()) {
                 String query = "SELECT * FROM " + HISTORY_TABLE + " WHERE " + USER_ACCOUNT_ID + " = " + userId;
                 PreparedStatement statement = connection.prepareStatement(query);
-                System.out.println("executing query");
                 ResultSet resultSet = statement.executeQuery();
-                System.out.println("executed query");
-                while (resultSet.next()) {
-                    System.out.println("start");
-                    history += resultSet.getString("ID") + " " + resultSet.getString("Date") + " " + resultSet.getString("Operation_Type") + " " + resultSet.getString("Amount");
-                    System.out.println("end");
+                int recordsSaved = 0;
+                while (resultSet.next() && recordsSaved < 5) {
+                    recordsSaved++;
+                    history += resultSet.getString("ID") + " " + resultSet.getString("Date") + " " + resultSet.getString("Operation_Type") + " " + resultSet.getString("Amount") + ";";
                 }
             } else {
                 System.err.println("Not connected to the database.");
@@ -184,6 +182,7 @@ public class DatabaseHandler {
             System.err.println("Failed to get History for user: " + userId);
             e.printStackTrace();
         }
+        System.out.println(history);
         return history;
     }
 }

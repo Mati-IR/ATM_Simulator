@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Locale;
+import java.util.Objects;
 
 import com.MoneyInfoStorage.MoneyInfoStorage;
 import com.ClientRequestUtil.ClientRequestUtil;
@@ -86,8 +88,10 @@ class ClientHandler implements Runnable {
 
 
         }
-        if (clientRequestUtil.getSelectedRequest() == "balance") {
+        if (Objects.equals(clientRequestUtil.getSelectedRequest(), "balance")) {
             clientRequestUtil.setRequest("balance");
+        } else if (clientRequestUtil.getSelectedRequest().toLowerCase().equals("history") || clientRequestUtil.getSelectedRequest().toLowerCase().equals("h")) {
+            clientRequestUtil.setRequest("history");
         }
         else if (true == result) {
             clientRequestUtil.setRequest("success");
@@ -182,7 +186,9 @@ class ClientHandler implements Runnable {
             return false;
         }
         if (userIsAuthenticated) {
-            history = databaseHandler.getHistoryForUser(userNumber);
+            this.history = databaseHandler.getHistoryForUser(userNumber);
+            this.clientRequestUtil.setRequest("history");
+            this.clientRequestUtil.setHistory(history);
             System.out.println(history);
             return history != null;
         }
