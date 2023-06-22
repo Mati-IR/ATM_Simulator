@@ -17,6 +17,7 @@ public class ClientRequestUtil {
     private String amount = "0";
     private String phoneNumber = "";
     private MoneyInfoStorage moneyInfo = new MoneyInfoStorage();
+    private String history = "";
 
 
     private static final Map<String, String> requestMappings = new HashMap<>();
@@ -60,7 +61,10 @@ public class ClientRequestUtil {
                     return "B " + this.cardNumber + " " + this.amount;
                 }
                 case "H": {
-                    return "H " + this.cardNumber;
+                    if (this.history == "") {
+                        return "H " + this.cardNumber + " " + "empty";
+                    }
+                    return "H " + this.cardNumber + " " + this.history;
                 }
                 /* TODO: Skipped few handlers */
                 case "T": {
@@ -152,11 +156,38 @@ public class ClientRequestUtil {
                     return;
                 }
             }
+            case "C": {
+                this.selectedRequest = requestMappings.get(parts[0]);
+                this.cardNumber = decodeUserNumber(parts[1]);
+                this.pin = decodePIN(parts[2]);
+
+                if (this.selectedRequest != null && this.cardNumber != null && this.pin != null) {
+                    this.isRequestValid = true;
+                    return;
+                } else {
+                    this.isRequestValid = false;
+                    return;
+                }
+
+            }
             case "S":
             case "F":
                 this.selectedRequest = requestMappings.get(parts[0]);
                     this.isRequestValid = true;
                     return;
+            case "H": {
+                this.selectedRequest = requestMappings.get(parts[0]);
+                this.cardNumber = decodeUserNumber(parts[1]);
+                this.history = decodeHistory(parts[2]);
+
+                if (this.selectedRequest != null && this.cardNumber != null && this.history != null) {
+                    this.isRequestValid = true;
+                    return;
+                } else {
+                    this.isRequestValid = false;
+                    return;
+                }
+            }
         }
     }
 
@@ -199,6 +230,15 @@ public class ClientRequestUtil {
         }
 
         return "";
+    }
+
+    private static String decodeHistory(String encodedHistory) {
+        // Perform decoding/validation of history and return decoded value
+        //if history is one or more characters and includes both letters and numbers
+        if (encodedHistory.matches("[a-zA-Z0-9]+")) {
+            return encodedHistory;
+        }
+        return null;
     }
 
     private String decodePhoneNumber(String encodedPhoneNumber) {
@@ -286,11 +326,21 @@ public class ClientRequestUtil {
         return this.pin;
     }
 
+    public void setHistory(String history) {
+        this.history = history;
+    }
+
+    public String getHistory() {
+        return this.history;
+    }
+
     public void clear() {
         this.selectedRequest = "";
         this.pin = "";
         this.cardNumber = "";
         this.amount = "";
         this.isRequestValid = false;
+        this.history = "";
+        this.phoneNumber = "";
     }
 }
