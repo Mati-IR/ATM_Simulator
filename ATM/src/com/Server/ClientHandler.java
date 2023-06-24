@@ -127,7 +127,7 @@ class ClientHandler implements Runnable {
             }
             if (accountBalance >= amountToWithdraw) {
                 int newBalance = accountBalance - amountToWithdraw;
-                boolean result = databaseHandler.changeBalanceForUser(userNumber, String.valueOf(newBalance));
+                boolean result = databaseHandler.changeBalanceForUser(userNumber, String.valueOf(newBalance), currency);
                 return result;
             } else {
                 return false;
@@ -148,7 +148,7 @@ class ClientHandler implements Runnable {
                 amountToDeposit *= moneyInfoStorage.getExchangeRate();
             }
             int newBalance = accountBalance + amountToDeposit;
-            boolean result = databaseHandler.changeBalanceForUser(userNumber, String.valueOf(newBalance));
+            boolean result = databaseHandler.changeBalanceForUser(userNumber, String.valueOf(newBalance), currency);
             return result;
         }else {
             return false;
@@ -206,7 +206,7 @@ class ClientHandler implements Runnable {
                 amountToDeposit *= moneyInfoStorage.getExchangeRate();
             }
             int newBalance = accountBalance - amountToDeposit;
-            boolean result = databaseHandler.changeBalanceForUser(userNumber, String.valueOf(newBalance));
+            boolean result = databaseHandler.changeBalanceForUser(userNumber, String.valueOf(newBalance), currency);
             return result;
         }else {
             return false;

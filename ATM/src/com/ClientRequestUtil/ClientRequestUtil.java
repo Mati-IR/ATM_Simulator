@@ -94,7 +94,11 @@ public class ClientRequestUtil {
             case "A":
                 this.selectedRequest = requestMappings.get(parts[0]);
                 this.pin = decodePIN(parts[1]);
-                this.cardNumber = decodeUserNumber(parts[2]);
+                if (parts.length > 2) {
+                    this.cardNumber = decodeUserNumber(parts[2]);
+                } else {
+                    this.cardNumber = null;
+                }
 
                 if (this.selectedRequest != null && this.pin != null && this.cardNumber != null) {
                     this.isRequestValid = true;
