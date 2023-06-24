@@ -58,7 +58,7 @@ public class ClientSocketHandler {
                 clientSocket = new Socket(serverAddress, serverPort);
                 if (clientSocket == null) {
                     System.out.println("Could not connect to server...");
-                    return "s";
+                    return null;
                 }
             }
         } catch (IOException e) {
@@ -77,34 +77,6 @@ public class ClientSocketHandler {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public String receiveResponse() {
-        try {
-            if (null == clientSocket || clientSocket.isClosed()) {
-                // Open a new socket
-                clientSocket = new Socket(serverAddress, serverPort);
-                if (clientSocket == null) {
-                    System.out.println("Could not connect to server...");
-                    return null;
-                }
-
-                // Initialize the BufferedReader after opening the socket
-                in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            }
-
-            // Check if the BufferedReader is ready for reading
-            if (in.ready()) {
-                return in.readLine();
-            } else {
-                // Handle the case when the stream is not ready
-                //System.out.println("Stream is not ready...");
-                return null;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
 
