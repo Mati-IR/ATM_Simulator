@@ -331,7 +331,7 @@ public class PeripherialsHandler {
                 }
             }
             case TOP_UP_PHONE_NUMBER -> {
-                if (KeyboardState.ENTER == keyboardHandler.getKeyboardState() && false == requestActive) {
+                if (KeyboardState.ENTER == keyboardHandler.getKeyboardState() && keyboardHandler.getInput() != "" && false == requestActive) {
                     atmClient.setPhoneNumber(keyboardHandler.getInput());
                     keyboardHandler.clear();
                     atmState = AtmState.TOP_UP_AMOUNT;
