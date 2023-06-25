@@ -106,6 +106,9 @@ class ClientHandler implements Runnable {
             return false;
         }
         String pinFromDatabase = databaseHandler.getPinForUser(userNumber);
+        if (pinFromDatabase == null) {
+            return false;
+        }
         if (pinFromDatabase.equals(userInputPin)) {
             userIsAuthenticated = true;
             return true;
