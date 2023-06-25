@@ -169,7 +169,13 @@ public class PeripherialsHandler {
                 cardPressed = false;
                 SideButtonState sideButtonState = sideButtonHandler.getSideButtonState();
                 switch (sideButtonState) {
-                    case WITHDRAW_PLN, WITHDRAW_EUR -> {
+                    case WITHDRAW_PLN -> {
+                        this.moneyInfoStorage.setCurrency(MoneyInfoStorage.Currency.PLN);
+                        previousState = atmState;
+                        atmState = AtmState.WITHDRAW_AMOUNT_CHOICE;
+                    }
+                    case WITHDRAW_EUR -> {
+                        this.moneyInfoStorage.setCurrency(MoneyInfoStorage.Currency.EUR);
                         previousState = atmState;
                         atmState = AtmState.WITHDRAW_AMOUNT_CHOICE;
                     }
