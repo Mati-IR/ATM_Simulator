@@ -123,7 +123,7 @@ class ClientHandler implements Runnable {
             int accountBalance = databaseHandler.getBalanceForUser(userNumber);
             int amountToWithdraw = amount;
             if (currency == MoneyInfoStorage.Currency.EUR) { /* Only PLN withdrawals are allowed for now */
-                amountToWithdraw *= moneyInfoStorage.getExchangeRate();
+                amountToWithdraw = amountToWithdraw * moneyInfoStorage.getExchangeRate(MoneyInfoStorage.Currency.EUR);
             }
             if (accountBalance >= amountToWithdraw) {
                 int newBalance = accountBalance - amountToWithdraw;
@@ -145,7 +145,7 @@ class ClientHandler implements Runnable {
             int accountBalance = databaseHandler.getBalanceForUser(userNumber);
             int amountToDeposit = amount;
             if (currency == MoneyInfoStorage.Currency.EUR) { /* Only PLN deposits are allowed for now */
-                amountToDeposit *= moneyInfoStorage.getExchangeRate();
+                amountToDeposit = amountToDeposit *  moneyInfoStorage.getExchangeRate(MoneyInfoStorage.Currency.EUR);
             }
             int newBalance = accountBalance + amountToDeposit;
             boolean result = databaseHandler.changeBalanceForUser(userNumber, String.valueOf(newBalance), currency);
@@ -203,7 +203,7 @@ class ClientHandler implements Runnable {
             int accountBalance = databaseHandler.getBalanceForUser(userNumber);
             int amountToDeposit = amount;
             if (currency == MoneyInfoStorage.Currency.EUR) { /* Only PLN deposits are allowed for now */
-                amountToDeposit *= moneyInfoStorage.getExchangeRate();
+                amountToDeposit = amountToDeposit * moneyInfoStorage.getExchangeRate(MoneyInfoStorage.Currency.EUR);
             }
             int newBalance = accountBalance - amountToDeposit;
             boolean result = databaseHandler.changeBalanceForUser(userNumber, String.valueOf(newBalance), currency);
