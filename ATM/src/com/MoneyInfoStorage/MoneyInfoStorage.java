@@ -102,7 +102,7 @@ public class MoneyInfoStorage {
         this.fractionalUnits = fractionalUnits;
     }
 
-    public int getExchangeRate() {
+    public int getExchangeRate(Currency currency) {
         if (currency == Currency.PLN) {
             return 1;
         } else if (currency == Currency.EUR) {
