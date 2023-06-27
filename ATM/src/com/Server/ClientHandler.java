@@ -203,13 +203,18 @@ class ClientHandler implements Runnable {
             return false;
         }
         if (userIsAuthenticated) {
+            boolean result = false;
             int accountBalance = databaseHandler.getBalanceForUser(userNumber);
             int amountToDeposit = amount;
             if (currency == MoneyInfoStorage.Currency.EUR) { /* Only PLN deposits are allowed for now */
                 amountToDeposit = amountToDeposit * moneyInfoStorage.getExchangeRate(MoneyInfoStorage.Currency.EUR);
             }
             int newBalance = accountBalance - amountToDeposit;
-            boolean result = databaseHandler.changeBalanceForUser(userNumber, String.valueOf(newBalance), currency);
+            if (newBalance >= 0) {
+                result = databaseHandler.changeBalanceForUser(userNumber, String.valueOf(newBalance), currency);
+            } else {
+                return false;
+            }
             return result;
         }else {
             return false;
