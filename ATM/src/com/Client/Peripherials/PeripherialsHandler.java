@@ -570,7 +570,9 @@ public class PeripherialsHandler {
                 controller.setNewPin(keyboardHandler.getInput());
                 controller.handleAtmState(atmState);
                 atmClient.setRequest("changepin");
-                if (KeyboardState.ENTER == keyboardHandler.getKeyboardState() && false == requestActive) {
+                if ((SideButtonState.OK == sideButtonHandler.getSideButtonState()
+                || KeyboardState.ENTER == keyboardHandler.getKeyboardState())
+                && false == requestActive) {
                     atmClient.setPin(keyboardHandler.getInput());
                     atmClient.sendRequest();
                     requestActive = true;
