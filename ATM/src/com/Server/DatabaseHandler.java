@@ -22,13 +22,13 @@ public class DatabaseHandler {
 
     private final String HISTORY_TABLE = "operation_info";
 
-    private final int OPERATION_WITHDRAW_PLN = 1;
-    private final int OPERATION_DEPOSIT = 2;
-    private final int OPERATION_WITHDRAW_EUR = 3;
-    private final int OPERATION_BALANCE = 4;
-    private final int OPERATION_PIN_CHANGE = 5;
-    private final int OPERATION_TOP_UP_PHONE = 6;
-    private final int OPERATION_HISTORY = 7;
+    public final int OPERATION_WITHDRAW_PLN = 1;
+    public final int OPERATION_DEPOSIT = 2;
+    public final int OPERATION_WITHDRAW_EUR = 3;
+    public final int OPERATION_BALANCE = 4;
+    public final int OPERATION_PIN_CHANGE = 5;
+    public final int OPERATION_TOP_UP_PHONE = 6;
+    public final int OPERATION_HISTORY = 7;
 
 
 
@@ -133,7 +133,7 @@ public class DatabaseHandler {
         return pin;
     }
 
-    public int getBalanceForUser(String userId) {
+    public int getBalanceForUser(String userId, boolean logOperation) {
         String balance = null;
         try {
             if (isConnected()) {
@@ -143,7 +143,9 @@ public class DatabaseHandler {
                 if (resultSet.next()) {
                     balance = resultSet.getString("balance");
                 }
-                logToDatabase(userId, OPERATION_BALANCE, balance);
+                if (logOperation) {
+                    logToDatabase(userId, OPERATION_BALANCE, balance);
+                }
             } else {
                 System.err.println("Not connected to the database.");
             }
@@ -161,6 +163,7 @@ public class DatabaseHandler {
                 PreparedStatement statement = connection.prepareStatement(query);
                 // if update executes successfully, return true
                 if (1 == statement.executeUpdate()) {
+                    logToDatabase(userId, OPERATION_PIN_CHANGE, null);
                     return true;
                 }
                 logToDatabase(userId, OPERATION_PIN_CHANGE, newPin);
@@ -174,7 +177,7 @@ public class DatabaseHandler {
         return false;
     }
 
-    public boolean changeBalanceForUser(String userId, String newBalance, MoneyInfoStorage.Currency currency) {
+    public boolean changeBalanceForUser(String userId, String newBalance, int amount, int operation) {
         try {
             if (isConnected()) {
                 String query = "UPDATE " + USERS_TABLE + " SET Balance = " + newBalance + " WHERE " + USER_ACCOUNT_ID + " = " + userId;
@@ -182,9 +185,9 @@ public class DatabaseHandler {
 
                 // if update executes successfully, return true
                 if (1 == statement.executeUpdate()) {
+                    logToDatabase(userId, operation, Integer.toString(amount));
                     return true;
                 }
-                //logToDatabase(userId, OPERATION_WITH, newBalance);
             } else {
                 System.err.println("Not connected to the database.");
             }
@@ -202,6 +205,7 @@ public class DatabaseHandler {
                 String query = "SELECT * FROM " + HISTORY_TABLE + " WHERE " + USER_ACCOUNT_ID + " = " + userId;
                 PreparedStatement statement = connection.prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery();
+                logToDatabase(userId, OPERATION_HISTORY, null);
                 int recordsSaved = 0;
                 while (resultSet.next() && recordsSaved < 5) {
                     recordsSaved++;

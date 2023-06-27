@@ -123,15 +123,17 @@ class ClientHandler implements Runnable {
             return false;
         }
         if (userIsAuthenticated) {
-            int accountBalance = databaseHandler.getBalanceForUser(userNumber);
+            int accountBalance = databaseHandler.getBalanceForUser(userNumber, false);
             int amountToWithdraw = amount;
+            int operation = databaseHandler.OPERATION_WITHDRAW_PLN;
+
             if (currency == MoneyInfoStorage.Currency.EUR) { /* Only PLN withdrawals are allowed for now */
                 amountToWithdraw = amountToWithdraw * moneyInfoStorage.getExchangeRate(MoneyInfoStorage.Currency.EUR);
+                operation = databaseHandler.OPERATION_WITHDRAW_EUR;
             }
             if (accountBalance >= amountToWithdraw) {
                 int newBalance = accountBalance - amountToWithdraw;
-                boolean result = databaseHandler.changeBalanceForUser(userNumber, String.valueOf(newBalance), currency);
-                return result;
+                return databaseHandler.changeBalanceForUser(userNumber, String.valueOf(newBalance), amountToWithdraw, operation);
             } else {
                 return false;
             }
@@ -145,13 +147,13 @@ class ClientHandler implements Runnable {
             return false;
         }
         if (userIsAuthenticated) {
-            int accountBalance = databaseHandler.getBalanceForUser(userNumber);
+            int accountBalance = databaseHandler.getBalanceForUser(userNumber, false);
             int amountToDeposit = amount;
             if (currency == MoneyInfoStorage.Currency.EUR) { /* Only PLN deposits are allowed for now */
                 amountToDeposit = amountToDeposit *  moneyInfoStorage.getExchangeRate(MoneyInfoStorage.Currency.EUR);
             }
             int newBalance = accountBalance + amountToDeposit;
-            boolean result = databaseHandler.changeBalanceForUser(userNumber, String.valueOf(newBalance), currency);
+            boolean result = databaseHandler.changeBalanceForUser(userNumber, String.valueOf(newBalance), amountToDeposit, databaseHandler.OPERATION_DEPOSIT);
             return result;
         }else {
             return false;
@@ -164,7 +166,7 @@ class ClientHandler implements Runnable {
         }
         if (userIsAuthenticated) {
             final int groszInPLN = 100;
-            int accountBalance = databaseHandler.getBalanceForUser(userNumber);
+            int accountBalance = databaseHandler.getBalanceForUser(userNumber, true);
             clientRequestUtil.setAmount(Integer.toString(accountBalance));
             return true;
         }else {
@@ -204,14 +206,15 @@ class ClientHandler implements Runnable {
         }
         if (userIsAuthenticated) {
             boolean result = false;
-            int accountBalance = databaseHandler.getBalanceForUser(userNumber);
+            int accountBalance = databaseHandler.getBalanceForUser(userNumber, false);
             int amountToDeposit = amount;
+            int operation = databaseHandler.OPERATION_TOP_UP_PHONE;
             if (currency == MoneyInfoStorage.Currency.EUR) { /* Only PLN deposits are allowed for now */
                 amountToDeposit = amountToDeposit * moneyInfoStorage.getExchangeRate(MoneyInfoStorage.Currency.EUR);
             }
             int newBalance = accountBalance - amountToDeposit;
             if (newBalance >= 0) {
-                result = databaseHandler.changeBalanceForUser(userNumber, String.valueOf(newBalance), currency);
+                result = databaseHandler.changeBalanceForUser(userNumber, String.valueOf(newBalance), amountToDeposit, operation);
             } else {
                 return false;
             }
