@@ -337,7 +337,8 @@ public class PeripherialsHandler {
                 }
             }
             case TOP_UP_PHONE_NUMBER -> {
-                if (KeyboardState.ENTER == keyboardHandler.getKeyboardState() && keyboardHandler.getInput() != "" && false == requestActive) {
+                if ((KeyboardState.ENTER == keyboardHandler.getKeyboardState() || SideButtonState.OK == sideButtonHandler.getSideButtonState())
+                    && keyboardHandler.getInput() != "" && false == requestActive) {
                     atmClient.setPhoneNumber(keyboardHandler.getInput());
                     keyboardHandler.clear();
                     atmState = AtmState.TOP_UP_AMOUNT;
@@ -356,7 +357,7 @@ public class PeripherialsHandler {
                     requestActive = false;
                 } else if ("failure".equals(clientRequestUtil.getSelectedRequest())) {
                     previousState = atmState;
-                    atmState = AtmState.TOP_UP_SUCCESS;
+                    atmState = AtmState.INSUFFICIENT_FUNDS;
                     requestActive = false;
                 }
             }
@@ -375,7 +376,7 @@ public class PeripherialsHandler {
                     requestActive = false;
                 } else if ("failure".equals(clientRequestUtil.getSelectedRequest())) {
                     previousState = atmState;
-                    //atmState = AtmState.PIN_CHANGE_FAILURE;
+                    atmState = AtmState.AGAIN_PIN;
                     requestActive = false;
                 }
             }
