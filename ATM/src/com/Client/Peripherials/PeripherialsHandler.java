@@ -341,11 +341,12 @@ public class PeripherialsHandler {
                     && keyboardHandler.getInput() != "" && false == requestActive) {
                     atmClient.setPhoneNumber(keyboardHandler.getInput());
                     keyboardHandler.clear();
+                    sideButtonHandler.clear();
                     atmState = AtmState.TOP_UP_AMOUNT;
                 }
             }
             case TOP_UP_AMOUNT -> {
-                if (KeyboardState.ENTER == keyboardHandler.getKeyboardState() && false == requestActive) {
+                if ((SideButtonState.OK == sideButtonHandler.getSideButtonState() || KeyboardState.ENTER == keyboardHandler.getKeyboardState()) && false == requestActive) {
                     atmState = AtmState.TOP_UP_ONGOING;
                     requestActive = false;
                 }
@@ -556,7 +557,7 @@ public class PeripherialsHandler {
             }
             case TOP_UP_ONGOING -> {
                 controller.handleAtmState(atmState);
-                if (KeyboardState.ENTER == keyboardHandler.getKeyboardState() && false == requestActive) {
+                if ((SideButtonState.OK == sideButtonHandler.getSideButtonState() || KeyboardState.ENTER == keyboardHandler.getKeyboardState()) && false == requestActive) {
                     moneyInfoStorage.setWholeUnits(Long.parseLong(keyboardHandler.getInput()));
                     atmClient.setMoneyInfo(moneyInfoStorage);
                     atmClient.sendRequest();
