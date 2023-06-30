@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * The ATMServer class represents the server component of the ATM application.
+ * It listens for client connections, handles client requests, and interacts with the database.
+ */
 public class ATMServer {
     String serverPort;
     String databaseAddress;
@@ -14,6 +18,18 @@ public class ATMServer {
 
     public com.Server.DatabaseHandler databaseHandler;
 
+    /**
+     * The main entry point of the server application.
+     *
+     * @param args The command-line arguments.
+     *             - args[0] is not used in this application.
+     *             - args[1] should be the server port.
+     *             - args[2] should be the database address.
+     *             - args[3] should be the database port.
+     *             - args[4] should be the database name.
+     *             - args[5] should be the database user.
+     *             - args[6] should be the database password.
+     */
     public void main(String[] args) {
         // split arguments into separate variables
         this.serverPort = args[1];

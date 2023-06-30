@@ -10,9 +10,18 @@ import javafx.scene.Parent;
 import java.util.Objects;
 import com.Client.ATMClient;
 
+/**
+ * The AtmApplication class represents the main entry point for the ATM application.
+ * It extends the JavaFX Application class and sets up the user interface and client backend.
+ */
 public class AtmApplication extends Application {
     static ATMClient atmClient;
 
+    /**
+     * Starts the ATM application by setting up the stage, loading the GUI, and starting the client backend.
+     *
+     * @param stage The primary stage of the application.
+     */
     @Override
     public void start(Stage stage) {
         try {
@@ -57,6 +66,12 @@ public class AtmApplication extends Application {
         }
     }
 
+    /**
+     * The main method of the ATM application.
+     * It sets up the client backend and launches the JavaFX application.
+     *
+     * @param args The command line arguments.
+     */
     public static void main(String[] args) {
         // set up the client backend
         atmClient = ATMClient.getInstance(Integer.parseInt(args[1]), args[2], Integer.parseInt(args[3]));

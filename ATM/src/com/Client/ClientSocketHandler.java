@@ -4,6 +4,10 @@ import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
 
+/**
+ * The ClientSocketHandler class handles the client-side socket communication with the server.
+ * It provides methods to connect to the server, send requests, receive responses, and disconnect from the server.
+ */
 public class ClientSocketHandler {
     private Socket clientSocket;
     private BufferedReader in;
@@ -12,6 +16,12 @@ public class ClientSocketHandler {
     private String serverAddress = "";
     private int serverPort = 0;
 
+    /**
+     * Constructs a new ClientSocketHandler instance with the specified server address and port.
+     *
+     * @param serverAddress The server address.
+     * @param serverPort    The server port.
+     */
     public ClientSocketHandler(String serverAddress, int serverPort) {
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
@@ -24,6 +34,9 @@ public class ClientSocketHandler {
         }
     }
 
+    /**
+     * Connects to the server using the specified server address and port.
+     */
     public void connectToServer() {
         try {
             if (clientSocket == null){
@@ -48,9 +61,14 @@ public class ClientSocketHandler {
         } catch (NullPointerException e) {
             System.out.println("Null pointer - Could not connect to server...");
         }
-
     }
 
+    /**
+     * Sends a request to the server and receives the response.
+     *
+     * @param request The request to send.
+     * @return The response received from the server.
+     */
     public String sendRequestAndReceiveResponse(String request) {
         try {
             if (null == clientSocket || clientSocket.isClosed()) {
@@ -79,7 +97,9 @@ public class ClientSocketHandler {
         return null;
     }
 
-
+    /**
+     * Disconnects from the server.
+     */
     public void disconnectFromServer() {
         try {
             in.close();
@@ -91,6 +111,11 @@ public class ClientSocketHandler {
         }
     }
 
+    /**
+     * Checks if the client is connected to the server.
+     *
+     * @return true if the client is connected, false otherwise.
+     */
     public boolean isConnected() {
         if (null == clientSocket || clientSocket.isClosed()){
             return false;

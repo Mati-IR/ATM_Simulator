@@ -10,7 +10,16 @@ import com.MoneyInfoStorage.MoneyInfoStorage;
 import java.util.Objects;
 //import static com.Client.Peripherials.SideButtonHandler.SideButtonState.WITHDRAW_PLN;
 
+
+/**
+ * Sigleton class
+ * This class is responsible for handling all the peripherials of the ATM.
+ * This class contains state machine that is responsible for handling the input from the peripherials and ATM behaviour.
+ */
 public class PeripherialsHandler {
+    /**
+     * The enumeration representing the possible states of an ATM.
+     */
     public enum AtmState {
         HELLO, INPUT_PIN, AGAIN_PIN, AUTHENTICATION_ONGOING, OPERATION_CHOICE,
         WITHDRAW_PLN, WITHDRAW_EUR, INSUFFICIENT_FUNDS, DEPOSIT_AMOUNT_CHOICE, DEPOSIT_OTHER_AMOUNT, DEPOSIT_INCORRECT_AMOUNT, BALANCE_REQUEST_ONGOING, BALANCE, WITHDRAW_OTHER_AMOUNT, INCORRECT_AMOUNT,
@@ -34,6 +43,11 @@ public class PeripherialsHandler {
     private boolean cashPressed = false;
     private boolean cardPressed = false;
 
+    /**
+     * Retrieves the singleton instance of the PeripherialsHandler class.
+     *
+     * @return The singleton instance of PeripherialsHandler.
+     */
     public static PeripherialsHandler getInstance() {
         if (instance == null) {
             synchronized (PeripherialsHandler.class) {
@@ -45,64 +59,120 @@ public class PeripherialsHandler {
         return instance;
     }
 
+    /**
+     * Sets the main controller for the PeripherialsHandler.
+     *
+     * @param controller The MainController to be set.
+     */
     public void setController(MainController controller) {
         this.controller = controller;
     }
 
+
+    /**
+     * Sets the message received by the PeripherialsHandler.
+     * The message will be decoded using the clientRequestUtil.
+     *
+     * @param message The message to be set.
+     */
     public void setMessage(String message) {
         if (message != null) {
             this.clientRequestUtil.decodeRequest(message);
-            //System.out.println("Message: " + message);
         }
     }
 
     /****** Keyboard ******/
+    /**
+     * Handles the input from the keyboard.
+     *
+     * @param key The KeyboardKeys enum representing the key pressed.
+     */
     public void handleKeyboardInput(KeyboardKeys key) {
         keyboardHandler.handleKeyboardInput(key);
         run();
     }
 
+    /**
+     * Retrieves the input from the keyboard.
+     *
+     * @return The input string from the keyboard.
+     */
     public String getKeyboardInput() {
         return keyboardHandler.getInput();
     }
 
+    /**
+     * Retrieves the current state of the keyboard.
+     *
+     * @return The KeyboardState enum representing the current state of the keyboard.
+     */
     public KeyboardState getKeyboardState() {
         return keyboardHandler.getKeyboardState();
     }
 
+    /**
+     * Clears the keyboard input.
+     */
     public void clearKeyboard() {
         keyboardHandler.clear();
     }
 
     /****** Card Reader ******/
+    /**
+     * Handles the input from the card reader.
+     *
+     * @param cardNumber The card number read by the card reader.
+     */
     public void handleCardReaderInput(String cardNumber) {
         cardPressed = true;
         cardReaderHandler.handleCardReaderInput(cardNumber);
         run();
     }
 
+    /**
+     * Retrieves the card number read by the card reader.
+     *
+     * @return The card number as a string.
+     */
     public String getCardNumber() {
         return cardReaderHandler.getCardNumber();
     }
 
+    /**
+     * Clears the card reader.
+     */
     public void clearCardReader() {
         cardReaderHandler.clear();
     }
 
     /****** Side buttons ******/
+    /**
+     * Handles the input from the side buttons.
+     *
+     * @param buttonNumber The number of the side button pressed.
+     */
     public void handleSideButton(int buttonNumber) {
         sideButtonHandler.handleSideButton(buttonNumber, atmState);
         run();
     }
 
     /****** Cash ******/
+    /**
+     * Handles the pressing of the cash button.
+     */
     public void handleCashButton() {
         cashPressed = true;
         run();
     }
 
-
+    
     /* STATE MACHINE */
+    /**
+     * Checks if the given SideButtonState is an amount choice state.
+     *
+     * @param state The SideButtonState to be checked.
+     * @return true if the state is an amount choice state, false otherwise.
+     */
     private boolean isSideButtonStateAnAmountChoice(SideButtonState state) {
         switch (state) {
             case CHOICE_50, CHOICE_100, CHOICE_150, CHOICE_200, CHOICE_300, CHOICE_400, CHOICE_500 -> {
@@ -114,6 +184,12 @@ public class PeripherialsHandler {
         }
     }
 
+    /**
+     * Evaluates common events that can occur during the ATM operation.
+     * These events include clearing the keyboard, canceling the operation, and returning to the initial state.
+     *
+     * @return true if a common event occurred, false otherwise.
+     */
     private boolean evaluateCommonEvents() {
         if (Objects.equals(keyboardHandler.getKeyboardState(), KeyboardState.CLEAR)) {
             keyboardHandler.clear();
@@ -128,6 +204,9 @@ public class PeripherialsHandler {
         return false;
     }
 
+    /**
+     * Evaluates the current state of the ATM and performs the necessary actions.
+     */
     private void evaluateStateChange() {
         if (true == evaluateCommonEvents()) {
             return;
@@ -397,7 +476,9 @@ public class PeripherialsHandler {
 
     }
 
-
+    /**
+     * Runs the state machine
+     */
     private void runState() {
         switch (atmState){
             case HELLO -> {

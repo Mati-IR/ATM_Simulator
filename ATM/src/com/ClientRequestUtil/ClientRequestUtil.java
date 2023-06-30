@@ -5,6 +5,10 @@ import com.MoneyInfoStorage.MoneyInfoStorage;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The ClientRequestUtil class provides utility methods for encoding and decoding client requests,
+ * as well as managing request-related data.
+ */
 public class ClientRequestUtil {
     private boolean isRequestValid = false;
     private String selectedRequest = null;
@@ -44,6 +48,11 @@ public class ClientRequestUtil {
     }
 
 
+    /**
+     * Encodes the selected request along with associated data into a formatted request string.
+     *
+     * @return The encoded request string.
+     */
     public String encodeRequest() {
         try {
 
@@ -85,6 +94,11 @@ public class ClientRequestUtil {
         return "Error";
     }
 
+    /**
+     * Decodes and validates an encoded request string.
+     *
+     * @param encodedRequest The encoded request string to decode.
+     */
     public void decodeRequest(String encodedRequest) {
         // Split the encoded request and perform decoding/validation
         String[] parts = encodedRequest.trim().split("\\s+");
@@ -197,6 +211,12 @@ public class ClientRequestUtil {
         }
     }
 
+    /**
+     * Encodes the given PIN value.
+     *
+     * @param pin the PIN value to encode
+     * @return the encoded PIN value
+     */
     private static String encodePIN(String pin) {
         // Perform PIN validation and return encoded value
         if (pin.matches("\\d{4}")) {
@@ -205,6 +225,12 @@ public class ClientRequestUtil {
         return null;
     }
 
+
+    /**
+     * Sets the amount.
+     *
+     * @param amount the amount to set
+     */
     public void setAmount(String amount) {
         this.amount = amount;
     }
@@ -217,6 +243,12 @@ public class ClientRequestUtil {
         return null;
     }
 
+    /**
+     * Decodes the encoded arguments and performs decoding/validation.
+     *
+     * @param encodedArguments the encoded arguments to decode
+     * @return the decoded arguments as a string
+     */
     private String decodeArguments(String encodedArguments) {
         // Split the encoded arguments and perform decoding/validation
         String[] parts = encodedArguments.trim().split("\\s+");
@@ -238,6 +270,12 @@ public class ClientRequestUtil {
         return "";
     }
 
+    /**
+     * Decodes the history from the encoded history array.
+     *
+     * @param encodedHistory the encoded history array to decode
+     * @return the decoded history as a string
+     */
     private static String decodeHistory(String encodedHistory[]) {
         // Perform decoding/validation of history and return decoded value
         //if history is one or more characters and includes both letters and numbers
@@ -252,6 +290,12 @@ public class ClientRequestUtil {
         return null;
     }
 
+    /**
+     * Decodes the encoded phone number.
+     *
+     * @param encodedPhoneNumber the encoded phone number to decode
+     * @return the decoded phone number
+     */
     private String decodePhoneNumber(String encodedPhoneNumber) {
         // Perform decoding/validation of phone number and return decoded value
         if (encodedPhoneNumber.matches("\\d+")) {
@@ -259,6 +303,13 @@ public class ClientRequestUtil {
         }
         return null;
     }
+
+    /**
+     * Decodes the encoded PIN value.
+     *
+     * @param encodedPIN the encoded PIN value to decode
+     * @return the decoded PIN value
+     */
     private static String decodePIN(String encodedPIN) {
         // Perform decoding/validation of PIN and return decoded value
         if (encodedPIN.matches("\\d{4}")) {
@@ -267,6 +318,12 @@ public class ClientRequestUtil {
         return null;
     }
 
+    /**
+     * Decodes the encoded user number.
+     *
+     * @param encodedUserNumber the encoded user number to decode
+     * @return the decoded user number
+     */
     private static String decodeUserNumber(String encodedUserNumber) {
         // Perform decoding/validation of user number and return decoded value
         if (encodedUserNumber.matches("\\d+")) {
@@ -275,6 +332,12 @@ public class ClientRequestUtil {
         return null;
     }
 
+    /**
+     * Decodes the encoded amount value.
+     *
+     * @param encodedAmount the encoded amount value to decode
+     * @return the decoded amount value
+     */
     private static String decodeAmount(String encodedAmount) {
         // Perform decoding/validation of amount and return decoded value
         if (encodedAmount.matches("\\d+")) {
@@ -283,6 +346,12 @@ public class ClientRequestUtil {
         return null;
     }
 
+    /**
+     * Decodes the encoded currency value.
+     *
+     * @param encodedCurrency the encoded currency value to decode
+     * @return the decoded currency value
+     */
     private static MoneyInfoStorage.Currency decodeCurrency(String encodedCurrency) {
         // Perform decoding/validation of currency and return decoded value
         if (encodedCurrency.matches("PLN")) {
@@ -293,58 +362,127 @@ public class ClientRequestUtil {
         return null;
     }
 
+    /**
+     * Sets the money information for the client request.
+     *
+     * @param moneyInfo The MoneyInfoStorage object containing the money information.
+     */
     public void setMoneyInfo(MoneyInfoStorage moneyInfo) {
         this.moneyInfo = moneyInfo;
     }
 
+    /**
+     * Sets the selected request based on the provided request string.
+     * The request string will be converted to lowercase before mapping.
+     *
+     * @param request The request string to set.
+     */
     public void setRequest(String Request) {
         this.selectedRequest = requestMappings.get(Request.toLowerCase());
     }
 
+    /**
+     * Sets the PIN for authentication.
+     *
+     * @param pin The PIN to set.
+     */
     public void setPin(String pin) {
         this.pin = pin;
     }
 
+    /**
+     * Sets the phone number for the client request.
+     *
+     * @param phoneNumber The phone number to set.
+     */
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
+    /**
+     * Sets the card number for the client request.
+     *
+     * @param cardNumber The card number to set.
+     */
     public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
     }
 
+    /**
+     * Returns the status of the client request validity.
+     *
+     * @return true if the request is valid, false otherwise.
+     */
     public boolean getIsRequestValid() {
         return this.isRequestValid;
     }
 
+    /**
+     * Returns the selected request.
+     *
+     * @return The selected request string.
+     */
     public String getSelectedRequest() {
         return this.selectedRequest;
     }
 
+    /**
+     * Returns the card number associated with the client request.
+     *
+     * @return The card number.
+     */
     public String getCardNumber() {
         return this.cardNumber;
     }
 
+    /**
+     * Returns the currency associated with the client request.
+     *
+     * @return The currency value as a MoneyInfoStorage.Currency enum.
+     */
     public MoneyInfoStorage.Currency getCurrency() {
         return this.moneyInfo.getCurrency();
     }
 
+    /**
+     * Returns the amount associated with the client request as an integer value.
+     *
+     * @return The amount value.
+     */
     public int getAmount() {
         return Integer.parseInt(this.amount);
     }
 
+    /**
+     * Returns the PIN associated with the client request.
+     *
+     * @return The PIN value.
+     */
     public String getPin() {
         return this.pin;
     }
 
+    /**
+     * Sets the history string for the client request.
+     *
+     * @param history The history string to set.
+     */
     public void setHistory(String history) {
         this.history = history;
     }
 
+    /**
+     * Returns the history string associated with the client request.
+     *
+     * @return The history string.
+     */
     public String getHistory() {
         return this.history;
     }
 
+    /**
+     * Resets all the fields of the client request to their initial values.
+     */
     public void clear() {
         this.selectedRequest = "";
         this.pin = "";

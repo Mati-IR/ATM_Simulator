@@ -10,7 +10,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-/* Handler for XAMPP MySQL database */
+/**
+ * Handler for XAMPP MySQL database.
+ */
 public class DatabaseHandler {
     private String databaseAddress;
     private String databasePort;
@@ -33,7 +35,15 @@ public class DatabaseHandler {
     public final int OPERATION_HISTORY = 7;
 
 
-
+    /**
+     * Constructs a new DatabaseHandler instance.
+     *
+     * @param databaseAddress  the address of the database
+     * @param databasePort     the port of the database
+     * @param databaseName     the name of the database
+     * @param databaseUsername the username for connecting to the database
+     * @param databasePassword the password for connecting to the database
+     */
     public DatabaseHandler(String databaseAddress, String databasePort, String databaseName, String databaseUsername, String databasePassword) {
         this.databaseAddress = databaseAddress;
         this.databasePort = databasePort;
@@ -42,6 +52,9 @@ public class DatabaseHandler {
         this.databasePassword = databasePassword;
     }
 
+    /**
+     * Connects to the database.
+     */
     public void connectToDatabase() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -60,6 +73,13 @@ public class DatabaseHandler {
         }
     }
 
+    /**
+     * Logs an operation to the database.
+     *
+     * @param userId    the ID of the user performing the operation
+     * @param operation the type of operation
+     * @param amount    the amount related to the operation
+     */
     public void logToDatabase(String userId, int operation, String amount) {
         try {
             if (isConnected()) {
@@ -78,6 +98,9 @@ public class DatabaseHandler {
         }
     }
 
+    /**
+     * Disconnects from the database.
+     */
     public void disconnectFromDatabase() {
         if (connection != null) {
             try {
@@ -90,6 +113,11 @@ public class DatabaseHandler {
         }
     }
 
+    /**
+     * Checks if the connection to the database is active.
+     *
+     * @return {@code true} if connected, {@code false} otherwise
+     */
     public boolean isConnected() {
         try {
             return connection != null && !connection.isClosed();
@@ -99,6 +127,12 @@ public class DatabaseHandler {
         return false;
     }
 
+    /**
+     * Executes a database query.
+     *
+     * @param query the SQL query to execute
+     * @return the ResultSet containing the query result
+     */
     public ResultSet executeQuery(String query) {
         ResultSet resultSet = null;
         try {
@@ -115,6 +149,12 @@ public class DatabaseHandler {
         return resultSet;
     }
 
+    /**
+     * Retrieves the PIN for a user from the database.
+     *
+     * @param userId the ID of the user
+     * @return the PIN of the user, or {@code null} if not found
+     */
     public String getPinForUser(String userId) {
         String pin = null;
         try {
@@ -135,6 +175,13 @@ public class DatabaseHandler {
         return pin;
     }
 
+    /**
+     * Retrieves the balance for a user from the database.
+     *
+     * @param userId        the ID of the user
+     * @param logOperation  flag indicating whether to log the operation
+     * @return the balance of the user
+     */
     public int getBalanceForUser(String userId, boolean logOperation) {
         String balance = null;
         try {
@@ -158,6 +205,13 @@ public class DatabaseHandler {
         return Integer.parseInt(balance);
     }
 
+    /**
+     * Changes the PIN for a user in the database.
+     *
+     * @param userId the ID of the user
+     * @param newPin the new PIN to set
+     * @return {@code true} if the PIN change is successful, {@code false} otherwise
+     */
     public boolean changePinForUser(String userId, String newPin) {
         try {
             if (isConnected()) {
@@ -179,6 +233,15 @@ public class DatabaseHandler {
         return false;
     }
 
+    /**
+     * Changes the balance for a user in the database.
+     *
+     * @param userId    the ID of the user
+     * @param newBalance the new balance to set
+     * @param amount     the amount related to the operation
+     * @param operation  the type of operation
+     * @return {@code true} if the balance change is successful, {@code false} otherwise
+     */
     public boolean changeBalanceForUser(String userId, String newBalance, int amount, int operation) {
         try {
             if (isConnected()) {
@@ -200,6 +263,12 @@ public class DatabaseHandler {
         return false;
     }
 
+    /**
+     * Retrieves the history for a user from the database.
+     *
+     * @param userId the ID of the user
+     * @return the history of the user as a string
+     */
     public String getHistoryForUser(String userId) {
         String history = "";
         try {

@@ -3,10 +3,20 @@ package com.Client.Peripherials;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The KeyboardHandler class is responsible for handling input from a keyboard device.
+ */
 public class KeyboardHandler {
+    /**
+     * Enumeration of keyboard keys.
+     */
     public enum KeyboardKeys {
         KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9, KEY_0, KEY_CANCEL, KEY_CLEAR, KEY_ENTER
     }
+
+    /**
+     * Enumeration of keyboard states.
+     */
     public enum KeyboardState {
         OK, CANCEL, CLEAR, ENTER, ERROR
     }
@@ -32,6 +42,11 @@ public class KeyboardHandler {
     private KeyboardState keyboardState = KeyboardState.OK;
     private String input = "";
 
+    /**
+     * Handles the input from the keyboard device.
+     *
+     * @param key The keyboard key that was pressed.
+     */
     public void handleKeyboardInput(KeyboardKeys key) {
         switch (key){
             case KEY_CANCEL:
@@ -56,7 +71,7 @@ public class KeyboardHandler {
             case KEY_8:
             case KEY_9:
                 keyboardState = KeyboardState.OK;
-                    input += keysMappings.get(key.toString());
+                input += keysMappings.get(key.toString());
                 break;
             default:
                 keyboardState = KeyboardState.ERROR;
@@ -64,10 +79,20 @@ public class KeyboardHandler {
         }
     }
 
+    /**
+     * Retrieves the input received from the keyboard.
+     *
+     * @return The input string.
+     */
     public String getInput() {
         return input;
     }
 
+    /**
+     * Retrieves the current state of the keyboard.
+     *
+     * @return The keyboard state.
+     */
     public KeyboardState getKeyboardState() {
         return keyboardState;
     }
@@ -80,6 +105,9 @@ public class KeyboardHandler {
         keyboardState = KeyboardState.OK;
     }
 
+    /**
+     * Clears the input and resets the keyboard state.
+     */
     public void clear() {
         clearInput();
         clearState();

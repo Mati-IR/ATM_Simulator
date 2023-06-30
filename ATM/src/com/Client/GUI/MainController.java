@@ -1,3 +1,8 @@
+/**
+ The MainController class is responsible for managing the GUI of the ATM application.
+ It handles user interactions, updates the display, and communicates with the PeripheralsHandler.
+ */
+
 package com.Client.GUI;
 
 import com.Client.Peripherials.PeripherialsHandler;
@@ -11,6 +16,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
+
+
+
+/**
+ The MainController class controls the main window of the ATM application.
+ */
 
 public class MainController {
     private AtmState atmState = AtmState.HELLO;
@@ -148,7 +160,11 @@ public class MainController {
     private Button receipt;
 
 
-
+    /**
+     * Handles the action when the user enters the card number.
+     * Saves the card number and validates it.
+     * Closes the current window if the card number is valid.
+     */
     @FXML
     private void handleCardNumberFromUser() {
         //save the card number
@@ -320,33 +336,75 @@ public class MainController {
         pinlabel1.setText(starsString);
     }
 
+    /**
+     * Sets the amount for cash withdrawal on the GUI.
+     *
+     * @param amount The amount to be displayed for cash withdrawal.
+     */
     public void setCashOutAmount(String amount) {
         withdrawAmount.setText(amount);
     }
 
+    /**
+     * Sets the amount for cash deposit on the GUI.
+     *
+     * @param amount The amount to be displayed for cash deposit.
+     */
     public void setDepostitAmount(String amount) {
         cashput.setText(amount);
     }
 
+    /**
+     * Sets the deposited cash amount on the GUI.
+     *
+     * @param amount The amount of cash that has been deposited.
+     */
     public void setDepositedCash(String amount) {
         depositedCash.setText(amount);
     }
 
+    /**
+     * Sets the phone number on the GUI for phone top-up.
+     *
+     * @param number The phone number to be displayed.
+     */
     public void setPhoneNumber(String number) {
         telenum.setText(number);
     }
+
+    /**
+     * Sets the amount for phone top-up on the GUI.
+     *
+     * @param amount The amount to be displayed for phone top-up.
+     */
     public void setPhoneAmount(String amount) {
         telecash.setText(amount);
     }
 
+    /**
+     * Sets the new PIN on the GUI for PIN change.
+     *
+     * @param pin The new PIN to be displayed.
+     */
     public void setNewPin(String pin) {
         newpin.setText(pin);
     }
 
+    /**
+     * Sets the transaction history on the GUI.
+     *
+     * @param history The transaction history to be displayed.
+     */
     public void setHistory(String history) {
         this.history = history;
     }
 
+    /**
+     * Sets the visibility of the specified anchor pane on the GUI.
+     *
+     * @param anchorPane The anchor pane to be shown or hidden.
+     * @param visible    {@code true} to make the anchor pane visible, {@code false} to hide it.
+     */
     private void setScreenAnchorPaneVisible(AnchorPane anchorPane, boolean visible) {
         anchorPane.setVisible(visible);
         //set other anchor panes invisible
@@ -359,6 +417,12 @@ public class MainController {
         }
     }
 
+    /**
+     * Extracts the relevant information from a history record and formats it.
+     *
+     * @param history The array containing the history record information.
+     * @return The formatted history record string.
+     */
     private String extractHistory(String history[]) {
         String operation = "";
         switch (history[3]) {
@@ -377,6 +441,10 @@ public class MainController {
         return operation + " " + date; // + " " + time;
     }
 
+    /**
+     * Handles the display of the transaction history on the GUI.
+     * The history is retrieved from the 'history' variable.
+     */
     private void handleHistory() {
         // each history record is seperated by a semicolon
         String[] historyRecords = history.split(";");
@@ -434,6 +502,11 @@ public class MainController {
 
     }
 
+    /**
+     * Handles the change in ATM state and updates the GUI accordingly.
+     *
+     * @param atmState The new ATM state.
+     */
     public void handleAtmState(AtmState atmState) {
         System.out.println("Atm state changed to " + atmState);
         this.atmState = atmState;

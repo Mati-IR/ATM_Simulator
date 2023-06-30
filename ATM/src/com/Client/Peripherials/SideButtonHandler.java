@@ -3,6 +3,9 @@ import com.Client.Peripherials.PeripherialsHandler.AtmState;
 
 import static com.Client.Peripherials.PeripherialsHandler.AtmState.*;
 
+/**
+ * The SideButtonHandler class handles the state and behavior of the side buttons on the ATM interface.
+ */
 public class SideButtonHandler {
     public enum SideButtonState {
         EMPTY, OK, YES, NO , CHOICE_50, CHOICE_100, CHOICE_150, CHOICE_200, CHOICE_300, CHOICE_400, CHOICE_500, OTHER,
@@ -10,6 +13,13 @@ public class SideButtonHandler {
         OPERATION_PRINT, PIN_CHANGE, ERROR
     }
    private SideButtonState sideButtonState = SideButtonState.EMPTY;
+
+    /**
+     * Handles the side button press based on the button number and ATM state.
+     *
+     * @param buttonNumber The number of the side button pressed.
+     * @param atmState     The current state of the ATM.
+     */
     public void handleSideButton(int buttonNumber, AtmState atmState) {
         switch (buttonNumber){
             case 1 -> {
@@ -90,10 +100,20 @@ public class SideButtonHandler {
         }
     }
 
+    /**
+     * Retrieves the current state of the side button.
+     *
+     * @return The current state of the side button.
+     */
     public SideButtonState getSideButtonState() {
         return sideButtonState;
     }
 
+    /**
+     * Retrieves the amount associated with the current side button state.
+     *
+     * @return The amount associated with the current side button state, or an empty string if no amount is associated.
+     */
     public String getAmount() {
         switch (sideButtonState) {
             case CHOICE_50:
@@ -114,6 +134,10 @@ public class SideButtonHandler {
                 return "";
         }
     }
+
+    /**
+     * Resets the side button state to empty.
+     */
     public void clear() {
         this.sideButtonState = SideButtonState.EMPTY;
     }
