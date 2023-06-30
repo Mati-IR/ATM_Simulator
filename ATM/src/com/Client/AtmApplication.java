@@ -43,7 +43,7 @@ public class AtmApplication extends Application {
             Stage cardSelectionStage = new Stage();
             cardSelectionStage.setTitle("Card Selection");
             Parent cardSelectionRoot = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("GUI/ATM_GUI_CARD_SELECT.fxml")));
-            Scene cardSelectionScene = new Scene(cardSelectionRoot, 180, 180);
+            Scene cardSelectionScene = new Scene(cardSelectionRoot, 200, 200);
             cardSelectionStage.setScene(cardSelectionScene);
             cardSelectionStage.setMaximized(false);
             cardSelectionStage.setResizable(false);
@@ -59,7 +59,7 @@ public class AtmApplication extends Application {
 
     public static void main(String[] args) {
         // set up the client backend
-        atmClient = ATMClient.getInstance();
+        atmClient = ATMClient.getInstance(Integer.parseInt(args[1]), args[2], Integer.parseInt(args[3]));
 
         launch();
     }

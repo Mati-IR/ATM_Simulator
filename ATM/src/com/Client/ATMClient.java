@@ -27,6 +27,12 @@ public class ATMClient {
         }
         return instance;
     }
+    public static ATMClient getInstance(int clientID, String serverAddress, int serverPort) {
+        if (instance == null) {
+            instance = new ATMClient(clientID, serverAddress, serverPort);
+        }
+        return instance;
+    }
 
     private ATMClient(int clientID, String serverAddress, int serverPort) {
         this.clientID = clientID;

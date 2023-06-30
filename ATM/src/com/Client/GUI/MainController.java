@@ -374,7 +374,7 @@ public class MainController {
         String date = history[1];
         String time = history[2];
 
-        return operation + " " + date + " " + time;
+        return operation + " " + date; // + " " + time;
     }
 
     private void handleHistory() {

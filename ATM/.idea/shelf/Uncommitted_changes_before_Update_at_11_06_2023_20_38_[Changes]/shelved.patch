@@ -1,0 +1,182 @@
+Index: src/com/Server/ATMServer.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.Server;\r\n\r\nimport java.io.IOException;\r\nimport java.net.ServerSocket;\r\nimport java.net.Socket;\r\n\r\npublic class ATMServer {\r\n    String serverPort;\r\n    String databaseAddress;\r\n    String databasePort;\r\n    String databaseName;\r\n    String databaseUser;\r\n    String databasePassword;\r\n\r\n    public com.Server.DatabaseHandler databaseHandler;\r\n\r\n    public void main(String[] args) {\r\n        // split arguments into separate variables\r\n        this.serverPort = args[1];\r\n        this.databaseAddress = args[2];\r\n        this.databasePort = args[3];\r\n        this.databaseName = args[4];\r\n        this.databaseUser = args[5];\r\n        this.databasePassword = args[6];\r\n\r\n        try {\r\n            ServerSocket serverSocket = new ServerSocket(1234);\r\n            System.out.println(\"Server started and listening on port 1234...\");\r\n\r\n            // Connect to database\r\n            databaseHandler = new com.Server.DatabaseHandler(databaseAddress, databasePort, databaseName, databaseUser, databasePassword);\r\n            databaseHandler.connectToDatabase();\r\n\r\n            while (true) {\r\n                Socket clientSocket = serverSocket.accept();\r\n                System.out.println(\"Client connected: \" + clientSocket);\r\n\r\n                // Handle client request in a separate thread\r\n                Thread clientThread = new Thread(new ClientHandler(clientSocket, databaseHandler));\r\n                clientThread.start();\r\n            }\r\n        } catch (IOException e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/Server/ATMServer.java b/src/com/Server/ATMServer.java
+--- a/src/com/Server/ATMServer.java	(revision c2f83281374eb7b79573cafcf131bb87f9415e55)
++++ b/src/com/Server/ATMServer.java	(date 1686427840675)
+@@ -25,7 +25,7 @@
+ 
+         try {
+             ServerSocket serverSocket = new ServerSocket(1234);
+-            System.out.println("Server started and listening on port 1234...");
++            System.out.println("Server started and listening on port " + this.databasePort);
+ 
+             // Connect to database
+             databaseHandler = new com.Server.DatabaseHandler(databaseAddress, databasePort, databaseName, databaseUser, databasePassword);
+Index: src/com/Server/ClientHandler.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.Server;\r\n\r\n\r\nimport java.io.BufferedReader;\r\nimport java.io.IOException;\r\nimport java.io.InputStreamReader;\r\nimport java.io.PrintWriter;\r\nimport java.net.Socket;\r\n\r\nimport MoneyInfoStorage.MoneyInfoStorage;\r\n\r\nclass ClientHandler implements Runnable {\r\n    boolean userIsAuthenticated = false;\r\n    private Socket clientSocket;\r\n    private ClientRequestUtil.ClientRequestUtil clientRequestUtil;\r\n    private DatabaseHandler databaseHandler;\r\n    MoneyInfoStorage moneyInfoStorage;\r\n\r\n\r\n    //private MoneyInfoStorage moneyInfoStorage;\r\n\r\n    public ClientHandler(Socket clientSocket, DatabaseHandler databaseHandler) {\r\n        clientRequestUtil = new ClientRequestUtil.ClientRequestUtil();\r\n        this.clientSocket = clientSocket;\r\n        this.databaseHandler = databaseHandler;\r\n        this.moneyInfoStorage = new MoneyInfoStorage();\r\n    }\r\n\r\n    @Override\r\n    public void run() {\r\n        try {\r\n            // Create input and output streams for client communication\r\n            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));\r\n            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);\r\n\r\n            // Read client request\r\n            String request = in.readLine();\r\n            System.out.println(\"Received request from client: \" + request);\r\n\r\n            // Process client request and send response\r\n            processRequest(request);\r\n            // Send response to client\r\n            out.println(clientRequestUtil.encodeRequest());\r\n\r\n            // Close streams and socket\r\n            in.close();\r\n            out.close();\r\n            clientSocket.close();\r\n            System.out.println(\"Client disconnected: \" + clientSocket);\r\n        } catch (IOException e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    private boolean processRequest(String request) {\r\n        // TODO: Implement the logic for processing client requests and generating a response\r\n        // TODO: Parse the client request to identify the operation type and required parameters\r\n        clientRequestUtil.decodeRequest(request);\r\n        String selectedRequest = clientRequestUtil.getSelectedRequest();\r\n\r\n        // TODO: Based on the operation type, perform the necessary actions\r\n        boolean result = false;\r\n        switch (selectedRequest) {\r\n            case \"authenticate\":\r\n                result = authentificationHandler(clientRequestUtil.getUserNumber(), clientRequestUtil.getPin());\r\n                break;\r\n            case \"withdraw\":\r\n                result = withdrawHandler(clientRequestUtil.getUserNumber(), clientRequestUtil.getAmount(), clientRequestUtil.getCurrency());\r\n                break;\r\n            case \"deposit\":\r\n                result = depositHandler(clientRequestUtil.getUserNumber(), clientRequestUtil.getAmount(), clientRequestUtil.getCurrency());\r\n                break;\r\n            case \"balance\":\r\n                result = balanceHandler(clientRequestUtil.getUserNumber());\r\n                break;\r\n            case \"history\":\r\n                /* TODO: Create handler */\r\n                //result = historyHandler(clientRequestUtil.getUserNumber());\r\n                break;\r\n            case \"changepin\":\r\n                result = changePinHandler(clientRequestUtil.getUserNumber(), clientRequestUtil.getPin());\r\n                break;\r\n            case \"topup\":\r\n                /* TODO: Create handler */\r\n                break;\r\n\r\n\r\n        }\r\n        if (true == result) {\r\n            clientRequestUtil.setRequest(\"success\");\r\n        } else {\r\n            clientRequestUtil.setRequest(\"failure\");\r\n        }\r\n        return result;\r\n    }\r\n\r\n    private boolean authentificationHandler(String userNumber, String userInputPin) {\r\n        if (false == clientRequestUtil.getIsRequestValid()){\r\n            return false;\r\n        }\r\n        String pinFromDatabase = databaseHandler.getPinForUser(userNumber);\r\n        if (pinFromDatabase.equals(userInputPin)) {\r\n            userIsAuthenticated = true;\r\n            return true;\r\n        } else {\r\n            userIsAuthenticated = false;\r\n            return false;\r\n        }\r\n    }\r\n\r\n    private boolean withdrawHandler(String userNumber, int amount, MoneyInfoStorage.Currency currency) {\r\n        if (false == clientRequestUtil.getIsRequestValid()){\r\n            return false;\r\n        }\r\n        if (userIsAuthenticated) {\r\n            int accountBalance = databaseHandler.getBalanceForUser(userNumber);\r\n            int amountToWithdraw = amount;\r\n            if (currency == MoneyInfoStorage.Currency.EUR) { /* Only PLN withdrawals are allowed for now */\r\n                amountToWithdraw *= moneyInfoStorage.getExchangeRate();\r\n            }\r\n            if (accountBalance >= amountToWithdraw) {\r\n                int newBalance = accountBalance - amountToWithdraw;\r\n                boolean result = databaseHandler.changeBalanceForUser(userNumber, String.valueOf(newBalance));\r\n                return result;\r\n            } else {\r\n                return false;\r\n            }\r\n        }else {\r\n            return false;\r\n        }\r\n    }\r\n\r\n    private boolean depositHandler(String userNumber, int amount, MoneyInfoStorage.Currency currency) {\r\n        if (false == clientRequestUtil.getIsRequestValid()){\r\n            return false;\r\n        }\r\n        if (userIsAuthenticated) {\r\n            int accountBalance = databaseHandler.getBalanceForUser(userNumber);\r\n            int amountToDeposit = amount;\r\n            if (currency == MoneyInfoStorage.Currency.EUR) { /* Only PLN deposits are allowed for now */\r\n                amountToDeposit *= moneyInfoStorage.getExchangeRate();\r\n            }\r\n            int newBalance = accountBalance + amountToDeposit;\r\n            boolean result = databaseHandler.changeBalanceForUser(userNumber, String.valueOf(newBalance));\r\n            return result;\r\n        }else {\r\n            return false;\r\n        }\r\n    }\r\n\r\n    private boolean balanceHandler(String userNumber) {\r\n        if (false == clientRequestUtil.getIsRequestValid()){\r\n            return false;\r\n        }\r\n        if (userIsAuthenticated) {\r\n            final int groszInPLN = 100;\r\n            int accountBalance = databaseHandler.getBalanceForUser(userNumber);\r\n            MoneyInfoStorage zloteASkromne = new MoneyInfoStorage(MoneyInfoStorage.Currency.PLN, accountBalance / groszInPLN, accountBalance % groszInPLN);\r\n            clientRequestUtil.setMoneyInfo(zloteASkromne);\r\n            return true;\r\n        }else {\r\n            return false;\r\n        }\r\n    }\r\n\r\n    private boolean changePinHandler(String userNumber, String newPin) {\r\n        if (false == clientRequestUtil.getIsRequestValid()){\r\n            return false;\r\n        }\r\n        if (userIsAuthenticated) {\r\n            boolean result = databaseHandler.changePinForUser(userNumber, newPin);\r\n            return result;\r\n        }else {\r\n            return false;\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/Server/ClientHandler.java b/src/com/Server/ClientHandler.java
+--- a/src/com/Server/ClientHandler.java	(revision c2f83281374eb7b79573cafcf131bb87f9415e55)
++++ b/src/com/Server/ClientHandler.java	(date 1686427325535)
+@@ -62,27 +62,37 @@
+         boolean result = false;
+         switch (selectedRequest) {
+             case "authenticate":
++                System.out.println("Authenticate request received");
+                 result = authentificationHandler(clientRequestUtil.getUserNumber(), clientRequestUtil.getPin());
+                 break;
+             case "withdraw":
++                System.out.println("Withdraw request received");
+                 result = withdrawHandler(clientRequestUtil.getUserNumber(), clientRequestUtil.getAmount(), clientRequestUtil.getCurrency());
+                 break;
+             case "deposit":
++                System.out.println("Deposit request received");
+                 result = depositHandler(clientRequestUtil.getUserNumber(), clientRequestUtil.getAmount(), clientRequestUtil.getCurrency());
+                 break;
+             case "balance":
++                System.out.println("Balance request received");
+                 result = balanceHandler(clientRequestUtil.getUserNumber());
+                 break;
+             case "history":
++                System.out.println("History request received");
+                 /* TODO: Create handler */
+-                //result = historyHandler(clientRequestUtil.getUserNumber());
++                result = historyHandler(clientRequestUtil.getUserNumber());
+                 break;
+             case "changepin":
++                System.out.println("Change pin request received");
+                 result = changePinHandler(clientRequestUtil.getUserNumber(), clientRequestUtil.getPin());
+                 break;
+             case "topup":
++                System.out.println("Topup request received");
+                 /* TODO: Create handler */
+                 break;
++            default:
++                System.out.println("Invalid request");
++                break;
+ 
+ 
+         }
+@@ -162,6 +172,20 @@
+             return false;
+         }
+     }
++
++    private boolean historyHandler(String userNumber) {
++        if (false == clientRequestUtil.getIsRequestValid()){
++            return false;
++        }
++        if (userIsAuthenticated) {
++            String history = databaseHandler.getHistoryForUser(userNumber);
++            System.out.println(history);
++            //clientRequestUtil.setHistory(history);
++            return true;
++        }else {
++            return false;
++        }
++    }
+ 
+     private boolean changePinHandler(String userNumber, String newPin) {
+         if (false == clientRequestUtil.getIsRequestValid()){
+Index: src/com/Server/DatabaseHandler.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.Server;\r\n\r\nimport java.sql.Connection;\r\nimport java.sql.DriverManager;\r\nimport java.sql.SQLException;\r\nimport java.sql.PreparedStatement;\r\nimport java.sql.ResultSet;\r\n\r\n/* Handler for XAMPP MySQL database */\r\npublic class DatabaseHandler {\r\n    private String databaseAddress;\r\n    private String databasePort;\r\n    private String databaseName;\r\n    private String databaseUsername;\r\n    private String databasePassword;\r\n    private Connection connection;\r\n\r\n    private final String USERS_TABLE = \"account_info\";\r\n    private final String USER_ACCOUNT_ID = \"Account_Id\";\r\n\r\n\r\n    public DatabaseHandler(String databaseAddress, String databasePort, String databaseName, String databaseUsername, String databasePassword) {\r\n        this.databaseAddress = databaseAddress;\r\n        this.databasePort = databasePort;\r\n        this.databaseName = databaseName;\r\n        this.databaseUsername = databaseUsername;\r\n        this.databasePassword = databasePassword;\r\n    }\r\n\r\n    public void connectToDatabase() {\r\n        try {\r\n            Class.forName(\"com.mysql.jdbc.Driver\");\r\n        } catch (ClassNotFoundException e) {\r\n            System.err.println(\"Failed to load MySQL JDBC driver.\");\r\n            e.printStackTrace();\r\n            return;\r\n        }\r\n        String jdbcUrl = \"jdbc:mysql://\" + databaseAddress + \":\" + databasePort + \"/\" + databaseName;\r\n        try {\r\n            connection = DriverManager.getConnection(jdbcUrl, databaseUsername, databasePassword);\r\n            System.out.println(\"Connected to database: \" + databaseName);\r\n        } catch (SQLException e) {\r\n            System.err.println(\"Failed to connect to database: \" + databaseName);\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    public void disconnectFromDatabase() {\r\n        if (connection != null) {\r\n            try {\r\n                connection.close();\r\n                System.out.println(\"Disconnected from database: \" + databaseName);\r\n            } catch (SQLException e) {\r\n                System.err.println(\"Failed to disconnect from database: \" + databaseName);\r\n                e.printStackTrace();\r\n            }\r\n        }\r\n    }\r\n\r\n    public boolean isConnected() {\r\n        try {\r\n            return connection != null && !connection.isClosed();\r\n        } catch (SQLException e) {\r\n            e.printStackTrace();\r\n        }\r\n        return false;\r\n    }\r\n\r\n    public ResultSet executeQuery(String query) {\r\n        ResultSet resultSet = null;\r\n        try {\r\n            if (isConnected()) {\r\n                PreparedStatement statement = connection.prepareStatement(query);\r\n                resultSet = statement.executeQuery();\r\n            } else {\r\n                System.err.println(\"Not connected to the database.\");\r\n            }\r\n        } catch (SQLException e) {\r\n            System.err.println(\"Failed to execute query: \" + query);\r\n            e.printStackTrace();\r\n        }\r\n        return resultSet;\r\n    }\r\n\r\n    public String getPinForUser(String userId) {\r\n        String pin = null;\r\n        try {\r\n            if (isConnected()) {\r\n                String query = \"SELECT Pin FROM \" + USERS_TABLE + \" WHERE \" + USER_ACCOUNT_ID + \" = \" + userId;\r\n                PreparedStatement statement = connection.prepareStatement(query);\r\n                ResultSet resultSet = statement.executeQuery();\r\n                if (resultSet.next()) {\r\n                    pin = resultSet.getString(\"pin\");\r\n                }\r\n            } else {\r\n                System.err.println(\"Not connected to the database.\");\r\n            }\r\n        } catch (SQLException e) {\r\n            System.err.println(\"Failed to get PIN for user: \" + userId);\r\n            e.printStackTrace();\r\n        }\r\n        return pin;\r\n    }\r\n\r\n    public int getBalanceForUser(String userId) {\r\n        String balance = null;\r\n        try {\r\n            if (isConnected()) {\r\n                String query = \"SELECT Balance FROM \" + USERS_TABLE + \" WHERE \" + USER_ACCOUNT_ID + \" = \" + userId;\r\n                PreparedStatement statement = connection.prepareStatement(query);\r\n                ResultSet resultSet = statement.executeQuery();\r\n                if (resultSet.next()) {\r\n                    balance = resultSet.getString(\"balance\");\r\n                }\r\n            } else {\r\n                System.err.println(\"Not connected to the database.\");\r\n            }\r\n        } catch (SQLException e) {\r\n            System.err.println(\"Failed to get Balance for user: \" + userId);\r\n            e.printStackTrace();\r\n        }\r\n        return Integer.parseInt(balance);\r\n    }\r\n\r\n    public boolean changePinForUser(String userId, String newPin) {\r\n        try {\r\n            if (isConnected()) {\r\n                String query = \"UPDATE \" + USERS_TABLE + \" SET Pin = \" + newPin + \" WHERE \" + USER_ACCOUNT_ID + \" = \" + userId;\r\n                PreparedStatement statement = connection.prepareStatement(query);\r\n                // if update executes successfully, return true\r\n                if (1 == statement.executeUpdate()) {\r\n                    return true;\r\n                }\r\n            } else {\r\n                System.err.println(\"Not connected to the database.\");\r\n            }\r\n        } catch (SQLException e) {\r\n            System.err.println(\"Failed to change PIN for user: \" + userId);\r\n            e.printStackTrace();\r\n        }\r\n        return false;\r\n    }\r\n\r\n    public boolean changeBalanceForUser(String userId, String newBalance) {\r\n        try {\r\n            if (isConnected()) {\r\n                String query = \"UPDATE \" + USERS_TABLE + \" SET Balance = \" + newBalance + \" WHERE \" + USER_ACCOUNT_ID + \" = \" + userId;\r\n                PreparedStatement statement = connection.prepareStatement(query);\r\n\r\n                // if update executes successfully, return true\r\n                if (1 == statement.executeUpdate()) {\r\n                    return true;\r\n                }\r\n            } else {\r\n                System.err.println(\"Not connected to the database.\");\r\n            }\r\n        } catch (SQLException e) {\r\n            System.err.println(\"Failed to change Balance for user: \" + userId);\r\n            e.printStackTrace();\r\n        }\r\n        return false;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/Server/DatabaseHandler.java b/src/com/Server/DatabaseHandler.java
+--- a/src/com/Server/DatabaseHandler.java	(revision c2f83281374eb7b79573cafcf131bb87f9415e55)
++++ b/src/com/Server/DatabaseHandler.java	(date 1686392245060)
+@@ -16,6 +16,7 @@
+     private Connection connection;
+ 
+     private final String USERS_TABLE = "account_info";
++    private final String HISTORY_TABLE = "operation_info";
+     private final String USER_ACCOUNT_ID = "Account_Id";
+ 
+ 
+@@ -160,4 +161,24 @@
+         }
+         return false;
+     }
++
++    public String getHistoryForUser(String userId) {
++        String history = null;
++        try {
++            if (isConnected()) {
++                String query = "SELECT * FROM " + HISTORY_TABLE + " WHERE " + USER_ACCOUNT_ID + " = " + userId;
++                PreparedStatement statement = connection.prepareStatement(query);
++                ResultSet resultSet = statement.executeQuery();
++                if (resultSet.next()) {
++                    history = resultSet.getString("history");
++                }
++            } else {
++                System.err.println("Not connected to the database.");
++            }
++        } catch (SQLException e) {
++            System.err.println("Failed to get History for user: " + userId);
++            e.printStackTrace();
++        }
++        return history;
++    }
+ }
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"cc448ad0-3d8b-41cf-b4a5-e87f2ace518e\" name=\"Changes\" comment=\"\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/out/production/ATM/.gitignore\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/com/Client/ATMClient.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/com/Client/ATMClient.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$/..\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2QTQrlM9jN0ughp1KGA2ZmzVVJv\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"RunOnceActivity.OpenProjectViewOnStart\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.ShowReadmeOnStart\" value=\"true\" />\r\n    <property name=\"SHARE_PROJECT_CONFIGURATION_FILES\" value=\"true\" />\r\n    <property name=\"WebServerToolWindowFactoryState\" value=\"false\" />\r\n    <property name=\"last_opened_file_path\" value=\"$PROJECT_DIR$/src/com/Server/mysql-connector-j-8.0.33.jar\" />\r\n    <property name=\"project.structure.last.edited\" value=\"Modules\" />\r\n    <property name=\"project.structure.proportion\" value=\"0.15\" />\r\n    <property name=\"project.structure.side.proportion\" value=\"0.2\" />\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"Application.Server\">\r\n    <configuration name=\"Client\" type=\"Application\" factoryName=\"Application\">\r\n      <option name=\"ALTERNATIVE_JRE_PATH\" value=\"corretto-19\" />\r\n      <option name=\"ALTERNATIVE_JRE_PATH_ENABLED\" value=\"true\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"com.Run.Main\" />\r\n      <module name=\"ATM\" />\r\n      <option name=\"PROGRAM_PARAMETERS\" value=\"c\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"Server\" type=\"Application\" factoryName=\"Application\">\r\n      <option name=\"ALTERNATIVE_JRE_PATH\" value=\"corretto-19\" />\r\n      <option name=\"ALTERNATIVE_JRE_PATH_ENABLED\" value=\"true\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"com.Run.Main\" />\r\n      <module name=\"ATM\" />\r\n      <option name=\"PROGRAM_PARAMETERS\" value=\"s 1234 127.0.0.1 3306 atm atm0 atm_password\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <list>\r\n      <item itemvalue=\"Application.Server\" />\r\n      <item itemvalue=\"Application.Client\" />\r\n    </list>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"cc448ad0-3d8b-41cf-b4a5-e87f2ace518e\" name=\"Changes\" comment=\"\" />\r\n      <created>1685375302851</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1685375302851</updated>\r\n      <workItem from=\"1685375312524\" duration=\"270000\" />\r\n      <workItem from=\"1685375611287\" duration=\"5691000\" />\r\n      <workItem from=\"1685788196743\" duration=\"4368000\" />\r\n      <workItem from=\"1685792643625\" duration=\"1969000\" />\r\n      <workItem from=\"1685795730745\" duration=\"118000\" />\r\n      <workItem from=\"1685795884129\" duration=\"5451000\" />\r\n      <workItem from=\"1686305558144\" duration=\"3228000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision c2f83281374eb7b79573cafcf131bb87f9415e55)
++++ b/.idea/workspace.xml	(date 1686497431257)
+@@ -3,8 +3,9 @@
+   <component name="ChangeListManager">
+     <list default="true" id="cc448ad0-3d8b-41cf-b4a5-e87f2ace518e" name="Changes" comment="">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/out/production/ATM/.gitignore" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/com/Client/ATMClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Client/ATMClient.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/Server/ATMServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Server/ATMServer.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/Server/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Server/ClientHandler.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/Server/DatabaseHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/Server/DatabaseHandler.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -80,7 +81,9 @@
+       <workItem from="1685792643625" duration="1969000" />
+       <workItem from="1685795730745" duration="118000" />
+       <workItem from="1685795884129" duration="5451000" />
+-      <workItem from="1686305558144" duration="3228000" />
++      <workItem from="1686305558144" duration="7272000" />
++      <workItem from="1686426341930" duration="2679000" />
++      <workItem from="1686493651578" duration="2560000" />
+     </task>
+     <servers />
+   </component>
+@@ -98,4 +101,15 @@
+       </map>
+     </option>
+   </component>
++  <component name="XDebuggerManager">
++    <breakpoint-manager>
++      <breakpoints>
++        <line-breakpoint enabled="true" type="java-line">
++          <url>file://$PROJECT_DIR$/src/com/Server/ClientHandler.java</url>
++          <line>32</line>
++          <option name="timeStamp" value="1" />
++        </line-breakpoint>
++      </breakpoints>
++    </breakpoint-manager>
++  </component>
+ </project>
+\ No newline at end of file
