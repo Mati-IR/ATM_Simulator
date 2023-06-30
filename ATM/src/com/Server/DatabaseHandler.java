@@ -7,6 +7,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /* Handler for XAMPP MySQL database */
 public class DatabaseHandler {
@@ -207,9 +209,18 @@ public class DatabaseHandler {
                 ResultSet resultSet = statement.executeQuery();
                 logToDatabase(userId, OPERATION_HISTORY, null);
                 int recordsSaved = 0;
-                while (resultSet.next() && recordsSaved < 5) {
+
+                List<String> historyList = new ArrayList<>();
+
+
+                while (resultSet.next()) {
                     recordsSaved++;
-                    history += resultSet.getString("ID") + " " + resultSet.getString("Date") + " " + resultSet.getString("Operation_Type") + " " + resultSet.getString("Amount") + ";";
+                    historyList.add(resultSet.getString("ID") + " " + resultSet.getString("Date") + " " + resultSet.getString("Operation_Type") + " " + resultSet.getString("Amount") + ";");
+                }
+
+                // add last five records to history string
+                for (int i = historyList.size() - 1; i >= 0 && i >= historyList.size() - 5; i--) {
+                    history += historyList.get(i);
                 }
             } else {
                 System.err.println("Not connected to the database.");
