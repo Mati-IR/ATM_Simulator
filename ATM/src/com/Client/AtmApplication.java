@@ -59,7 +59,7 @@ public class AtmApplication extends Application {
 
     public static void main(String[] args) {
         // set up the client backend
-        atmClient = ATMClient.getInstance();
+        atmClient = ATMClient.getInstance(Integer.parseInt(args[1]), args[2], Integer.parseInt(args[3]));
 
         launch();
     }
